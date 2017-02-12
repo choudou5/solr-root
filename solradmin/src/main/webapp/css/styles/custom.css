@@ -1,0 +1,34 @@
+#content #cores .actions div.dialog .cloud{
+  display: none;
+}
+
+#content #cores .actions div.dialog
+{
+  width: 350px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  box-shadow: 5px 5px 10px #c0c0c0;
+  -moz-box-shadow: 5px 5px 10px #c0c0c0;
+  -webkit-box-shadow: 5px 5px 10px #c0c0c0;
+  display: none;
+  position: absolute;
+  left: -50px;
+  top: 40px;
+  padding: 10px;
+}
+
+.updateConfAutoDeploy{
+	display: none;
+}
+
+/* 公告提示 */
+#notice {
+	position:absolute;
+	background-image:url('../../img/notice.png');
+	width:250px;
+	height:35px;
+	text-align:center;
+	padding:12px 0 0 0;
+	font-size:13px;
+	color:#467618;
+}
