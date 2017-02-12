@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="solrsite" default="copySolrAdminProject" basedir="D:\workspace-dev\solr-root" >
+
+<property name="copyTo" value="D:\workspace-dev\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\solr.website"/>
+
+<target name="copySolrAdminProject" description="复制solradmin项目文件 到 website项目里">
+   <copydir src="solradmin\src\main\resources" dest="${copyTo}\WEB-INF\classes" />
+   <copydir src="solradmin\src\main\webapp" dest="${copyTo}" />
+</target>
+	
+<target name="copySolrHome" description="复制配置文件到 solr配置中心">
+   <copydir src="collections" dest="D:\solrHome\example" description="solr配置中心目录" />
+</target>
+
+</project>

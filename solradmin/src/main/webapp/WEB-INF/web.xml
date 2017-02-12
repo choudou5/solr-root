@@ -97,8 +97,9 @@
     <extension>.xsl</extension>
     <mime-type>application/xslt+xml</mime-type>
   </mime-mapping>
+  
   <welcome-file-list>
-    <welcome-file>site/index.html</welcome-file>
+    <welcome-file>website/index.html</welcome-file>
     <welcome-file>admin.html</welcome-file>
   </welcome-file-list>
 </web-app>

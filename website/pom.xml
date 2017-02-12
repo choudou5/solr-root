@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
     <groupId>com.choudoufu.solr</groupId>
-	<artifactId>choudoufu.solr.website</artifactId>
-	<name>choudoufu.solr.website</name>
+	<artifactId>solr.website</artifactId>
+	<name>solr.website</name>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -21,11 +21,28 @@
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<lianj.package.version>0.0.1</lianj.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
-		<package.warName>choudoufu.solr.website</package.warName>
+		<package.warName>solr.website</package.warName>
 	</properties>
 
 	<dependencies>
 
+
+		<!-- ehcache -->
+		<dependency>
+		    <groupId>net.sf.ehcache</groupId>
+		    <artifactId>ehcache-core</artifactId>
+		    <version>${ehcache-core.version}</version>
+		</dependency>
+		
+		<!-- ant -->
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>${ant.version}</version>
+		</dependency>
+
+
+<!--**************solradmin pom *********************-->
 		<!-- mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -177,21 +194,7 @@
 			<artifactId>httpcore</artifactId>
 			<version>${http.version}</version>
 		</dependency>
-		
-		<!-- ehcache -->
-		<dependency>
-		    <groupId>net.sf.ehcache</groupId>
-		    <artifactId>ehcache-core</artifactId>
-		    <version>${ehcache-core.version}</version>
-		</dependency>
-		
-		<!-- ant -->
-		<dependency>
-			<groupId>org.apache.ant</groupId>
-			<artifactId>ant</artifactId>
-			<version>${ant.version}</version>
-		</dependency>
-		
+
 	</dependencies>
 
 

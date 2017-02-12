@@ -34,7 +34,6 @@ public class AntUtil extends BaseLog{
 			p.fireBuildFinished(null);
 		} catch (BuildException e) {
 			logger.error(e);
-			
 		}
 		return null;
 	}
