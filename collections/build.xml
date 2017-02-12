@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="solrBuild" default="copyCollectionToSolrHome" basedir=".">
+<property name="copyTo" value="D:\solrHome3"/>
+<property name="collName" value="example"/>
+
+<target name="init">
+   <mkdir dir="${collName}"/>
+</target>
+<target name="compile" depends="init">
+	<javaresource>
+		<classpath  path="${collName}"/>
+	</javaresource>
+</target>
+<target name="copyCollectionToSolrHome" depends="compile">
+   <copydir dest="${copyTo}\${collName}" src="${collName}"/>
+</target>
+
+</project>
