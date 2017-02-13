@@ -1,1 +1,1 @@
-# solrclient
+# solr root
