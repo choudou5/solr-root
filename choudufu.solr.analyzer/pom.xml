@@ -7,8 +7,8 @@
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
 
-	<artifactId>solr.analyzer</artifactId>
-	<name>solr.analyzer</name>
+	<artifactId>choudufu.solr.analyzer</artifactId>
+	<name>choudufu.solr.analyzer</name>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 

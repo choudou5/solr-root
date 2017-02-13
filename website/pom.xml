@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
     <groupId>com.choudoufu.solr</groupId>
-	<artifactId>solr.website</artifactId>
-	<name>solr.website</name>
+	<artifactId>choudufu.solr.website</artifactId>
+	<name>choudufu.solr.website</name>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -21,7 +21,7 @@
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<lianj.package.version>0.0.1</lianj.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
-		<package.warName>solr.website</package.warName>
+		<package.warName>choudufu.solr.website</package.warName>
 	</properties>
 
 	<dependencies>
