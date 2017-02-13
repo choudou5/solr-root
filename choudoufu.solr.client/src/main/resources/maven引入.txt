@@ -1,5 +1,5 @@
 <dependency>
-	<groupId>com.lianj.solr</groupId>
-	<artifactId>lianj.solr.solrj</artifactId>
-	<version>${lianj.package.version}-SNAPSHOT</version>
+	<groupId>com.choudoufu.solr</groupId>
+	<artifactId>choudoufu.solr.solrj</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 </dependency>

@@ -23,7 +23,7 @@
 		<http.version>4.4.1</http.version>
 		
 		<solr-solr.version>4.10.4</solr-solr.version>
-		<lianj.package.version>0.0.1</lianj.package.version>
+		<choudoufu.package.version>0.0.1</choudoufu.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
 		<package.warName>choudoufu.solr.admin</package.warName>
 	</properties>
@@ -132,16 +132,16 @@
 			<artifactId>lucene-analyzers-smartcn</artifactId>
 			<version>${solr-solr.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>com.lianj.solr</groupId>
-			<artifactId>lianj.solr.analyzer</artifactId>
-			<version>${lianj.package.version}-SNAPSHOT</version>
+		<dependency>
+			<groupId>com.choudoufu.solr</groupId>
+			<artifactId>choudoufu.solr.analyzer</artifactId>
+			<version>${choudoufu.package.version}-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.lianj.solr</groupId>
-			<artifactId>lianj.solr.plugin</artifactId>
-			<version>${lianj.package.version}-SNAPSHOT</version>
-		</dependency> -->
+			<groupId>com.choudoufu.solr</groupId>
+			<artifactId>choudoufu.solr.plugin</artifactId>
+			<version>${choudoufu.package.version}-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 		    <groupId>org.apache.solr</groupId>
 		    <artifactId>solr-dataimporthandler</artifactId>

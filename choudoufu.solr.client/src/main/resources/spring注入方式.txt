@@ -5,7 +5,7 @@ solr.initConnectionModule=projectInfo,projectGrab
 solr.maxPoolSize=1
 solr.checkExpirePeriod=60000
  
-<bean id="solrAPI" class="com.lianj.solrj.api.impl.SolrAPIImpl">
+<bean id="solrService" class="com.choudoufu.client.service.impl.SolrServiceImpl">
     <constructor-arg name="solrServer">
     	<bean class="com.lianj.solrj.server.SolrServer">
     	    <property name="solrModel" value="${solr.model}"/>

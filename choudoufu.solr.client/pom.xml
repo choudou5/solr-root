@@ -10,7 +10,6 @@
 	<artifactId>choudoufu.solr.client</artifactId>
 	<name>choudoufu.solr.client</name>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<junit.version>4.12</junit.version>
