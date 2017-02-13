@@ -6,7 +6,7 @@
         <artifactId>choudoufu.solr</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
-
+    
 	<artifactId>choudoufu.solr.analyzer</artifactId>
 	<name>choudoufu.solr.analyzer</name>
 	<packaging>jar</packaging>
