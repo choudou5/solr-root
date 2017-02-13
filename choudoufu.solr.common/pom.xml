@@ -7,8 +7,8 @@
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
 
-	<artifactId>choudufu.solr.common</artifactId>
-	<name>choudufu.solr.common</name>
+	<artifactId>choudoufu.solr.common</artifactId>
+	<name>choudoufu.solr.common</name>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 

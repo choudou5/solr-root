@@ -7,10 +7,9 @@
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
 
-	<artifactId>choudufu.solr.analyzer</artifactId>
-	<name>choudufu.solr.analyzer</name>
+	<artifactId>choudoufu.solr.analyzer</artifactId>
+	<name>choudoufu.solr.analyzer</name>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<pinyin4j.version>2.5.0</pinyin4j.version>

@@ -8,8 +8,8 @@
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
     
-	<artifactId>choudufu.solr.admin</artifactId>
-	<name>choudufu.solr.admin</name>
+	<artifactId>choudoufu.solr.admin</artifactId>
+	<name>choudoufu.solr.admin</name>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -25,7 +25,7 @@
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<lianj.package.version>0.0.1</lianj.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
-		<package.warName>choudufu.solr.admin</package.warName>
+		<package.warName>choudoufu.solr.admin</package.warName>
 	</properties>
 
 	<dependencies>

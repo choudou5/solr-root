@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-        <groupId>com.choudufu.solr</groupId>
-        <artifactId>choudufu.solr</artifactId>
+
+    <parent>
+        <groupId>com.choudoufu.solr</groupId>
+        <artifactId>choudoufu.solr</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
     </parent>
 
-	<artifactId>choudufu.solr.plugin</artifactId>
-	<name>choudufu.solr.plugin</name>
+	<artifactId>choudoufu.solr.plugin</artifactId>
+	<name>choudoufu.solr.plugin</name>
 	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -98,8 +99,8 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.choudufu.solr</groupId>
-			<artifactId>choudufu.solr.analyzer</artifactId>
+			<groupId>com.choudoufu.solr</groupId>
+			<artifactId>choudoufu.solr.analyzer</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
