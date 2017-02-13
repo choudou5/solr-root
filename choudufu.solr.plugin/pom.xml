@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>com.choudufu.solr</groupId>
+        <artifactId>choudufu.solr</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+	<artifactId>choudufu.solr.plugin</artifactId>
+	<name>choudufu.solr.plugin</name>
+	<packaging>jar</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<servlet-api.version>2.5</servlet-api.version>
+		<commons-logging>1.2</commons-logging>
+		<commons-apache.version>2.5</commons-apache.version>
+		<zookeeper.version>3.4.8</zookeeper.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>servlet-api</artifactId>
+		    <version>${servlet-api.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>1.7.6</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-logging</groupId>
+		    <artifactId>commons-logging</artifactId>
+		    <version>${commons-logging}</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-io</groupId>
+  			<artifactId>commons-io</artifactId>
+		    <version>${commons-apache.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>commons-lang</groupId>
+  			<artifactId>commons-lang</artifactId>
+		    <version>${commons-apache.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.google.guava</groupId>
+		    <artifactId>guava</artifactId>
+		    <version>19.0</version>
+		</dependency>
+
+		<!-- solr -->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-core</artifactId>
+			<version>${solr-solr.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>${solr-solr.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${solr-solrj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${solr-solrj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>${zookeeper.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.choudufu.solr</groupId>
+			<artifactId>choudufu.solr.analyzer</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+
+</project>
