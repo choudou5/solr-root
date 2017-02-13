@@ -1,0 +1,9 @@
+---------------------【IK分词器 合并到 solr.analyzer项目-】-----------------------------
+IK分词器扩展说明：
+	更改点：
+	    1、org.wltea.analyzer.dic.Dictionary类增加 reLoadExtDict方法
+	
+	新增点：
+	    1、org.wltea.analyzer.lucene.IKTokenizerFactory类
+	    
+	    

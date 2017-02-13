@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>com.choudoufu.solr</groupId>
+        <artifactId>choudoufu.solr</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+	<artifactId>solr.analyzer</artifactId>
+	<name>solr.analyzer</name>
+	<packaging>jar</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<pinyin4j.version>2.5.0</pinyin4j.version>
+		<mmseg4j.version>1.9.1</mmseg4j.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${solr-solrj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>${solr-solrj.version}</version>
+		</dependency>
+
+	    <dependency>
+		    <groupId>com.belerweb</groupId>
+		    <artifactId>pinyin4j</artifactId>
+		    <version>${pinyin4j.version}</version>
+		</dependency>
+
+		<!-- <dependency>
+	  		<groupId>com.chenlb.mmseg4j</groupId>
+	  		<artifactId>mmseg4j-analysis</artifactId>
+	  		<version>${mmseg4j.version}</version>
+	  		<exclusions>
+	  			<exclusion>
+	  				<groupId>*</groupId>
+	  			  	<artifactId>*</artifactId>
+	  			</exclusion>
+	  		</exclusions>
+	  	</dependency> -->
+	  	<dependency>
+	  		<groupId>com.chenlb.mmseg4j</groupId>
+	  		<artifactId>mmseg4j-core</artifactId>
+	  		<version>${mmseg4j.version}</version>
+	  	</dependency>
+	</dependencies>
+
+</project>
