@@ -1,0 +1,18 @@
+###########single=单机,cloud=分布式,master_slave=主从
+solr.model=cloud
+solr.url=192.168.36.220:2181,192.168.37.220:3181,192.168.36.220:4181
+solr.initConnectionModule=projectInfo,projectGrab
+solr.maxPoolSize=1
+solr.checkExpirePeriod=60000
+ 
+<bean id="solrAPI" class="com.lianj.solrj.api.impl.SolrAPIImpl">
+    <constructor-arg name="solrServer">
+    	<bean class="com.lianj.solrj.server.SolrServer">
+    	    <property name="solrModel" value="${solr.model}"/>
+    	    <property name="host" value="${solr.url}"/>
+    	    <property name="initConnectionModules" value="${solr.initConnectionModule}"/>
+	    	<property name="maxPoolSize" value="${solr.maxPoolSize}"/>
+	    	<property name="checkExpirePeriod" value="${solr.checkExpirePeriod}"/>
+	    </bean>
+    </constructor-arg>
+</bean>
