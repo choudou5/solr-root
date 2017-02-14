@@ -11,7 +11,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.util.EhcacheUtil;
+import com.choudoufu.solr.util.UserUtil;
 
 public class LoginFilter implements Filter {
 
@@ -34,12 +36,13 @@ public class LoginFilter implements Filter {
 		if (req.getPathInfo() != null) {
 			path += req.getPathInfo();
 		}
-		// Check for the core admin collections url
-//			if (path.equals("/admin/collections")) {
-//			if ("/select".equals(path)
-		// Otherwise let the webapp handle the request
-		chain.doFilter(request, response);
-
+		
+		String encryptCode = req.getParameter("sigCode");
+		if(SignUtil.decryptCode(encryptCode) || UserUtil.isLogin(req)){
+			chain.doFilter(request, response);
+		}else{
+			request.getRequestDispatcher("/login").forward(request, response);
+		}
 	}
 
 	@Override
