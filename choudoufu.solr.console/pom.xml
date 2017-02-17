@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>com.choudoufu.solr</groupId>
+        <artifactId>choudoufu.solr</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+    </parent>
+	
+	<artifactId>choudoufu.solr.console</artifactId>
+	<name>choudoufu.solr.console</name>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+
+		<choudoufu.package.version>0.0.1</choudoufu.package.version>
+
+	</properties>
+
+	<dependencies>
+
+		<!-- solr common -->
+		<dependency>
+		    <groupId>com.choudoufu.solr</groupId>
+  			<artifactId>choudoufu.solr.common</artifactId>
+		    <version>${choudoufu.package.version}-SNAPSHOT</version>
+		</dependency>
+		
+	</dependencies>
+
+</project>
