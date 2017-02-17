@@ -40,7 +40,7 @@ public class UserUtil {
 	 */
 	public static boolean isLogin(HttpServletRequest request){
 		User user = (User) request.getSession().getAttribute(SysConsts.USER_SESSION);
-		return user==null?true:false;
+		return user!=null?true:false;
 	}
 
 	/**

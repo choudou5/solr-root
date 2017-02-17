@@ -1,4 +1,4 @@
-package org.apache.solr.common.params;
+package com.choudoufu.solr.common.params;
 
 import java.util.Locale;
 

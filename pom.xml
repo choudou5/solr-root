@@ -15,11 +15,13 @@
 	</properties>
 
 	<modules>
-		<module>choudoufu.solr.admin</module>
 		<module>choudoufu.solr.analyzer</module>
-		<module>choudoufu.solr.plugin</module>
 		<module>choudoufu.solr.client</module>
 		<module>choudoufu.solr.common</module>
+		
+		<module>choudoufu.solr.admin</module>
+		<module>choudoufu.solr.console</module>
+		<module>choudoufu.solr.website</module>
 	</modules> 
 
 	<dependencies>

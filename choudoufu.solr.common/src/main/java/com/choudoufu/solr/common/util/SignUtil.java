@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 签名工具
@@ -18,15 +18,21 @@ public class SignUtil {
 	
 	/** 签名key */
 	private static final String SIG_KEY = "solrroot";
+	private static final int DEF_TIME_OUT = 10;//单位秒
 	
-	public static void main(String[] args) {
+	@SuppressWarnings("static-access")
+	public static void main(String[] args) throws InterruptedException {
 		long begin = System.currentTimeMillis();
-		for (int i = 0; i < 100; i++) {
-			String encrypt = getEncryptCode();
-			System.out.println("encrypt="+encrypt+", decryptCode="+decryptCode(encrypt));
-		}
+		String encrypt = getEncryptCode();
+		System.out.println("encrypt="+encrypt+", validCode="+validCode(encrypt));
 		long end = System.currentTimeMillis();
 		System.out.println("time:"+(end-begin));
+		
+		//校验 超时
+		for (int i = 0; i < 5; i++) {
+			Thread.currentThread().sleep(3000);
+			System.out.println(validCode(encrypt));
+		}
 	}
 	
 	/**
@@ -34,29 +40,42 @@ public class SignUtil {
 	 * @return
 	 */
 	public static String getEncryptCode(){
-		String code = RandomStringUtils.randomAlphanumeric(10);
-		return code+","+XXTea.encrypt(code+XXTea.getFactors(SIG_KEY), SIG_KEY);
+		long time = System.currentTimeMillis();
+		System.out.println(time);
+		return XXTea.encrypt(time+"", SIG_KEY+XXTea.getFactors(SIG_KEY));
 	}
 	
-	
 	/**
-	 * 解密 encryptCode
+	 * 验证 code
 	 * @param encryptCode
 	 * @return
 	 */
-	public static boolean decryptCode(String encryptCode){
-		if(encryptCode == null)
-			return false;
-		
-		String[] codes = encryptCode.split(",");
-		if(codes.length != 2)
-			return false;
-		
-		String code = codes[0];
-		String encrypt = codes[1];
-		String decrypt = XXTea.decrypt(encrypt, SIG_KEY);
-		return decrypt.equals(code+XXTea.getFactors(SIG_KEY));
+	public static boolean validCode(String encryptCode){
+		return validCode(encryptCode, DEF_TIME_OUT);
 	}
+	
+	/**
+	 * 验证 code
+	 * @param encryptCode
+	 * @param effectiveRangeSecond 有效范围秒
+	 * @return
+	 */
+	public static boolean validCode(String encryptCode, int effectiveRangeSecond){
+		if(StringUtils.isBlank(encryptCode))
+			return false;
+		
+		String decrypt = XXTea.decrypt(encryptCode, SIG_KEY+XXTea.getFactors(SIG_KEY));
+		try {
+			Long time = Long.parseLong(decrypt);
+			long now = System.currentTimeMillis();
+			System.out.println(now+" == "+decrypt);
+			return Math.abs(now-time)>(effectiveRangeSecond*1000)?false:true;
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 
 	/**
 	 * 对称加密解密算法
@@ -70,7 +89,7 @@ public class SignUtil {
 	    private static char SPECIAL_CHAR = '\0';
 	    
 	    //-----------begin----------扩展 XXTea 增加 加密因子--------------
-	    private static final char[] FACTORS = new char[]{'a','b','c','d','e','g','f'};
+	    private static final char[] FACTORS = new char[]{'a','b','c','d','e','g','f','g','h','i'};
 		
 		/**
 		 * 获取 加密影响因子

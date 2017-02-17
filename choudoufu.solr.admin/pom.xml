@@ -138,11 +138,6 @@
 			<version>${choudoufu.package.version}-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.choudoufu.solr</groupId>
-			<artifactId>choudoufu.solr.plugin</artifactId>
-			<version>${choudoufu.package.version}-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 		    <groupId>org.apache.solr</groupId>
 		    <artifactId>solr-dataimporthandler</artifactId>
 		    <version>${solr-solr.version}</version>

@@ -1,4 +1,4 @@
-package org.apache.solr.core;
+package com.choudoufu.solr.core;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -7,14 +7,17 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.solr.cloud.ZkController;
-import org.apache.solr.cloud.ZkCustomController;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.cloud.ZooKeeperException;
-import org.apache.solr.handler.admin.CustomHandler;
-import org.apache.solr.handler.admin.UserHandler;
+import org.apache.solr.core.ConfigSolr;
+import org.apache.solr.core.SolrResourceLoader;
 import org.apache.zookeeper.KeeperException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.choudoufu.solr.cloud.ZkCustomController;
+import com.choudoufu.solr.handler.CustomHandler;
+import com.choudoufu.solr.handler.UserHandler;
 
 /**
  * 自定义 容器

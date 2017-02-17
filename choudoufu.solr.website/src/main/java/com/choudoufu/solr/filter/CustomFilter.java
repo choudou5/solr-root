@@ -1,4 +1,4 @@
-package org.apache.solr.servlet;
+package com.choudoufu.solr.filter;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -16,11 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.common.params.CommonParams;
-import org.apache.solr.common.params.CustomParams;
 import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
-import org.apache.solr.core.CustomContainer;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrRequestHandler;
@@ -29,10 +27,15 @@ import org.apache.solr.response.BinaryQueryResponseWriter;
 import org.apache.solr.response.JSONResponseWriter;
 import org.apache.solr.response.QueryResponseWriter;
 import org.apache.solr.response.SolrQueryResponse;
+import org.apache.solr.servlet.ResponseUtils;
+import org.apache.solr.servlet.SolrRequestParsers;
 import org.apache.solr.servlet.cache.Method;
 import org.apache.solr.util.FastWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.choudoufu.solr.common.params.CustomParams;
+import com.choudoufu.solr.core.CustomContainer;
 
 
 /**
@@ -40,15 +43,15 @@ import org.slf4j.LoggerFactory;
  * @author xuhaowen
  * @serial 2017-1-7
  */
-public class SolrCustomFilter implements Filter{
+public class CustomFilter implements Filter{
 	
-	static final Logger log = LoggerFactory.getLogger(SolrCustomFilter.class);
+	static final Logger log = LoggerFactory.getLogger(CustomFilter.class);
 	
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
 	
 	protected volatile CustomContainer container;
 	
-	public SolrCustomFilter() {
+	public CustomFilter() {
 	}
 	
 	@Override

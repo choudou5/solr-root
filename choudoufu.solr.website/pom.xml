@@ -1,7 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <groupId>com.choudoufu.solr</groupId>
+	
+	<parent>
+        <groupId>com.choudoufu.solr</groupId>
+        <artifactId>choudoufu.solr</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+    </parent>
+    
 	<artifactId>choudoufu.solr.website</artifactId>
 	<name>choudoufu.solr.website</name>
 	<packaging>war</packaging>
@@ -11,6 +17,7 @@
 		<junit.version>4.12</junit.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-logging>1.2</commons-logging>
+		<commons-collections>3.2.1</commons-collections>
 		<commons-beanutils.version>1.9.1</commons-beanutils.version>
 		<commons-codec.version>1.9</commons-codec.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -47,6 +54,13 @@
   			<artifactId>choudoufu.solr.common</artifactId>
 		    <version>${choudoufu.package.version}-SNAPSHOT</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>commons-collections</groupId>
+		    <artifactId>commons-collections</artifactId>
+		    <version>${commons-collections}</version>
+		</dependency>
+				
 		
 
 <!--**************solradmin pom *********************-->
@@ -158,11 +172,6 @@
 			<version>${choudoufu.package.version}-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.choudoufu.solr</groupId>
-			<artifactId>choudoufu.solr.plugin</artifactId>
-			<version>${choudoufu.package.version}-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 		    <groupId>org.apache.solr</groupId>
 		    <artifactId>solr-dataimporthandler</artifactId>
 		    <version>${solr-solr.version}</version>
@@ -209,32 +218,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.3</version> 
-				<configuration>
-					<testFailureIgnore>true</testFailureIgnore>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warName>${package.warName}</warName>
@@ -244,30 +227,4 @@
 	</build>
 
 
-	<profiles>
-		<profile>
-			<id>dev</id>
-			<properties>
-				<package.environment>dev</package.environment>
-			</properties>
-		</profile>
-		<profile>
-			<id>test</id>
-			<properties>
-				<package.environment>test</package.environment>
-			</properties>
-		</profile>
-		<profile>
-			<id>uat</id>
-			<properties>
-				<package.environment>uat</package.environment>
-			</properties>
-		</profile>
-		<profile>
-			<id>product</id>
-			<properties>
-				<package.environment>product</package.environment>
-			</properties>
-		</profile>
-	</profiles>
 </project>
