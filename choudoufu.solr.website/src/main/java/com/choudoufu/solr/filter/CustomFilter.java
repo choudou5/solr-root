@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -20,6 +19,7 @@ import org.apache.solr.common.util.ContentStreamBase;
 import org.apache.solr.common.util.NamedList;
 import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.core.SolrCore;
+import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.request.SolrQueryRequest;
 import org.apache.solr.request.SolrRequestHandler;
 import org.apache.solr.request.SolrRequestInfo;
@@ -28,6 +28,7 @@ import org.apache.solr.response.JSONResponseWriter;
 import org.apache.solr.response.QueryResponseWriter;
 import org.apache.solr.response.SolrQueryResponse;
 import org.apache.solr.servlet.ResponseUtils;
+import org.apache.solr.servlet.SolrDispatchFilter;
 import org.apache.solr.servlet.SolrRequestParsers;
 import org.apache.solr.servlet.cache.Method;
 import org.apache.solr.util.FastWriter;
@@ -35,7 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.choudoufu.solr.common.params.CustomParams;
+import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.core.CustomContainer;
+import com.choudoufu.solr.core.request.CustomRequestHandler;
+import com.choudoufu.solr.util.IpUtil;
+import com.choudoufu.solr.util.UserUtil;
 
 
 /**
@@ -43,24 +48,26 @@ import com.choudoufu.solr.core.CustomContainer;
  * @author xuhaowen
  * @serial 2017-1-7
  */
-public class CustomFilter implements Filter{
+public class CustomFilter extends SolrDispatchFilter{
 	
 	static final Logger log = LoggerFactory.getLogger(CustomFilter.class);
 	
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
 	
-	protected volatile CustomContainer container;
+	protected volatile CustomContainer customContainer;
 	
 	public CustomFilter() {
 	}
 	
 	@Override
 	public void init(FilterConfig config) throws ServletException {
-		log.info("SolrCustomFilter.init()");
+		super.init(config);
 		
+		log.info("SolrCustomFilter.init()");
 		try {
-			container = new CustomContainer();
-			container.load();
+			SolrResourceLoader loader = new SolrResourceLoader(SolrResourceLoader.locateSolrHome());
+			customContainer = new CustomContainer(loader, super.getCores());
+			customContainer.load();
 	    }catch( Throwable t ) {
 	      log.error( "SolrCustomFilter init error");
 	      SolrCore.log( t );
@@ -68,52 +75,106 @@ public class CustomFilter implements Filter{
 	        throw (Error) t;
 	      }
 	    }
-		
 	    log.info("SolrCustomFilter.init() done");
 	}
 	
+	 
 	@Override
 	public void destroy() {
-		if (container != null) {
-			container.shutdown();
-			container = null;
-	    }  
+		super.destroy();
 	}
-
+	
+	/**
+	 * 是否 排除页面
+	 * @param req
+	 * @return
+	 */
+	private boolean isExcludePage(String path){
+		String[] EXCLUDE_PAGES = new String[]{
+				"/website/images",
+				"/website/js",
+				"/website/css",
+				"/website/fonts",
+				"/website/index.html",
+				"/console/login.html",
+				"/console/img",
+				"/console/js",
+				"/console/css",
+				"/console/font-awesome",
+				"/console/static",
+				"/static/",
+				"/favicon.ico",
+				"/admin",
+				"/css",
+				"/js",
+				"/img",
+				"/font-awesome",
+				"/tpl",
+				"/userHistory",
+				"/collection1",
+				"/index.js"
+			};
+		System.out.println("path:"+path);
+		for (String page : EXCLUDE_PAGES) {
+			if(path.startsWith(page))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if (this.container == null) {
+		if (this.customContainer == null) {
 	      ((HttpServletResponse)response).sendError( 503, "Server is shutting down or failed to initialize" );
 	      return;
 	    }
 		
-		CustomContainer cores = this.container;
+		CustomContainer cores = this.customContainer;
 	    SolrQueryRequest solrReq = null;
 	    
 	    if(request instanceof HttpServletRequest) {
 	      HttpServletRequest req = (HttpServletRequest)request;
+	      HttpServletResponse resp = (HttpServletResponse)response;
+	      
 	      try {
-	        req.setAttribute("org.apache.solr.core.CustomContainer", cores);
 	        String path = req.getServletPath();
 	        if( req.getPathInfo() != null ) {
 	        	path += req.getPathInfo();
 	        }
-	        solrReq =  SolrRequestParsers.DEFAULT.parse(null,path, req);
-	        //上传 core配置
-	        if(path.equals(CustomParams.REQ_PATH_CCUSTOM) ) {
-	        	SolrRequestHandler handler = cores.getCustomHandler();
-	            handleCustomRequest(req, response, handler, solrReq);
-	            return;
-	        }
 	        
-	        //控制台-用户
-	        if(path.equals(CustomParams.REQ_PATH_CONSOLE_USER) ) {
-	        	SolrRequestHandler handler = cores.getUserHandler();
-	        	handleConsoleRequest(req, response, handler, solrReq);
-	            return;
-	        }
-	        log.info("[custom filter] path=" + path + " params="+solrReq.toString());
-	      } 
+	        //排除页面
+			if(isExcludePage(path)){
+//				chain.doFilter(request, response);
+				super.doFilter(request, response, chain);
+				return;
+			}
+			
+			//校验登录
+			String encryptCode = req.getParameter("sigCode");
+			if(SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
+//				chain.doFilter(request, response);
+				super.doFilter(request, response, chain);
+			}else{
+				solrReq =  SolrRequestParsers.DEFAULT.parse(null,path, req);
+		        //上传 core配置
+		        if(path.equals(CustomParams.REQ_PATH_CCUSTOM) ) {
+		        	SolrRequestHandler handler = cores.getCustomHandler();
+		            handleCustomRequest(req, response, handler, solrReq);
+		            return;
+		        }
+		        log.info("[custom filter] path=" + path + " params="+solrReq.toString());
+		        
+				//控制台-用户
+		        if(path.equals(CustomParams.REQ_PATH_CONSOLE_USER) ) {
+		        	CustomRequestHandler handler = cores.getUserHandler();
+		        	handleConsoleRequest(req, response, handler, solrReq);
+		            return;
+		        }
+		        resp.sendRedirect("/console/login.html");
+		        return;
+			}
+	        
+	      }
 	      catch (Throwable ex) {
 	        sendError(solrReq, request, (HttpServletResponse)response, ex );
 	        // walk the the entire cause chain to search for an Error
@@ -139,7 +200,7 @@ public class CustomFilter implements Filter{
 	        }
 	      }
 	    }
-
+	    
 	    chain.doFilter(request, response);
 	}
 	
@@ -157,17 +218,18 @@ public class CustomFilter implements Filter{
 		writeResponse(solrResp, response, respWriter, solrReq, Method.getMethod(req.getMethod()));
 	}
 	
-	private void handleConsoleRequest(HttpServletRequest req, ServletResponse response, SolrRequestHandler handler,
+	private void handleConsoleRequest(HttpServletRequest req, ServletResponse response, CustomRequestHandler handler,
             SolrQueryRequest solrReq) throws IOException {
 		SolrQueryResponse solrResp = new SolrQueryResponse();
 		SolrCore.preDecorateResponse(solrReq, solrResp);
-		handler.handleRequest(solrReq, solrResp);
+		solrReq.getContext().put(CustomParams.ACCESS_IP, IpUtil.getIpAddr(req));
+		handler.handleRequest(req, solrReq, solrResp);
 		SolrCore.postDecorateResponse(handler, solrReq, solrResp);
 		if (log.isInfoEnabled() && solrResp.getToLog().size() > 0) {
 			log.info(solrResp.getToLogAsString("[custom] "));
 		}
 		QueryResponseWriter respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get(solrReq.getParams().get(CommonParams.WT));
-		if (respWriter == null) respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get("standard");
+		if (respWriter == null) respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get("raw");
 		writeResponse(solrResp, response, respWriter, solrReq, Method.getMethod(req.getMethod()));
 	}
 

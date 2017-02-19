@@ -39,6 +39,10 @@ public class IdGrowthUtil {
 		return id;
 	}
 	
+	public static String getIncrIdStr(String module){
+		return getIncrId(module)+"";
+	}
+	
 	private static Long getCacheIncrId(String moduleKey, boolean isDisk){
 		return (Long)EhcacheUtil.getInstance().get(CacheConsts.CACHE_TO_DISK, moduleKey);
 	}

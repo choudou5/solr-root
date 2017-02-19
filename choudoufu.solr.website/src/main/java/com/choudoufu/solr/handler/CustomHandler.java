@@ -21,9 +21,11 @@ import org.apache.solr.client.solrj.request.CollectionAdminRequest.Create;
 import org.apache.solr.client.solrj.response.CollectionAdminResponse;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.SolrException.ErrorCode;
+import org.apache.solr.common.cloud.SolrZkClient;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.ContentStream;
 import org.apache.solr.common.util.NamedList;
+import org.apache.solr.core.CoreContainer;
 import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.handler.RequestHandlerBase;
 import org.apache.solr.request.SolrQueryRequest;
@@ -35,7 +37,6 @@ import org.wltea.analyzer.dic.Dictionary;
 import com.choudoufu.solr.cloud.ZkCustomController;
 import com.choudoufu.solr.common.params.CustomParams;
 import com.choudoufu.solr.common.params.CustomParams.CustomAction;
-import com.choudoufu.solr.core.CustomContainer;
 
 /**
  * 自定义 管理器
@@ -47,19 +48,27 @@ public class CustomHandler extends RequestHandlerBase {
 
 	protected static Logger log = LoggerFactory.getLogger(CustomHandler.class);
 
-	protected final CustomContainer customContainer;
+	protected final CoreContainer coreContainer;
 	
 	public final static String MODEL_CLOUD = "cloud";
 	
 	protected static final String SOLR_HOME = SolrResourceLoader.locateSolrHome();
 	    
+	private final SolrZkClient zkClient;
+	
 	public CustomHandler() {
 		super();
-		this.customContainer = null;
+		this.coreContainer = null;
+		zkClient = null;
 	}
 
-	public CustomHandler(final CustomContainer customContainer) {
-		this.customContainer = customContainer;
+	public CustomHandler(final CoreContainer coreContainer) {
+		this.coreContainer = coreContainer;
+		if(coreContainer.isZooKeeperAware()){
+			zkClient = coreContainer.getZkController().getZkClient();
+		}else{
+			zkClient = null;
+		}
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -70,15 +79,15 @@ public class CustomHandler extends RequestHandlerBase {
 				"CustomHandler should not be configured in solrconf.xml\n" + "it is a special Handler configured directly by the RequestDispatcher");
 	}
 
-	public CustomContainer getCustomContainer() {
-		return this.customContainer;
+	public CoreContainer getCoreContainer() {
+		return this.coreContainer;
 	}
 
 	@Override
 	public void handleRequestBody(SolrQueryRequest req, SolrQueryResponse rsp)
 			throws Exception {
 		// Make sure the cores is enabled
-		CustomContainer cores = getCustomContainer();
+		CoreContainer cores = getCoreContainer();
 		if (cores == null) {
 			throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "Core container instance missing");
 		}
@@ -141,9 +150,8 @@ public class CustomHandler extends RequestHandlerBase {
 		if(StringUtils.isBlank(fileName))
 			throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "fileName参数 不能为空！");
 		
-		ZkCustomController zkCustom = customContainer.getZkController();
 		try {
-			zkCustom.deleteZkFile(fileName, coreName);
+			ZkCustomController.deleteZkFile(zkClient, fileName, coreName);
 		} catch (Exception e) {
 			log.warn("Fail deleteZkFile coreName "+coreName+" fileName"+fileName, e);
 			throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "删除zk文件失败！");
@@ -234,7 +242,7 @@ public class CustomHandler extends RequestHandlerBase {
 		}
 		
 		try {
-			String zkHost = customContainer.getZkController().getZkServerAddress();
+			String zkHost = coreContainer.getZkController().getZkServerAddress();
 			CloudSolrServer server = new CloudSolrServer(zkHost);
 			CollectionAdminResponse response = createCollection(collName, shards, collName, server);
 			log.info("response createCollection:"+response);
@@ -289,11 +297,15 @@ public class CustomHandler extends RequestHandlerBase {
 			//cloud上传 到临时目录
 			File file = uploadCloudTempDir(stream);
 			
-			ZkCustomController zkCustom = customContainer.getZkController();
-			if(!zkCustom.existsConfigName(confName)){
+			
+//			try {
+//				ZkCustomController.deleteZkFile(zkContr.getZkClient(), fileName, coreName);
+				
+//			ZkCustomController zkCustom = customContainer.getZkController();
+			if(!ZkCustomController.existsConfigName(zkClient, confName)){
 				throw new SolrException(ErrorCode.SERVER_ERROR, "ZK configs目录下 不存在 "+confName+" 目录");
 			}
-			zkCustom.uploadConfigFile(file, confName);
+			ZkCustomController.uploadConfigFile(zkClient, file, confName);
 			file.delete();
 			return;
 		}
@@ -390,9 +402,8 @@ public class CustomHandler extends RequestHandlerBase {
 		
 		if(MODEL_CLOUD.equals(model)){
 			log.info("uploadZip cloud, upload to zookeeper collName:"+collName);
-			ZkCustomController zkCustom = customContainer.getZkController();
 			String confDir = zipFile.getParent()+"/"+collName+"/conf";
-			zkCustom.uploadConfigDir(new File(confDir), collName);
+			ZkCustomController.uploadConfigDir(zkClient, new File(confDir), collName);
 			FileUtils.deleteDirectory(zipFile.getParentFile());//删除文件
 		}
 		return collName;

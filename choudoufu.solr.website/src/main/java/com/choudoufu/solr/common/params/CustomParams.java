@@ -19,6 +19,8 @@ public abstract class CustomParams {
 	public final static String CONF_TYPE_FILE = "file";
 	public final static String CONF_TYPE_ZIP = "zip";
 	
+	public final static String ACCESS_IP = "accessIp";
+	
 	
 	public enum CustomAction {
 		UPLOAD_CONF,
@@ -27,7 +29,8 @@ public abstract class CustomParams {
 		
 		/** 用户模块 */
 		LOGIN,
-		LOGIN_OUT;
+		LOGIN_OUT,
+		VISITOR;
 	    
 		
 		

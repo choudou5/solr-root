@@ -2,7 +2,6 @@ package com.choudoufu.solr.cloud;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.solr.cloud.ZkController;
 import org.apache.solr.common.cloud.SolrZkClient;
@@ -14,28 +13,15 @@ public final class ZkCustomController {
 	
 	private static Logger log = LoggerFactory.getLogger(ZkCustomController.class);
 	
-	private final SolrZkClient zkClient;
 
 	public static final String CONFIGS_ZKNODE = "/configs";
 	public final static String COLLECTION_PARAM_PREFIX = "collection.";
 	public final static String CONFIGNAME_PROP = "configName";
 	
-	private final String zkServerAddress;          // example: 127.0.0.1:54062/solr
-	
-	public ZkCustomController(String zkServerAddress, int zkClientTimeout, int zkClientConnectTimeout) throws InterruptedException, TimeoutException, IOException{
-		
-		this.zkServerAddress = zkServerAddress;
-		
-	    zkClient = new SolrZkClient(zkServerAddress, zkClientTimeout, zkClientConnectTimeout);
-	}
 
-	public String getZkConfigsPath(String configName){
+	public static String getZkConfigsPath(String configName){
 		configName = getCollName(configName);
 		return ZkController.CONFIGS_ZKNODE + "/"+ configName;
-	}
-	
-	public void uploadToZK(File dir, String zkPath) throws IOException, KeeperException, InterruptedException {
-		uploadToZK(zkClient, dir, zkPath);
 	}
 
 	/**
@@ -43,12 +29,12 @@ public final class ZkCustomController {
 	 * @param configName
 	 * @return
 	 */
-	public boolean existsConfigName(String configName) throws KeeperException, InterruptedException {
+	public static boolean existsConfigName(final SolrZkClient zkClient, String configName) throws KeeperException, InterruptedException {
 		String zkPath = getZkConfigsPath(configName);
 		return zkClient.exists(zkPath, false);
 	}
 	
-	public void uploadConfigFile(File file, String configName) throws IOException, KeeperException, InterruptedException {
+	public static void uploadConfigFile(final SolrZkClient zkClient, File file, String configName) throws IOException, KeeperException, InterruptedException {
 		String zkPath = getZkConfigsPath(configName);
 		if (!file.getName().startsWith(".")) {
 	        if (!file.isDirectory()) {
@@ -58,7 +44,7 @@ public final class ZkCustomController {
 	    }
 	}
 	
-	public void uploadConfigDir(File dir, String configName) throws IOException, KeeperException, InterruptedException {
+	public static void uploadConfigDir(final SolrZkClient zkClient, File dir, String configName) throws IOException, KeeperException, InterruptedException {
 		uploadToZK(zkClient, dir, getZkConfigsPath(configName));
 	}
 	
@@ -85,7 +71,7 @@ public final class ZkCustomController {
 	 * @param fileName
 	 * @param configName
 	 */
-	public void deleteZkFile(String fileName, String configName) {
+	public static void deleteZkFile(final SolrZkClient zkClient, String fileName, String configName) {
 		String zkPath = getZkConfigsPath(configName);
 		log.info("delteZKFile fileName:{}, zkPath:{};", fileName, zkPath);
         try {
@@ -100,15 +86,6 @@ public final class ZkCustomController {
 			collName = collName.split("_shard")[0];
 		}
 		return collName;
-	}
-	
-	
-	public String getZkServerAddress() {
-		return zkServerAddress;
-	}
-
-	public SolrZkClient getZkClient() {
-		return zkClient;
 	}
 	
 }
