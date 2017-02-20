@@ -22,17 +22,18 @@ public class SignUtil {
 	
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) throws InterruptedException {
-		long begin = System.currentTimeMillis();
-		String encrypt = getEncryptCode();
-		System.out.println("encrypt="+encrypt+", validCode="+validCode(encrypt));
-		long end = System.currentTimeMillis();
-		System.out.println("time:"+(end-begin));
-		
-		//校验 超时
-		for (int i = 0; i < 5; i++) {
-			Thread.currentThread().sleep(3000);
-			System.out.println(validCode(encrypt));
-		}
+//		long begin = System.currentTimeMillis();
+//		String encrypt = getEncryptCode();
+//		System.out.println("encrypt="+encrypt+", validCode="+validCode(encrypt));
+//		long end = System.currentTimeMillis();
+//		System.out.println("time:"+(end-begin));
+//		
+//		//校验 超时
+//		for (int i = 0; i < 5; i++) {
+//			Thread.currentThread().sleep(3000);
+//			System.out.println(validCode(encrypt));
+//		}
+		System.out.println(encrypt("admin"));
 	}
 	
 	/**
@@ -41,9 +42,9 @@ public class SignUtil {
 	 */
 	public static String getEncryptCode(){
 		long time = System.currentTimeMillis();
-		System.out.println(time);
 		return XXTea.encrypt(time+"", SIG_KEY+XXTea.getFactors(SIG_KEY));
 	}
+	
 	
 	/**
 	 * 验证 code
@@ -77,6 +78,16 @@ public class SignUtil {
 	}
 	
 
+	public static String encrypt(String str){
+		return XXTea.encrypt(str, SIG_KEY+XXTea.getFactors(SIG_KEY));
+	}
+	
+	public static String decrypt(String encryptCode){
+		if(StringUtils.isBlank(encryptCode))
+			return null;
+		return XXTea.decrypt(encryptCode, SIG_KEY+XXTea.getFactors(SIG_KEY));
+	}
+	
 	/**
 	 * 对称加密解密算法
 	 * @author xuhaowen

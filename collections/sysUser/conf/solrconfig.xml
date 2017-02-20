@@ -1237,42 +1237,7 @@
 
        https://wiki.apache.org/solr/SolrCloud/
     -->
-  <requestHandler name="/replication" class="solr.ReplicationHandler" > 
-    <!--
-       To enable simple master/slave replication, uncomment one of the 
-       sections below, depending on whether this solr instance should be
-       the "master" or a "slave".  If this instance is a "slave" you will 
-       also need to fill in the masterUrl to point to a real machine.
-    -->
-
-      <lst name="master">
-	     <str name="enable">${enable.master:false}</str>
-         <str name="replicateAfter">commit</str>
-         <str name="replicateAfter">startup</str>
-		 <str name="confFiles">schema.xml,stopwords.txt,elevate.xml</str>
-		 <str name="commitReserveDuration">00:00:10</str>
-       </lst>
   
-       <lst name="slave">
-	     <str name="enable">${enable.slave:false}</str>
-         <str name="masterUrl">http://localhost:90/solr-slave/collection1/replication</str>
-         <!-- 时间间隔在从应轮询主.格式为HH:mm:ss。如果这是缺失的奴隶不会自动轮询。 但fetchindex可以在管理或HTTP API被触发 -->
-		 <str name="pollInterval">00:00:10</str>
-         
-		 <!-- 在传输索引文件时使用压缩 -->
-		 <!-- <str name="compression">internal</str> -->
-         <str name="httpConnTimeout">5000</str>
-         <str name="httpReadTimeout">10000</str>
-
-         <!-- 如果HTTP基本身份验证在主启用，那么从可以用下面的配置 -->
-         <!--
-			<str name="httpBasicAuthUser">username</str>
-			<str name="httpBasicAuthPassword">password</str>
-         -->
-       </lst>
-
-  </requestHandler>
-
   <!-- Search Components
 
        Search components are registered to SolrCore and used by 

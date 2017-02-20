@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="userHistory" version="1.5">
+<schema name="sysUser" version="1.5">
      
 	<!-- 基本数据类型-->
     <fieldType name="text" class="solr.TextField" sortMissingLast="true" />
@@ -103,10 +103,12 @@
    <!-- 自定义字段 -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="loginName" type="string" indexed="true" stored="true" />
-   <field name="action" type="string" indexed="true" stored="true"/>
+   <field name="password" type="string" indexed="false" stored="true" />
+   <field name="userType" type="int" indexed="true" stored="true" />
    <field name="ip" type="string" indexed="true" stored="true" />
    <field name="status" type="string" indexed="true" stored="true" />
    <field name="createTime" type="tdate" indexed="true" stored="true" />
+   
 	
    <field name="text" type="word_ik" indexed="true" stored="false" multiValued="true"/>
 

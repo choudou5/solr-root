@@ -31,7 +31,7 @@ public class UserUtil {
 	public static User createTempUser(){
 		String loginName = "temporary_"+IdGrowthUtil.getIncrId(IdGrowthConsts.TEMP_USER);
 		String password = RandomStringUtils.randomAlphanumeric(6);
-		return new User(loginName, password);
+		return new User(loginName, null);
 	}
 	
 	/**

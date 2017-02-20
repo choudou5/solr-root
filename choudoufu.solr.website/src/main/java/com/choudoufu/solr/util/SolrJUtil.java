@@ -8,9 +8,12 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.UpdateRequest;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.UpdateParams;
 import org.apache.solr.common.util.ContentStream;
+import org.apache.solr.common.util.NamedList;
 import org.apache.solr.core.SolrConfig;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.SolrQueryRequest;
@@ -49,6 +52,47 @@ public class SolrJUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * 查询模型
+	 * @param keyword
+	 * @param core
+	 * @param req
+	 * @param resp
+	 * @param clasz
+	 * @return
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static <T extends SolrBaseModel> T queryModel(String keyword, SolrCore core, SolrQueryRequest req, SolrQueryResponse resp, Class<T> clasz){
+		final SolrConfig config = core.getSolrConfig();
+		SolrRequestParsers parser = config.getRequestParsers();
+		
+		String path = "/select";
+		SolrRequestHandler handler = core.getRequestHandler(path);
+		SolrQuery params = new SolrQuery();
+		params.add("wt", "javabin");
+		params.add("q", keyword);
+	    try {
+	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
+			SolrQueryRequest sreq = parser.buildRequestFrom(core, params, streams);
+			sreq.getContext().put( "path", path );
+			SolrRequestInfo.setRequestInfo(new SolrRequestInfo(req, resp));
+			sreq.getCore().execute( handler, sreq, resp);
+			NamedList list = resp.getValues();
+			
+			QueryResponse res = new QueryResponse(list, null);
+			SolrDocumentList docList = res.getResults();
+			DocumentObjectBinder binder = new DocumentObjectBinder();
+			return (T) binder.getBeans(clasz, docList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return null;
+	}
+	
+	
+//	
+	
 	
 	private static <T extends SolrBaseModel> Collection<ContentStream> getContentStreams(T bean) throws SolrServerException, IOException {
 		DocumentObjectBinder binder = new DocumentObjectBinder();

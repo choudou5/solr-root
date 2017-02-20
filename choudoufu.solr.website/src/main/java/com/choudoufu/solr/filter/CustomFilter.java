@@ -150,12 +150,13 @@ public class CustomFilter extends SolrDispatchFilter{
 			}
 			
 			//校验登录
-			String encryptCode = req.getParameter("sigCode");
-			if(SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
+//			String encryptCode = req.getParameter("sigCode");
+			if(1==2){// SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
 //				chain.doFilter(request, response);
 				super.doFilter(request, response, chain);
 			}else{
-				solrReq =  SolrRequestParsers.DEFAULT.parse(null,path, req);
+//				SolrCore core = this.cores.getCore("");
+				solrReq = SolrRequestParsers.DEFAULT.parse(null,path, req);
 		        //上传 core配置
 		        if(path.equals(CustomParams.REQ_PATH_CCUSTOM) ) {
 		        	SolrRequestHandler handler = cores.getCustomHandler();
@@ -201,7 +202,7 @@ public class CustomFilter extends SolrDispatchFilter{
 	      }
 	    }
 	    
-	    chain.doFilter(request, response);
+//	    chain.doFilter(request, response);
 	}
 	
 	private void handleCustomRequest(HttpServletRequest req, ServletResponse response, SolrRequestHandler handler,

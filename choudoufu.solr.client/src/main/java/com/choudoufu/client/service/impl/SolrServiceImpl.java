@@ -728,7 +728,7 @@ public class SolrServiceImpl implements SolrService {
 			 LOGGER.error("cloud model not can send http.");
 			 return;
 		 }
-		 Map<String, String> params = new HashMap<>();
+		 Map<String, String> params = new HashMap<String, String>();
 		 String url = solrServer.getHttpHost()+moduleName+"/dataimport";
 		 try {
 			  	LOGGER.debug("数据导入 {} ", moduleName);
@@ -776,7 +776,7 @@ public class SolrServiceImpl implements SolrService {
 		  try {
 			  	LOGGER.debug("数据导入 状态信息 {} ", moduleName);
 				long start = System.currentTimeMillis();
-				Map<String, String> params = new HashMap<>();
+				Map<String, String> params = new HashMap<String, String>();
 				params.put("command", Command.STATUS);
 				params.put("indent", "true");
 				params.put("wt", "json");

@@ -17,8 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import com.choudoufu.solr.common.params.CustomParams;
 import com.choudoufu.solr.common.params.CustomParams.CustomAction;
+import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.core.request.CustomRequestHandlerBase;
 import com.choudoufu.solr.entity.User;
+import com.choudoufu.solr.model.SysUser;
 import com.choudoufu.solr.model.UserHistory;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrJUtil;
@@ -93,6 +95,10 @@ public class UserHandler extends CustomRequestHandlerBase {
 				    this.handleVisitorAction(req, solrReq, rsp);
 					break;
 			    }
+			    case LOGIN: {
+				    this.handleLoginAction(req, solrReq, rsp);
+					break;
+			    }
 				default: {
 					this.handleUnknownAction(solrReq);
 					break;
@@ -109,6 +115,25 @@ public class UserHandler extends CustomRequestHandlerBase {
 		throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "Unsupported operation: "+ req.getParams().get(CustomParams.ACTION));
 	}
 
+	protected void handleLoginAction(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse resp) {
+		SolrParams params = solrReq.getParams();
+		String loginName = params.get("user");
+		String loginPwd = params.get("password");
+		
+		String module = "sysUser";
+		SolrCore core = coreContainer.getCore(module);
+		
+		SysUser sysUser = SolrJUtil.queryModel("loginName:"+loginName, core, solrReq, resp, SysUser.class);
+		if(sysUser != null){
+			String pwd = sysUser.getPassword();
+			String sig = SignUtil.encrypt(loginPwd);
+			if(sig.equals(pwd)){
+				System.out.println("login success.");
+				return;
+			}
+		}
+	}
+	
 	protected void handleVisitorAction(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse resp) {
 		String ip = solrReq.getContext().get(CustomParams.ACCESS_IP).toString();
 		//创建 临时用户
@@ -124,7 +149,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 	
 	private UserHistory buildUserHistory(String module, String ip, String loginName){
 		UserHistory model = new UserHistory();
-		model.setId(IdGrowthUtil.getIncrIdStr(module));
+		model.setId(IdGrowthUtil.getIncrIdStr(module)+22);
 		model.setAction(CustomAction.VISITOR.name());
 		model.setCreateTime(new Date());
 		model.setIp(ip);
