@@ -104,6 +104,10 @@ public class UserHandler extends CustomRequestHandlerBase {
 				    this.handleLoginAction(req, resp, solrReq, rsp);
 					break;
 			    }
+			    case LOGIN_OUT: {
+				    this.handleLoginOutAction(req, resp, solrReq, rsp);
+					break;
+			    }
 				default: {
 					this.handleUnknownAction(solrReq);
 					break;
@@ -120,12 +124,20 @@ public class UserHandler extends CustomRequestHandlerBase {
 		throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "Unsupported operation: "+ req.getParams().get(CustomParams.ACTION));
 	}
 
+	/**
+	 * 登录
+	 * @param req
+	 * @param resp
+	 * @param solrReq
+	 * @param solrResp
+	 * @throws IOException
+	 */
 	protected void handleLoginAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse solrResp) throws IOException {
 		SolrParams params = solrReq.getParams();
 		String loginName = params.get("username");
 		String loginPwd = params.get("password");
 		if(StringUtils.isBlank(loginName) || StringUtils.isBlank(loginPwd)){
-			ViewUtil.goView("/console/login.html", req, resp, "账号密码不能为空！");
+			ViewUtil.goView(SysConsts.VIEW_LOGIN, req, resp, "账号密码不能为空！");
 			return;
 		}
 		
@@ -135,28 +147,55 @@ public class UserHandler extends CustomRequestHandlerBase {
 			String pwd = sysUser.getPassword();
 			String sig = SignUtil.encrypt(loginPwd);
 			if(sig.equals(pwd)){
-				System.out.println("login success.");
+				//登录成功
+				UserUtil.loginSucc(req, sysUser.toUser());
+				
+				log.debug(loginName+", login success.");
+				ViewUtil.redirect(SysConsts.VIEW_INDEX, req, resp);
 				return;
 			}
 		}
+		log.debug(loginName+", login fail.");
+		ViewUtil.goView(SysConsts.VIEW_LOGIN, req, resp, "账号密码有误!");
 	}
 	
+	/**
+	 * 退出登录
+	 * @param req
+	 * @param resp
+	 * @param solrReq
+	 * @param solrResp
+	 * @throws IOException
+	 */
+	protected void handleLoginOutAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse solrResp) throws IOException {
+		UserUtil.loginOut(req);
+		ViewUtil.redirect("/", req, resp);
+	}
+	
+	/**
+	 * 游客快捷登录
+	 * @param req
+	 * @param resp
+	 * @param solrReq
+	 * @param sresp
+	 * @throws IOException
+	 */
 	protected void handleVisitorAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse sresp) throws IOException {
 		String ip = solrReq.getContext().get(CustomParams.ACCESS_IP).toString();
 		//创建 临时用户
 		User user = UserUtil.createTempUser();
 		//登录成功
-		UserUtil.addAttrByloginSucc(req, user);
+		UserUtil.loginSucc(req, user);
 		
 		//保存记录
 		SolrCore core = coreContainer.getCore(SysConsts.SYS_MODULE_USER_EVENT_HI);
 		SolrJUtil.addModel(buildUserHistory(SysConsts.SYS_MODULE_USER_EVENT_HI, ip, user.getLoginName()), core, solrReq, sresp);
-		ViewUtil.redirect("/console/index.html", req, resp);
+		ViewUtil.redirect(SysConsts.VIEW_INDEX, req, resp);
 	}
 	
 	private SysUserEventHistory buildUserHistory(String module, String ip, String loginName){
 		SysUserEventHistory model = new SysUserEventHistory();
-		model.setId(IdGrowthUtil.getIncrIdStr(module)+22);
+		model.setId(IdGrowthUtil.getIncrIdStr(module));
 		model.setAction(CustomAction.VISITOR.name());
 		model.setCreateTime(new Date());
 		model.setIp(ip);

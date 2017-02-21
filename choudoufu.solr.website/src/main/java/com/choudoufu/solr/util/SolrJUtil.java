@@ -52,8 +52,11 @@ public class SolrJUtil {
 		params.add("wt", WT_XML);
 		if(keyword != null)
 			params.add("q", keyword);
-		if(commit)
+		if(commit){
 			params.add(UpdateParams.COMMIT, "true" );
+			params.add(UpdateParams.WAIT_SEARCHER, "false");
+			//OPEN_SEARCHER
+		}
 		return params;
 	}
 	 
@@ -81,7 +84,7 @@ public class SolrJUtil {
 		SolrQuery params = getSolrQuery(true);
 	    try {
 	    	Collection<ContentStream> streams = getContentStreams(bean);
-			SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, resp);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,11 +103,12 @@ public class SolrJUtil {
 		SolrQuery params = getSolrQuery(keyword);
 	    try {
 	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
-			SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, resp);
-			
+	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, resp);
 			SolrDocument doc = getDocument(resp, sreq);
-			DocumentObjectBinder binder = new DocumentObjectBinder();
-			return binder.getBean(clasz, doc);
+			if(doc != null){
+				DocumentObjectBinder binder = new DocumentObjectBinder();
+				return binder.getBean(clasz, doc);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,6 +124,7 @@ public class SolrJUtil {
 		
 		SolrRequestHandler handler = core.getRequestHandler(qt);
 		sreq.getCore().execute( handler, sreq, resp);
+		SolrRequestInfo.clearRequestInfo();
 		return sreq;
 	}
 	
@@ -140,8 +145,10 @@ public class SolrJUtil {
 	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, resp);
 			
 			SolrDocumentList docList = getDocuments(resp, sreq);
-			DocumentObjectBinder binder = new DocumentObjectBinder();
-			return (List<T>) binder.getBeans(clasz, docList);
+			if(docList != null){
+				DocumentObjectBinder binder = new DocumentObjectBinder();
+				return (List<T>) binder.getBeans(clasz, docList);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -219,7 +226,6 @@ public class SolrJUtil {
 		}
 		Set<String> fieldNames = fields.getLuceneFieldNames();
 		IndexSchema schema = req.getSchema();
-		
 		SolrDocument doc = getSolrDocument(ids.iterator(), req.getSearcher(), transformer, schema, fieldNames);
 		if( transformer != null ) {
 			transformer.setContext( null );
@@ -228,6 +234,9 @@ public class SolrJUtil {
 	}
 	
 	private static SolrDocument getSolrDocument(DocIterator iterator, SolrIndexSearcher searcher, DocTransformer transformer, IndexSchema schema, Set<String> fieldNameSet) throws IOException{
+		if(!iterator.hasNext())
+			return null;
+		
 		int id = iterator.nextDoc();
 		Document doc = searcher.doc(id, fieldNameSet);
 		Set<String> fieldNames = schema.getFields().keySet();

@@ -7,10 +7,10 @@ $(document).ready(function(){
 
     $("#loginform").validate({
 		rules:{
-			required:{
+			username:{
 				required:true
 			},
-			pwd:{
+			password:{
 				required: true,
 				minlength:6,
 				maxlength:20

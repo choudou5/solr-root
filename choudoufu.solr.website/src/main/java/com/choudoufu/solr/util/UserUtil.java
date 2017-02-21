@@ -31,7 +31,11 @@ public class UserUtil {
 	public static User createTempUser(){
 		String loginName = "temporary_"+IdGrowthUtil.getIncrId(IdGrowthConsts.TEMP_USER);
 		String password = RandomStringUtils.randomAlphanumeric(6);
-		return new User(loginName, null);
+		return new User(loginName, password);
+	}
+	
+	public static User getUser(HttpServletRequest request){
+		return (User) request.getSession().getAttribute(SysConsts.USER_SESSION);
 	}
 	
 	/**
@@ -39,20 +43,33 @@ public class UserUtil {
 	 * @param request
 	 */
 	public static boolean isLogin(HttpServletRequest request){
-		User user = (User) request.getSession().getAttribute(SysConsts.USER_SESSION);
-		return user!=null?true:false;
+		return getUser(request)!=null?true:false;
 	}
 
 	/**
-	 * 添加 登录成功 属性
+	 *  登录成功 
 	 * @param request
 	 */
-	public static void addAttrByloginSucc(HttpServletRequest request, User user){
+	public static void loginSucc(HttpServletRequest request, User user){
 		//添加 session
 		request.getSession().setAttribute(SysConsts.USER_SESSION, user);
 		
 		//累加 在线用户
-		EhcacheUtil.getInstance().put(CacheConsts.CACEH_USER_SESSION, user.getLoginName(), 1);
+		EhcacheUtil.getInstance().put(CacheConsts.CACHE_USER_SESSION, user.getLoginName(), 1);
+	}
+	
+	
+	/**
+	 * 添加 登录成功 属性
+	 * @param request
+	 */
+	public static void loginOut(HttpServletRequest request){
+		User user = getUser(request);
+		if(user != null){
+			request.getSession().removeAttribute(SysConsts.USER_SESSION);
+			//减少 在线用户
+			EhcacheUtil.getInstance().remove(CacheConsts.CACHE_USER_SESSION, user.getLoginName());
+		}
 	}
 	
 	/**
@@ -60,7 +77,7 @@ public class UserUtil {
 	 * @return
 	 */
 	public static int getOnlineNum(){
-		return EhcacheUtil.getInstance().getCacheSize(CacheConsts.CACEH_USER_SESSION);
+		return EhcacheUtil.getInstance().getCacheSize(CacheConsts.CACHE_USER_SESSION);
 	}
 	
 }

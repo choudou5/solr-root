@@ -3,6 +3,8 @@ package com.choudoufu.solr.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 
+import com.choudoufu.solr.entity.User;
+
 public class SysUser extends SysUserEventHistory{
 
 	private static final long serialVersionUID = -218902660217120481L;
@@ -13,7 +15,15 @@ public class SysUser extends SysUserEventHistory{
 	
 	/** 用户类型 */
 	@Field
-	private String userType;
+	private int userType;
+	
+	public User toUser(){
+		User user = new User();
+		user.setLoginName(getLoginName());
+		user.setUserType(getUserType());
+		user.setPassword(getPassword());
+		return user;
+	}
 
 	public String getPassword() {
 		return password;
@@ -23,11 +33,11 @@ public class SysUser extends SysUserEventHistory{
 		this.password = password;
 	}
 
-	public String getUserType() {
+	public int getUserType() {
 		return userType;
 	}
 
-	public void setUserType(String userType) {
+	public void setUserType(int userType) {
 		this.userType = userType;
 	}
 	

@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
@@ -22,8 +24,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * <pre>
@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public class HttpClientUtil {  
     
-	protected static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);	
+	protected static Log logger = LogFactory.getLog(HttpClientUtil.class);	
 	
     /** 
      * 发送GET请求，携带参数 
@@ -63,12 +63,12 @@ public class HttpClientUtil {
 				result = entityToString(httpResponse.getEntity());
 			}
 		} catch (Exception e) {
-			logger.debug("getData Exception url: {}", url, e);
+			logger.debug("getData Exception url: "+url, e);
 			logger.debug("http post error,", e);
 		} finally {
 			HttpClientUtils.closeQuietly(httpResponse);
 			long interval = System.currentTimeMillis() - start;
-			logger.debug("{} 请求耗时：{} ", url, interval);
+			logger.debug(url+" 请求耗时： "+interval);
 		}
 		return result;
     }  
@@ -127,7 +127,7 @@ public class HttpClientUtil {
 		} finally {
 			HttpClientUtils.closeQuietly(httpResponse);
 			long interval = System.currentTimeMillis() - start;
-			logger.debug("请求耗时：{} ", interval);
+			logger.debug("请求耗时："+ interval);
 		}
 		return result;
     }  

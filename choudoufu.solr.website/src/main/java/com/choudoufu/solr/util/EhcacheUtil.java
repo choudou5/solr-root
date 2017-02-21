@@ -38,8 +38,6 @@ public class EhcacheUtil {
         Cache cache = manager.getCache(cacheName);
         Element element = new Element(key, value);  
         cache.put(element);
-//        cache.putWithWriter(element);
-//        cache.putIfAbsent(element)
         cache.flush();
     }
   

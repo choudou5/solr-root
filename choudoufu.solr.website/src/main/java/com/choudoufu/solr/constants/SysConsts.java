@@ -10,6 +10,7 @@ public interface SysConsts {
 	String SYS_MODULE_USER = "sys_user";
 	String SYS_MODULE_USER_EVENT_HI = "sys_user_event_history";
 	
-			
+	String VIEW_INDEX = "/console/index.html";	//首页
+	String VIEW_LOGIN = "/console/login.html";	//登录页
 			
 }

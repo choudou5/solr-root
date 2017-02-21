@@ -43,6 +43,7 @@ import com.choudoufu.solr.core.request.CustomRequestHandler;
 import com.choudoufu.solr.util.EhcacheUtil;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.IpUtil;
+import com.choudoufu.solr.util.RequestFilterUtil;
 import com.choudoufu.solr.util.UserUtil;
 
 
@@ -93,44 +94,6 @@ public class CustomFilter extends SolrDispatchFilter{
 		EhcacheUtil.getInstance().shutdown();
 	}
 	
-	/**
-	 * 是否 排除页面
-	 * @param req
-	 * @return
-	 */
-	private boolean isExcludePage(String path){
-		String[] EXCLUDE_PAGES = new String[]{
-				"/website/images",
-				"/website/js",
-				"/website/css",
-				"/website/fonts",
-				"/website/index.html",
-				"/console/login.html",
-				"/console/img",
-				"/console/js",
-				"/console/css",
-				"/console/font-awesome",
-				"/console/static",
-				"/static/",
-				"/favicon.ico",
-				"/admin",
-				"/css",
-				"/js",
-				"/img",
-				"/font-awesome",
-				"/tpl",
-				"/userHistory",
-				"/collection1",
-				"/index.js"
-			};
-		System.out.println("path:"+path);
-		for (String page : EXCLUDE_PAGES) {
-			if(path.startsWith(page))
-				return true;
-		}
-		return false;
-	}
-	
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (this.customContainer == null) {
@@ -151,16 +114,23 @@ public class CustomFilter extends SolrDispatchFilter{
 	        }
 	        
 	        //排除页面
-			if(isExcludePage(path)){
-//				chain.doFilter(request, response);
+			if(RequestFilterUtil.isExcludePage(path)){
 				super.doFilter(request, response, chain);
 				return;
 			}
 			
+			
 			//校验登录
 			String encryptCode = req.getParameter("sigCode");
 			if(SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
-//				chain.doFilter(request, response);
+				
+				//已登录
+				String action = req.getParameter("action");
+				if(path.startsWith("/console/user") && RequestFilterUtil.isLoginReq(action)){
+					resp.sendRedirect("/console/index.html");
+					return;
+				}
+				
 				super.doFilter(request, response, chain);
 			}else{
 				solrReq = SolrRequestParsers.DEFAULT.parse(null,path, req);
@@ -232,13 +202,9 @@ public class CustomFilter extends SolrDispatchFilter{
 		SolrCore.preDecorateResponse(solrReq, solrResp);
 		solrReq.getContext().put(CustomParams.ACCESS_IP, IpUtil.getIpAddr(req));
 		handler.handleRequest(req, resp, solrReq, solrResp);
-		SolrCore.postDecorateResponse(handler, solrReq, solrResp);
 		if (log.isInfoEnabled() && solrResp.getToLog().size() > 0) {
 			log.info(solrResp.getToLogAsString("[custom] "));
 		}
-		QueryResponseWriter respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get(solrReq.getParams().get(CommonParams.WT));
-		if (respWriter == null) respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get("raw");
-		writeResponse(solrResp, resp, respWriter, solrReq, Method.getMethod(req.getMethod()));
 	}
 
 	 @SuppressWarnings("rawtypes")

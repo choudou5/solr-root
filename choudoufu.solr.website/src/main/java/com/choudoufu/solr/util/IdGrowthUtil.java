@@ -6,6 +6,7 @@ import org.apache.solr.core.SolrCore;
 import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.response.SolrQueryResponse;
 
+import com.choudoufu.solr.constants.CacheConsts;
 import com.choudoufu.solr.model.SysTable;
 
 
@@ -23,7 +24,7 @@ public class IdGrowthUtil {
 	}
 	
 	private static long getGrowthId(String module){
-		SysTable sysTable = SolrJUtil.getModel(module, core, solrReq, solrResp, SysTable.class);
+		SysTable sysTable = SolrJUtil.getModel("id:"+module, core, solrReq, solrResp, SysTable.class);
 		return sysTable == null ? -1L : sysTable.getGrowthId();
 	}
 	
@@ -41,22 +42,36 @@ public class IdGrowthUtil {
 	 */
 	public static long getIncrId(String module){
 		long interval = 2000L;//增长区间
-		//取 索引数据
-		Long id = getGrowthId(module);
-		if(id == -1){
-			id = 0L;
+		//取 缓存
+		Long id = getCacheIncrId(module); //
+		if(id == null){
+			id = getGrowthId(module);
+			if(id == -1)
+				id = 0L;
 		}
 		//更新 索引 磁盘
 		if(id%interval == 0){
 			addGrowthId(module, id+interval);
 		}
 		id++;
+		
+		//put 到缓存
+		putCacheIncrId(module, id);
 		return id;
 	}
 	
 	public static String getIncrIdStr(String module){
 		return getIncrId(module)+"";
 	}
+	
+	private static Long getCacheIncrId(String moduleKey){
+		return (Long)EhcacheUtil.getInstance().get(CacheConsts.CACHE_SYS, moduleKey);
+	}
+	
+	private static void putCacheIncrId(String moduleKey, Long id){
+		EhcacheUtil.getInstance().put(CacheConsts.CACHE_SYS, moduleKey, id);
+	}
+	
 	
 //	public static long getIncrId(String module){
 //		long interval = 200L;
