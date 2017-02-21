@@ -37,8 +37,11 @@ import org.slf4j.LoggerFactory;
 
 import com.choudoufu.solr.common.params.CustomParams;
 import com.choudoufu.solr.common.util.SignUtil;
+import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.core.CustomContainer;
 import com.choudoufu.solr.core.request.CustomRequestHandler;
+import com.choudoufu.solr.util.EhcacheUtil;
+import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.IpUtil;
 import com.choudoufu.solr.util.UserUtil;
 
@@ -68,6 +71,9 @@ public class CustomFilter extends SolrDispatchFilter{
 			SolrResourceLoader loader = new SolrResourceLoader(SolrResourceLoader.locateSolrHome());
 			customContainer = new CustomContainer(loader, super.getCores());
 			customContainer.load();
+			
+			//初始化 ID增长
+			IdGrowthUtil.init(cores.getCore(SysConsts.SYS_MODULE_TABLE));
 	    }catch( Throwable t ) {
 	      log.error( "SolrCustomFilter init error");
 	      SolrCore.log( t );
@@ -75,6 +81,8 @@ public class CustomFilter extends SolrDispatchFilter{
 	        throw (Error) t;
 	      }
 	    }
+		
+		
 	    log.info("SolrCustomFilter.init() done");
 	}
 	
@@ -82,6 +90,7 @@ public class CustomFilter extends SolrDispatchFilter{
 	@Override
 	public void destroy() {
 		super.destroy();
+		EhcacheUtil.getInstance().shutdown();
 	}
 	
 	/**
@@ -135,7 +144,6 @@ public class CustomFilter extends SolrDispatchFilter{
 	    if(request instanceof HttpServletRequest) {
 	      HttpServletRequest req = (HttpServletRequest)request;
 	      HttpServletResponse resp = (HttpServletResponse)response;
-	      
 	      try {
 	        String path = req.getServletPath();
 	        if( req.getPathInfo() != null ) {
@@ -150,12 +158,11 @@ public class CustomFilter extends SolrDispatchFilter{
 			}
 			
 			//校验登录
-//			String encryptCode = req.getParameter("sigCode");
-			if(1==2){// SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
+			String encryptCode = req.getParameter("sigCode");
+			if(SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
 //				chain.doFilter(request, response);
 				super.doFilter(request, response, chain);
 			}else{
-//				SolrCore core = this.cores.getCore("");
 				solrReq = SolrRequestParsers.DEFAULT.parse(null,path, req);
 		        //上传 core配置
 		        if(path.equals(CustomParams.REQ_PATH_CCUSTOM) ) {
@@ -168,7 +175,7 @@ public class CustomFilter extends SolrDispatchFilter{
 				//控制台-用户
 		        if(path.equals(CustomParams.REQ_PATH_CONSOLE_USER) ) {
 		        	CustomRequestHandler handler = cores.getUserHandler();
-		        	handleConsoleRequest(req, response, handler, solrReq);
+		        	handleConsoleRequest(req, resp, handler, solrReq);
 		            return;
 		        }
 		        resp.sendRedirect("/console/login.html");
@@ -219,19 +226,19 @@ public class CustomFilter extends SolrDispatchFilter{
 		writeResponse(solrResp, response, respWriter, solrReq, Method.getMethod(req.getMethod()));
 	}
 	
-	private void handleConsoleRequest(HttpServletRequest req, ServletResponse response, CustomRequestHandler handler,
+	private void handleConsoleRequest(HttpServletRequest req, HttpServletResponse resp, CustomRequestHandler handler,
             SolrQueryRequest solrReq) throws IOException {
 		SolrQueryResponse solrResp = new SolrQueryResponse();
 		SolrCore.preDecorateResponse(solrReq, solrResp);
 		solrReq.getContext().put(CustomParams.ACCESS_IP, IpUtil.getIpAddr(req));
-		handler.handleRequest(req, solrReq, solrResp);
+		handler.handleRequest(req, resp, solrReq, solrResp);
 		SolrCore.postDecorateResponse(handler, solrReq, solrResp);
 		if (log.isInfoEnabled() && solrResp.getToLog().size() > 0) {
 			log.info(solrResp.getToLogAsString("[custom] "));
 		}
 		QueryResponseWriter respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get(solrReq.getParams().get(CommonParams.WT));
 		if (respWriter == null) respWriter = SolrCore.DEFAULT_RESPONSE_WRITERS.get("raw");
-		writeResponse(solrResp, response, respWriter, solrReq, Method.getMethod(req.getMethod()));
+		writeResponse(solrResp, resp, respWriter, solrReq, Method.getMethod(req.getMethod()));
 	}
 
 	 @SuppressWarnings("rawtypes")

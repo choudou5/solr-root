@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.SolrParams;
@@ -109,24 +110,24 @@ public abstract class CustomRequestHandlerBase implements CustomRequestHandler, 
 	    return initArgs;
 	  }
 	  
-	  public abstract void handleRequestBody(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse rsp ) throws Exception;
+	  public abstract void handleRequestBody(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse rsp ) throws Exception;
 
 	  @Override
-	  public void handleRequest(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse rsp) {
+	  public void handleRequest(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse srsp) {
 	    numRequests.incrementAndGet();
 	    TimerContext timer = requestTimes.time();
 	    try {
 	      SolrPluginUtils.setDefaults(solrReq,defaults,appends,invariants);
-	      rsp.setHttpCaching(httpCaching);
-	      handleRequestBody(req, solrReq, rsp );
+	      srsp.setHttpCaching(httpCaching);
+	      handleRequestBody(req, resp, solrReq, srsp );
 	      // count timeouts
-	      NamedList header = rsp.getResponseHeader();
+	      NamedList header = srsp.getResponseHeader();
 	      if(header != null) {
 	        Object partialResults = header.get("partialResults");
 	        boolean timedOut = partialResults == null ? false : (Boolean)partialResults;
 	        if( timedOut ) {
 	          numTimeouts.incrementAndGet();
-	          rsp.setHttpCaching(false);
+	          srsp.setHttpCaching(false);
 	        }
 	      }
 	    } catch (Exception e) {
@@ -145,7 +146,7 @@ public abstract class CustomRequestHandlerBase implements CustomRequestHandler, 
 	        }
 	      }
 
-	      rsp.setException(e);
+	      srsp.setException(e);
 	      numErrors.incrementAndGet();
 	    }
 	    finally {

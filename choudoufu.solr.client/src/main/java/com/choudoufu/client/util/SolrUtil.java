@@ -13,7 +13,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.client.solrj.util.ClientUtils;
 
-import com.choudoufu.client.page.Page;
+import com.choudoufu.solr.common.page.Page;
 
 public class SolrUtil {
 

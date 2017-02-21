@@ -54,11 +54,11 @@
   			<artifactId>choudoufu.solr.common</artifactId>
 		    <version>${choudoufu.package.version}-SNAPSHOT</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 		    <groupId>com.choudoufu.solr</groupId>
   			<artifactId>choudoufu.solr.client</artifactId>
 		    <version>${choudoufu.package.version}-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 		    <groupId>commons-collections</groupId>

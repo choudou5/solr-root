@@ -3,7 +3,7 @@ package com.choudoufu.solr.model;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 
-public class SysUser extends UserHistory{
+public class SysUser extends SysUserEventHistory{
 
 	private static final long serialVersionUID = -218902660217120481L;
 

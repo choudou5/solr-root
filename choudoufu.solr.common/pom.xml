@@ -22,6 +22,21 @@
   			<artifactId>commons-lang</artifactId>
 		    <version>${commons-apache.version}</version>
 		</dependency>
+		
+		<!-- solrj -->
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>${solr-solrj.version}</version>
+			<type>jar</type>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 
 </project>

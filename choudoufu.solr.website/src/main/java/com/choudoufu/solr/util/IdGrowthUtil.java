@@ -1,41 +1,56 @@
 package com.choudoufu.solr.util;
 
-import com.choudoufu.solr.constants.CacheConsts;
+import java.util.Date;
+
+import org.apache.solr.core.SolrCore;
+import org.apache.solr.request.SolrQueryRequestBase;
+import org.apache.solr.response.SolrQueryResponse;
+
+import com.choudoufu.solr.model.SysTable;
 
 
 public class IdGrowthUtil {
 
-	public static void main(String[] args) throws InterruptedException {
-		for (int i = 0; i < 50; i++) {
-			System.out.println(getIncrId("test1"));
-		}
-		
-		Thread.sleep(1000);
-		EhcacheUtil.getInstance().shutdown();
+	private static volatile SolrCore core;
+	private static volatile SolrQueryRequestBase solrReq;
+	private static volatile SolrQueryResponse solrResp;
+	
+	
+	public static void init(SolrCore core){
+		IdGrowthUtil.core = core;
+		solrReq = new SolrQueryRequestBase(core, null) { };
+		solrResp = new SolrQueryResponse();
 	}
+	
+	private static long getGrowthId(String module){
+		SysTable sysTable = SolrJUtil.getModel(module, core, solrReq, solrResp, SysTable.class);
+		return sysTable == null ? -1L : sysTable.getGrowthId();
+	}
+	
+	private static void addGrowthId(String module, long id){
+		SysTable sysTable = new SysTable(module);
+		sysTable.setGrowthId(id);
+		sysTable.setUpdateTime(new Date());
+		SolrJUtil.addModel(sysTable, core, solrReq, solrResp);
+	}
+	
 	/**
 	 * 获得 自增ID
 	 * @param module
 	 * @return
 	 */
 	public static long getIncrId(String module){
-		long interval = 200L;
-		//取内存
-		Long id = getCacheIncrId(module, false);
-		if(id == null){
-			//取磁盘
-			id = getCacheIncrId(module, true);
-			if(id == null)
-				id = 0L;
+		long interval = 2000L;//增长区间
+		//取 索引数据
+		Long id = getGrowthId(module);
+		if(id == -1){
+			id = 0L;
 		}
-		//写入 磁盘
+		//更新 索引 磁盘
 		if(id%interval == 0){
-			putCacheIncrId(module, id+interval, true);
+			addGrowthId(module, id+interval);
 		}
 		id++;
-		
-		//写入 内存
-		putCacheIncrId(module, id, false);
 		return id;
 	}
 	
@@ -43,14 +58,25 @@ public class IdGrowthUtil {
 		return getIncrId(module)+"";
 	}
 	
-	private static Long getCacheIncrId(String moduleKey, boolean isDisk){
-		return (Long)EhcacheUtil.getInstance().get(CacheConsts.CACHE_TO_DISK, moduleKey);
-	}
+//	public static long getIncrId(String module){
+//		long interval = 200L;
+//		//取内存
+//		Long id = getCacheIncrId(module, false);
+//		if(id == null){
+//			//取磁盘
+//			id = getCacheIncrId(module, true);
+//			if(id == null)
+//				id = 0L;
+//		}
+//		//写入 磁盘
+//		if(id%interval == 0){
+//			putCacheIncrId(module, id+interval, true);
+//		}
+//		id++;
+//		
+//		//写入 内存
+//		putCacheIncrId(module, id, false);
+//		return id;
+//	}
 	
-	private static void putCacheIncrId(String moduleKey, Long id, boolean isDisk){
-		if(isDisk)
-			EhcacheUtil.getInstance().putDisk(CacheConsts.CACHE_TO_DISK, moduleKey, id);
-		else
-			EhcacheUtil.getInstance().put(CacheConsts.CACHE_TO_DISK, moduleKey, id);
-	}
 }

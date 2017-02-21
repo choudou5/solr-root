@@ -10,7 +10,7 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
 
 import com.choudoufu.client.model.SolrBaseModel;
-import com.choudoufu.client.page.Page;
+import com.choudoufu.solr.common.page.Page;
 
 /**
  * 描述：Solr API接口

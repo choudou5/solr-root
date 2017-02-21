@@ -1,9 +1,12 @@
 package com.choudoufu.solr.handler;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.solr.common.SolrException;
 import org.apache.solr.common.params.SolrParams;
 import org.apache.solr.common.util.NamedList;
@@ -18,13 +21,15 @@ import org.slf4j.LoggerFactory;
 import com.choudoufu.solr.common.params.CustomParams;
 import com.choudoufu.solr.common.params.CustomParams.CustomAction;
 import com.choudoufu.solr.common.util.SignUtil;
+import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.core.request.CustomRequestHandlerBase;
 import com.choudoufu.solr.entity.User;
 import com.choudoufu.solr.model.SysUser;
-import com.choudoufu.solr.model.UserHistory;
+import com.choudoufu.solr.model.SysUserEventHistory;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;
+import com.choudoufu.solr.util.ViewUtil;
 
 /**
  * 用户 管理器
@@ -66,7 +71,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 	}
 	
 	@Override
-	public void handleRequestBody(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse rsp)
+	public void handleRequestBody(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse rsp)
 			throws Exception {
 		// Make sure the cores is enabled
 		CoreContainer cores = getCoreContainer();
@@ -84,19 +89,19 @@ public class UserHandler extends CustomRequestHandlerBase {
 			this.handleUnknownAction(solrReq);
 			return;
 		}
-		handleRequestInternal(req, solrReq, rsp, action);
+		handleRequestInternal(req, resp, solrReq, rsp, action);
 	}
 
-	protected void handleRequestInternal(HttpServletRequest req, SolrQueryRequest solrReq,
+	protected void handleRequestInternal(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq,
 			SolrQueryResponse rsp, CustomAction action) throws Exception {
 		if (action != null) {
 			switch (action) {
 			    case VISITOR: {
-				    this.handleVisitorAction(req, solrReq, rsp);
+				    this.handleVisitorAction(req, resp, solrReq, rsp);
 					break;
 			    }
 			    case LOGIN: {
-				    this.handleLoginAction(req, solrReq, rsp);
+				    this.handleLoginAction(req, resp, solrReq, rsp);
 					break;
 			    }
 				default: {
@@ -115,15 +120,17 @@ public class UserHandler extends CustomRequestHandlerBase {
 		throw new SolrException(SolrException.ErrorCode.BAD_REQUEST, "Unsupported operation: "+ req.getParams().get(CustomParams.ACTION));
 	}
 
-	protected void handleLoginAction(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse resp) {
+	protected void handleLoginAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse solrResp) throws IOException {
 		SolrParams params = solrReq.getParams();
-		String loginName = params.get("user");
+		String loginName = params.get("username");
 		String loginPwd = params.get("password");
+		if(StringUtils.isBlank(loginName) || StringUtils.isBlank(loginPwd)){
+			ViewUtil.goView("/console/login.html", req, resp, "账号密码不能为空！");
+			return;
+		}
 		
-		String module = "sysUser";
-		SolrCore core = coreContainer.getCore(module);
-		
-		SysUser sysUser = SolrJUtil.queryModel("loginName:"+loginName, core, solrReq, resp, SysUser.class);
+		SolrCore core = coreContainer.getCore(SysConsts.SYS_MODULE_USER);
+		SysUser sysUser = SolrJUtil.getModel("loginName:"+loginName, core, solrReq, solrResp, SysUser.class);
 		if(sysUser != null){
 			String pwd = sysUser.getPassword();
 			String sig = SignUtil.encrypt(loginPwd);
@@ -134,7 +141,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 		}
 	}
 	
-	protected void handleVisitorAction(HttpServletRequest req, SolrQueryRequest solrReq, SolrQueryResponse resp) {
+	protected void handleVisitorAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse sresp) throws IOException {
 		String ip = solrReq.getContext().get(CustomParams.ACCESS_IP).toString();
 		//创建 临时用户
 		User user = UserUtil.createTempUser();
@@ -142,13 +149,13 @@ public class UserHandler extends CustomRequestHandlerBase {
 		UserUtil.addAttrByloginSucc(req, user);
 		
 		//保存记录
-		String module = "userHistory";
-		SolrCore core = coreContainer.getCore(module);
-		SolrJUtil.addModel(buildUserHistory(module, ip, user.getLoginName()), core, solrReq, resp);
+		SolrCore core = coreContainer.getCore(SysConsts.SYS_MODULE_USER_EVENT_HI);
+		SolrJUtil.addModel(buildUserHistory(SysConsts.SYS_MODULE_USER_EVENT_HI, ip, user.getLoginName()), core, solrReq, sresp);
+		ViewUtil.redirect("/console/index.html", req, resp);
 	}
 	
-	private UserHistory buildUserHistory(String module, String ip, String loginName){
-		UserHistory model = new UserHistory();
+	private SysUserEventHistory buildUserHistory(String module, String ip, String loginName){
+		SysUserEventHistory model = new SysUserEventHistory();
 		model.setId(IdGrowthUtil.getIncrIdStr(module)+22);
 		model.setAction(CustomAction.VISITOR.name());
 		model.setCreateTime(new Date());

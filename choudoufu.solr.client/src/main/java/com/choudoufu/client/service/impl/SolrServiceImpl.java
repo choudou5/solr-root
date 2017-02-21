@@ -24,13 +24,13 @@ import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.choudoufu.client.model.SolrBaseModel;
 import com.choudoufu.client.model.DataImport.Command;
-import com.choudoufu.client.page.Page;
+import com.choudoufu.client.model.SolrBaseModel;
 import com.choudoufu.client.service.SolrService;
 import com.choudoufu.client.util.HttpClientUtil;
 import com.choudoufu.client.util.SolrUtil;
 import com.choudoufu.client.util.SolrUtil.ServerType;
+import com.choudoufu.solr.common.page.Page;
 
 /**
  * 描述：Solr API 接口实现类
