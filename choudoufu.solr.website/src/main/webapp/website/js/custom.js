@@ -97,7 +97,7 @@ $(function(){
   $(function(){
     jQuery(document).ready(function() {
     $('#home').backstretch([
-       "website/images/home-bg-slideshow1.jpg"
+       "/website/images/home-bg-slideshow1.jpg"
         ],  {duration: 2000, fade: 750});
     });
   })

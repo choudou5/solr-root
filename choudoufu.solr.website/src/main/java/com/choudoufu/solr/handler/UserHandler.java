@@ -141,7 +141,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 			return;
 		}
 		
-		SolrCore core = coreContainer.getCore(SysConsts.SYS_MODULE_USER);
+		SolrCore core = coreContainer.getCore(SysConsts.MODULE_USER);
 		SysUser sysUser = SolrJUtil.getModel("loginName:"+loginName, core, solrReq, solrResp, SysUser.class);
 		if(sysUser != null){
 			String pwd = sysUser.getPassword();
@@ -169,7 +169,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 	 */
 	protected void handleLoginOutAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse solrResp) throws IOException {
 		UserUtil.loginOut(req);
-		ViewUtil.redirect("/", req, resp);
+		ViewUtil.redirect("/website/index.html", req, resp);
 	}
 	
 	/**
@@ -188,8 +188,8 @@ public class UserHandler extends CustomRequestHandlerBase {
 		UserUtil.loginSucc(req, user);
 		
 		//保存记录
-		SolrCore core = coreContainer.getCore(SysConsts.SYS_MODULE_USER_EVENT_HI);
-		SolrJUtil.addModel(buildUserHistory(SysConsts.SYS_MODULE_USER_EVENT_HI, ip, user.getLoginName()), core, solrReq, sresp);
+		SolrCore core = coreContainer.getCore(SysConsts.MODULE_USER_EVENT_HI);
+		SolrJUtil.addModel(buildUserHistory(SysConsts.MODULE_USER_EVENT_HI, ip, user.getLoginName()), core, solrReq, sresp);
 		ViewUtil.redirect(SysConsts.VIEW_INDEX, req, resp);
 	}
 	

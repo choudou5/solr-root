@@ -265,7 +265,7 @@ $.extend($.validator, {
 	},
 
 	messages: {
-		required: "该字段必.填",
+		required: "该字段必填",
 		remote: "Please fix this field.",
 		email: "请输入正确的邮箱地址.",
 		url: "请输入正确的地址.",

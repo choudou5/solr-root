@@ -68,7 +68,7 @@ public class SolrJUtil {
 		return getSolrQuery(keyword, false);
 	}
 	
-	private static SolrQuery getSolrQuery(boolean commit){
+	public static SolrQuery getSolrQuery(boolean commit){
 		return getSolrQuery(null, true);
 	}
 	

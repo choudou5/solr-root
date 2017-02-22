@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.View;
 
 import org.apache.solr.common.params.CommonParams;
 import org.apache.solr.common.util.ContentStreamBase;
@@ -21,6 +22,7 @@ import org.apache.solr.common.util.SimpleOrderedMap;
 import org.apache.solr.core.SolrCore;
 import org.apache.solr.core.SolrResourceLoader;
 import org.apache.solr.request.SolrQueryRequest;
+import org.apache.solr.request.SolrQueryRequestBase;
 import org.apache.solr.request.SolrRequestHandler;
 import org.apache.solr.request.SolrRequestInfo;
 import org.apache.solr.response.BinaryQueryResponseWriter;
@@ -36,15 +38,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.choudoufu.solr.common.params.CustomParams;
+import com.choudoufu.solr.common.util.PropertiesUtil;
 import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.constants.SysConsts;
+import com.choudoufu.solr.constants.SysPropConsts;
 import com.choudoufu.solr.core.CustomContainer;
 import com.choudoufu.solr.core.request.CustomRequestHandler;
+import com.choudoufu.solr.model.SysUser;
 import com.choudoufu.solr.util.EhcacheUtil;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.IpUtil;
 import com.choudoufu.solr.util.RequestFilterUtil;
+import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;
+import com.choudoufu.solr.util.ViewUtil;
 
 
 /**
@@ -57,6 +64,8 @@ public class CustomFilter extends SolrDispatchFilter{
 	static final Logger log = LoggerFactory.getLogger(CustomFilter.class);
 	
 	private static final Charset UTF8 = StandardCharsets.UTF_8;
+	
+	public static final Package PACKAGE = SolrCore.class.getPackage();
 	
 	protected volatile CustomContainer customContainer;
 	
@@ -73,8 +82,7 @@ public class CustomFilter extends SolrDispatchFilter{
 			customContainer = new CustomContainer(loader, super.getCores());
 			customContainer.load();
 			
-			//初始化 ID增长
-			IdGrowthUtil.init(cores.getCore(SysConsts.SYS_MODULE_TABLE));
+			initSystem();
 	    }catch( Throwable t ) {
 	      log.error( "SolrCustomFilter init error");
 	      SolrCore.log( t );
@@ -83,8 +91,27 @@ public class CustomFilter extends SolrDispatchFilter{
 	      }
 	    }
 		
-		
 	    log.info("SolrCustomFilter.init() done");
+	}
+	
+	/**
+	 * 初始化 系统
+	 */
+	private void initSystem(){
+		log.info("SolrCustomFilter.initSystem()");
+		//ID增长
+		IdGrowthUtil.init(cores.getCore(SysConsts.MODULE_TABLE));
+		//属性资源
+		PropertiesUtil.init(SysPropConsts.PROP_PATH);
+		
+		//初始化 系统管理员
+		SysUser sysUser = UserUtil.initSystemAdmin();
+		SolrCore core = cores.getCore(SysConsts.MODULE_USER);
+		SolrQueryRequest solrReq = new SolrQueryRequestBase(core, SolrJUtil.getSolrQuery(true)) {};
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+		SolrCore.preDecorateResponse(solrReq, solrResp);
+		SolrJUtil.addModel(sysUser, core, solrReq, solrResp);
+		log.info("SolrCustomFilter.initSystem() done");
 	}
 	
 	 
@@ -119,20 +146,23 @@ public class CustomFilter extends SolrDispatchFilter{
 				return;
 			}
 			
-			
-			//校验登录
 			String encryptCode = req.getParameter("sigCode");
-			if(SignUtil.validCode(encryptCode) || UserUtil.isLogin(req)){
-				
-				//已登录
+			if(!"/console".startsWith(path) && SignUtil.validCode(encryptCode)){
+				super.doFilter(request, response, chain);
+			}else{
+				//已登录 校验登录
+				boolean isLogin = UserUtil.isLogin(req);
 				String action = req.getParameter("action");
-				if(path.startsWith("/console/user") && RequestFilterUtil.isLoginReq(action)){
+				if(path.startsWith(CustomParams.REQ_PATH_CONSOLE_USER) && RequestFilterUtil.isLoginReq(action) 
+						&& isLogin){
 					resp.sendRedirect("/console/index.html");
 					return;
 				}
+				if(isLogin && ("/console/index.html".equals(path) || !path.startsWith(CustomParams.REQ_PATH_CONSOLE_USER))){
+		        	chain.doFilter(request, response);
+		        	return;
+		        }
 				
-				super.doFilter(request, response, chain);
-			}else{
 				solrReq = SolrRequestParsers.DEFAULT.parse(null,path, req);
 		        //上传 core配置
 		        if(path.equals(CustomParams.REQ_PATH_CCUSTOM) ) {
@@ -148,7 +178,8 @@ public class CustomFilter extends SolrDispatchFilter{
 		        	handleConsoleRequest(req, resp, handler, solrReq);
 		            return;
 		        }
-		        resp.sendRedirect("/console/login.html");
+//		        resp.sendRedirect("/console/login.html");
+		        ViewUtil.goView("/console/login.html", req, resp, "");
 		        return;
 			}
 	        
@@ -178,7 +209,6 @@ public class CustomFilter extends SolrDispatchFilter{
 	        }
 	      }
 	    }
-	    
 //	    chain.doFilter(request, response);
 	}
 	

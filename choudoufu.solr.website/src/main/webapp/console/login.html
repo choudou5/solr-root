@@ -6,17 +6,20 @@
         
         <!-- Favicon -->
     	<link rel="shortcut icon" href="/static/images/favicon.ico">
-		<link rel="stylesheet" href="css/bootstrap.min.css" />
-		<link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="css/matrix-login.css" />
-        <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
-		<link href='css/fonts.googleapis.com.css' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="/console/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/console/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="/console/css/matrix-login.css" />
+        <link rel="stylesheet" href="/console/font-awesome/css/font-awesome.css" />
+		<link rel='stylesheet' href='/console/css/fonts.googleapis.com.css' type='text/css'>
 
     </head>
     <body>
-        <div id="loginbox">            
+        <div id="loginbox">	
+        	<div class="alert alert-error alert-block ${messageCss}"><a class="close" data-dismiss="alert" href="#">×</a>
+              <h4 class="alert-heading text-center">${message}</h4>
+            </div>  
             <form id="loginform" class="form-vertical" action="/console/user?action=login" method="post" enctype="multipart/form-data">
-				 <div class="control-group normal_text"> <h3><img src="/static/images/logo.png" alt="Logo" /></h3></div>
+				<div class="control-group normal_text"> <h3><img src="/static/images/logo.png" alt="Logo" /></h3></div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
@@ -53,9 +56,10 @@
             </form>
         </div>
         
-        <script src="js/jquery.min.js"></script>  
-        <script src="js/jquery.validate.js"></script> 
-        <script src="js/matrix.login.js"></script> 
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/jquery.validate.js"></script>
+        <script src="js/matrix.login.js"></script>
     </body>
 
 </html>

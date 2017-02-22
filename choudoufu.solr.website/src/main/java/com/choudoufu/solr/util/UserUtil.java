@@ -1,13 +1,20 @@
 package com.choudoufu.solr.util;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.choudoufu.solr.common.util.PropertiesUtil;
 import com.choudoufu.solr.constants.CacheConsts;
 import com.choudoufu.solr.constants.IdGrowthConsts;
 import com.choudoufu.solr.constants.SysConsts;
+import com.choudoufu.solr.constants.SysConsts.DataStatusEnum;
+import com.choudoufu.solr.constants.SysPropConsts;
+import com.choudoufu.solr.constants.UserTypeEnum;
 import com.choudoufu.solr.entity.User;
+import com.choudoufu.solr.model.SysUser;
 
 /**
  * 用户 工具类
@@ -23,6 +30,26 @@ public class UserUtil {
 			System.out.println(createTempUser());
 		}
 	}
+	
+	/**
+	 * 创建 系统管理员
+	 * @return User
+	 */
+	public static SysUser initSystemAdmin(){
+		String admin = PropertiesUtil.getString(SysPropConsts.PROP_KEY_ADMIN);
+		String pwd = PropertiesUtil.getString(SysPropConsts.PROP_KEY_ADMIN_PWD);
+		
+		SysUser user = new SysUser();
+		user.setId("0");
+		user.setLoginName(admin);
+		user.setPassword(pwd);
+		user.setIp("localhost");
+		user.setUserType(UserTypeEnum.ADMIN.getValue());
+		user.setCreateTime(new Date());
+		user.setStatus(DataStatusEnum.YES.getValue());
+		return user;
+	}
+	
 	
 	/**
 	 * 创建 临时用户

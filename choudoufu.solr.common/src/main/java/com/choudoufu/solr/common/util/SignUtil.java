@@ -17,8 +17,15 @@ import org.apache.commons.lang.StringUtils;
 public class SignUtil {
 	
 	/** 签名key */
-	private static final String SIG_KEY = "solrroot";
-	private static final int DEF_TIME_OUT = 10;//单位秒
+	private static final String SIG_KEY;
+	private static final int DEF_TIME_OUT;//单位毫秒秒
+	
+	static{
+		SIG_KEY = PropertiesUtil.getString(PropConsts.PROP_KEY_SIG);
+		DEF_TIME_OUT = PropertiesUtil.getInteger(PropConsts.PROP_KEY_SIG_TIME_OUT);
+		
+//		SIG_KEY = "solrroot"; DEF_TIME_OUT = 10;
+	}
 	
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) throws InterruptedException {
@@ -33,7 +40,7 @@ public class SignUtil {
 //			Thread.currentThread().sleep(3000);
 //			System.out.println(validCode(encrypt));
 //		}
-		System.out.println(encrypt("admin"));
+		System.out.println(encrypt("adminadmin"));
 	}
 	
 	/**
