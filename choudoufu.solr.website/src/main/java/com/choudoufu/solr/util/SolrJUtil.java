@@ -39,6 +39,8 @@ import org.apache.solr.servlet.SolrRequestParsers;
 
 public class SolrJUtil {
 	
+	public static final String QUERY_ALL ="*:*";
+	
 	/** Query Type */
 	public static final String QT_SELECT ="/select";
 	public static final String QT_UPDATE ="/update";
@@ -64,7 +66,7 @@ public class SolrJUtil {
 		return getSolrQuery(null, false);
 	}
 	
-	private static SolrQuery getSolrQuery(String keyword){
+	public static SolrQuery getSolrQuery(String keyword){
 		return getSolrQuery(keyword, false);
 	}
 	
@@ -72,22 +74,59 @@ public class SolrJUtil {
 		return getSolrQuery(null, true);
 	}
 	
-
 	/**
-	 * 添加 模型
+	 * 添加 模型数据
 	 * @param bean
 	 * @param core
-	 * @param req
-	 * @param resp
 	 */
-	public static <T extends Serializable> void addModel(T bean, SolrCore core, SolrQueryRequest req, SolrQueryResponse resp){
+	public static <T extends Serializable> void addModelData(T bean, SolrCore core){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
 		SolrQuery params = getSolrQuery(true);
 	    try {
 	    	Collection<ContentStream> streams = getContentStreams(bean);
-	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, resp);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 添加 模型数据集合
+	 * @param beans
+	 * @param core
+	 */
+	public static <T extends Serializable> void addModelDatas(List<T> beans, SolrCore core){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+		SolrQuery params = getSolrQuery(true);
+	    try {
+	    	Collection<ContentStream> streams = getContentStreams(beans);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 获得 模型数据
+	 * @param params
+	 * @param core
+	 * @param clasz
+	 * @return
+	 */
+	public static <T extends Serializable> T getModelData(SolrQuery params, SolrCore core, Class<T> clasz){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+	    try {
+	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
+	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, solrResp);
+			SolrDocument doc = getDocument(solrResp, sreq);
+			if(doc != null){
+				DocumentObjectBinder binder = new DocumentObjectBinder();
+				return binder.getBean(clasz, doc);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return null;
 	}
 	
 	/**
@@ -99,21 +138,23 @@ public class SolrJUtil {
 	 * @param clasz
 	 * @return
 	 */
-	public static <T extends Serializable> T getModel(String keyword, SolrCore core, SolrQueryRequest req, SolrQueryResponse resp, Class<T> clasz){
-		SolrQuery params = getSolrQuery(keyword);
+	public static <T extends Serializable> List<T> listModelData(SolrQuery params, SolrCore core, Class<T> clasz){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
 	    try {
 	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
-	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, resp);
-			SolrDocument doc = getDocument(resp, sreq);
-			if(doc != null){
+	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, solrResp);
+			
+			SolrDocumentList docList = getDocuments(solrResp, sreq);
+			if(docList != null){
 				DocumentObjectBinder binder = new DocumentObjectBinder();
-				return binder.getBean(clasz, doc);
+				return (List<T>) binder.getBeans(clasz, docList);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	    return null;
 	}
+	
 	
 	private static SolrQueryRequest execute(String qt, SolrCore core, SolrQuery params, Collection<ContentStream> streams, SolrQueryResponse resp) throws Exception{
 		final SolrConfig config = core.getSolrConfig();
@@ -126,33 +167,6 @@ public class SolrJUtil {
 		sreq.getCore().execute( handler, sreq, resp);
 		SolrRequestInfo.clearRequestInfo();
 		return sreq;
-	}
-	
-	
-	/**
-	 * 查询模型
-	 * @param keyword
-	 * @param core
-	 * @param req
-	 * @param resp
-	 * @param clasz
-	 * @return
-	 */
-	public static <T extends Serializable> List<T> listModel(String keyword, SolrCore core, SolrQueryRequest req, SolrQueryResponse resp, Class<T> clasz){
-		SolrQuery params = getSolrQuery(keyword);
-	    try {
-	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
-	    	SolrQueryRequest sreq = execute(QT_SELECT, core, params, streams, resp);
-			
-			SolrDocumentList docList = getDocuments(resp, sreq);
-			if(docList != null){
-				DocumentObjectBinder binder = new DocumentObjectBinder();
-				return (List<T>) binder.getBeans(clasz, docList);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	    return null;
 	}
 	
 	
@@ -260,6 +274,18 @@ public class SolrJUtil {
 		DocumentObjectBinder binder = new DocumentObjectBinder();
 	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
 	    docs.add(binder.toSolrInputDocument(bean));
+	    UpdateRequest req = new UpdateRequest();
+	    req.add(docs);
+	    req.setCommitWithin(-1);
+	    return req.getContentStreams();
+	}
+	
+	private static <T extends Serializable> Collection<ContentStream> getContentStreams(List<T> beans) throws SolrServerException, IOException {
+		DocumentObjectBinder binder = new DocumentObjectBinder();
+	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
+	    for (T bean : beans) {
+	        docs.add(binder.toSolrInputDocument(bean));
+	    }
 	    UpdateRequest req = new UpdateRequest();
 	    req.add(docs);
 	    req.setCommitWithin(-1);

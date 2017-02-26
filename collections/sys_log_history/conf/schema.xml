@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="userHistory" version="1.5">
-     
-	<!-- 基本数据类型-->
+<schema name="sysLogHistory" version="1.5">
+
+   <!-- solr必要字段 -->
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+   <field name="_root_" type="string" indexed="true" stored="false"/>
+
+   <!-- 自定义字段 -->
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+   <field name="title" type="word_ik" indexed="true" stored="true" />
+   <field name="loginName" type="string" indexed="true" stored="true" />
+   <field name="accessType" type="string" indexed="true" stored="true" />
+   <field name="action" type="string" indexed="true" stored="true" />
+   <field name="url" type="string" indexed="true" stored="true" />
+   <field name="method" type="string" indexed="true" stored="true" />
+   <field name="params" type="string" indexed="true" stored="true" />
+   <field name="userAgent" type="string" indexed="true" stored="true" />
+   <field name="ip" type="string" indexed="true" stored="true" />
+   <field name="exception" type="string" indexed="true" stored="true" />
+   <field name="createTime" type="tdate" indexed="true" stored="true" />
+	
+	
+   <field name="text" type="word_ik" indexed="true" stored="false" multiValued="true"/>
+
+   <uniqueKey>id</uniqueKey>
+
+   <defaultSearchField>loginName</defaultSearchField>
+
+   <!-- 字段复值值 -->
+   <!-- <copyField source="title" dest="text"/> -->
+
+	<!-- *************************begin 数据类型****************************** -->
+   	<!-- 基本数据类型-->
     <fieldType name="text" class="solr.TextField" sortMissingLast="true" />
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
@@ -94,33 +123,6 @@
           <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
-
-
-   <!-- solr必要字段 -->
-   <field name="_version_" type="long" indexed="true" stored="true"/>
-   <field name="_root_" type="string" indexed="true" stored="false"/>
-
-   <!-- 自定义字段 -->
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="loginName" type="string" indexed="true" stored="true" />
-   <field name="action" type="string" indexed="true" stored="true"/>
-   <field name="ip" type="string" indexed="true" stored="true" />
-   <field name="status" type="string" indexed="true" stored="true" />
-   <field name="createTime" type="tdate" indexed="true" stored="true" />
-	
-   <field name="text" type="word_ik" indexed="true" stored="false" multiValued="true"/>
-
- <uniqueKey>id</uniqueKey>
-
- <defaultSearchField>loginName</defaultSearchField>
-
-   <!-- 字段复值值 -->
-   <!-- <copyField source="title" dest="text"/> -->
-
-  <!--
-     <similarity class="com.example.solr.CustomSimilarityFactory">
-       <str name="paramkey">param value</str>
-     </similarity>
-    -->
-
+    
+    <!-- *************************end 数据类型****************************** -->
 </schema>
