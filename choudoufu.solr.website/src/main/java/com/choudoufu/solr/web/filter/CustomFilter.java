@@ -261,6 +261,7 @@ public class CustomFilter extends SolrDispatchFilter{
 	    chain.doFilter(request, response);
 	}
 	
+	//即将弃用
 	private void handleCustomRequest(HttpServletRequest req, ServletResponse response, SolrRequestHandler handler,
             SolrQueryRequest solrReq) throws IOException {
 		SolrQueryResponse solrResp = new SolrQueryResponse();
