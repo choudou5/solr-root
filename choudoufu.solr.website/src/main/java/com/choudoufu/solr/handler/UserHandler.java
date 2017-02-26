@@ -1,7 +1,6 @@
 package com.choudoufu.solr.handler;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,10 +22,7 @@ import com.choudoufu.solr.common.params.CustomParams.CustomAction;
 import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.core.request.CustomRequestHandlerBase;
-import com.choudoufu.solr.entity.User;
 import com.choudoufu.solr.model.SysUser;
-import com.choudoufu.solr.model.SysUserEventHistory;
-import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;
 import com.choudoufu.solr.util.ViewUtil;
@@ -142,7 +138,7 @@ public class UserHandler extends CustomRequestHandlerBase {
 		}
 		
 		SolrCore core = coreContainer.getCore(SysConsts.MODULE_USER);
-		SysUser sysUser = SolrJUtil.getModel("loginName:"+loginName, core, solrReq, solrResp, SysUser.class);
+		SysUser sysUser = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("loginName:"+loginName), core, SysUser.class);
 		if(sysUser != null){
 			String pwd = sysUser.getPassword();
 			String sig = SignUtil.encrypt(loginPwd);
@@ -181,26 +177,9 @@ public class UserHandler extends CustomRequestHandlerBase {
 	 * @throws IOException
 	 */
 	protected void handleVisitorAction(HttpServletRequest req, HttpServletResponse resp, SolrQueryRequest solrReq, SolrQueryResponse sresp) throws IOException {
-		String ip = solrReq.getContext().get(CustomParams.ACCESS_IP).toString();
 		//创建 临时用户
-		User user = UserUtil.createTempUser();
-		//登录成功
-		UserUtil.loginSucc(req, user);
-		
-		//保存记录
-		SolrCore core = coreContainer.getCore(SysConsts.MODULE_USER_EVENT_HI);
-		SolrJUtil.addModel(buildUserHistory(SysConsts.MODULE_USER_EVENT_HI, ip, user.getLoginName()), core, solrReq, sresp);
+		UserUtil.createTempUser(req);
 		ViewUtil.redirect(SysConsts.VIEW_INDEX, req, resp);
-	}
-	
-	private SysUserEventHistory buildUserHistory(String module, String ip, String loginName){
-		SysUserEventHistory model = new SysUserEventHistory();
-		model.setId(IdGrowthUtil.getIncrIdStr(module));
-		model.setAction(CustomAction.VISITOR.name());
-		model.setCreateTime(new Date());
-		model.setIp(ip);
-		model.setLoginName(loginName);
-		return model;
 	}
 	
 	// ////////////////////// SolrInfoMBeans methods //////////////////////
