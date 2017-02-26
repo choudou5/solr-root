@@ -26,13 +26,44 @@
 		<ant.version>1.7.1</ant.version>
 		
 		<solr-solr.version>4.10.4</solr-solr.version>
+		<spring.version>4.2.4.RELEASE</spring.version>
 		<choudoufu.package.version>0.0.1</choudoufu.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
 		<package.warName>choudoufu.solr.website</package.warName>
 	</properties>
 
 	<dependencies>
-
+		
+		<!-- springmvc -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-webmvc</artifactId>
+		    <version>${spring.version}</version>
+		    <!-- <exclusions>
+		    	<exclusion>
+		    		<groupId>*</groupId>
+		    		<artifactId>*</artifactId>
+		    	</exclusion>
+		    </exclusions> -->
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${spring.version}</version>
+		   <!--  <exclusions>
+		    	<exclusion>
+		    		<groupId>*</groupId>
+		    		<artifactId>*</artifactId>
+		    	</exclusion>
+		    </exclusions> -->
+		</dependency>
+		
+		<dependency>
+		    <groupId>jstl</groupId>
+		    <artifactId>jstl</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		
 
 		<!-- ehcache -->
 		<dependency>
@@ -218,6 +249,48 @@
 
 	</dependencies>
 
+	
+	<!-- 设定主仓库，按设定顺序进行查找。 -->
+	<repositories>  
+	    <repository>
+			<id>sonatype-repos</id>
+			<name>sonatype Repository</name>
+			<url>http://repository.sonatype.org/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>ibiblio-repos</id>
+			<name>ibiblio Repository</name>
+			<url>http://maven.ibiblio.org/maven2</url>
+		</repository>
+		<repository>
+			<id>activiti-repos</id>
+			<name>Activiti Repository</name>
+			<url>https://maven.alfresco.com/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>activiti-repos2</id>
+			<name>Activiti Repository 2</name>
+			<url>https://app.camunda.com/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+            <id>springsource-repos</id>
+            <name>SpringSource Repository</name>
+            <url>http://repo.spring.io/release/</url>
+        </repository>
+		<repository>  
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id 就会覆盖中央仓库的配置 -->
+			<id>mvnrepository</id>  
+		        <name>mvnrepository</name>  
+		        <url>http://www.mvnrepository.com/</url>  
+		        <layout>default</layout>  
+		        <releases>  
+		            <enabled>true</enabled>  
+		        </releases>  
+		        <snapshots>  
+		            <enabled>false</enabled>  
+		        </snapshots>  
+		    </repository>
+	</repositories>
 
 	<build>
 		<plugins>
@@ -230,6 +303,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	
 
 
 </project>
