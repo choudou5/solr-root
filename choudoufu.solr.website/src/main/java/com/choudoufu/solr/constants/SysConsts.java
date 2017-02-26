@@ -7,10 +7,11 @@ public interface SysConsts {
 	/** 模块 */
 	String MODULE_TABLE = "sys_table";
 	String MODULE_USER = "sys_user";
-	String MODULE_USER_EVENT_HI = "sys_user_event_history";
+	String MODULE_LOG_HI = "sys_log_history";
+	String MODULE_PLUG_SENSITIVE_WORD = "plug_sensitive_word";
 	
-	String VIEW_INDEX = "/console/index.html";	//首页
-	String VIEW_LOGIN = "/console/login.html";	//登录页
+	String VIEW_INDEX = "/console/page?path=/index";	//首页
+	String VIEW_LOGIN = "/console/page?path=/login";	//登录页
 	
 	/**
 	 * 数据状态: YES/NO

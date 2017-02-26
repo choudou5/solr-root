@@ -1,10 +1,9 @@
 package com.choudoufu.solr.util;
 
+import java.security.SecureRandom;
 import java.util.Date;
 
 import org.apache.solr.core.SolrCore;
-import org.apache.solr.request.SolrQueryRequestBase;
-import org.apache.solr.response.SolrQueryResponse;
 
 import com.choudoufu.solr.constants.CacheConsts;
 import com.choudoufu.solr.model.SysTable;
@@ -13,18 +12,15 @@ import com.choudoufu.solr.model.SysTable;
 public class IdGrowthUtil {
 
 	private static volatile SolrCore core;
-	private static volatile SolrQueryRequestBase solrReq;
-	private static volatile SolrQueryResponse solrResp;
 	
+	private static SecureRandom random = new SecureRandom();
 	
 	public static void init(SolrCore core){
 		IdGrowthUtil.core = core;
-		solrReq = new SolrQueryRequestBase(core, null) { };
-		solrResp = new SolrQueryResponse();
 	}
 	
 	private static long getGrowthId(String module){
-		SysTable sysTable = SolrJUtil.getModel("id:"+module, core, solrReq, solrResp, SysTable.class);
+		SysTable sysTable = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+module), core, SysTable.class);
 		return sysTable == null ? -1L : sysTable.getGrowthId();
 	}
 	
@@ -32,7 +28,7 @@ public class IdGrowthUtil {
 		SysTable sysTable = new SysTable(module);
 		sysTable.setGrowthId(id);
 		sysTable.setUpdateTime(new Date());
-		SolrJUtil.addModel(sysTable, core, solrReq, solrResp);
+		SolrJUtil.addModelData(sysTable, core);
 	}
 	
 	/**
@@ -94,4 +90,17 @@ public class IdGrowthUtil {
 //		return id;
 //	}
 	
+	/**
+	 * 使用SecureRandom随机生成Long. 
+	 */
+	public static long randomLong() {
+		return Math.abs(random.nextLong());
+	}
+
+	/**
+	 * 使用SecureRandom随机生成Int. 
+	 */
+	public static int randomInt() {
+		return Math.abs(random.nextInt());
+	}
 }

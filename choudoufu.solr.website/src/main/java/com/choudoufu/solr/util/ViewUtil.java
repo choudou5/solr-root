@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.choudoufu.solr.constants.CacheConsts;
-import com.choudoufu.solr.filter.CustomFilter;
+import com.choudoufu.solr.web.filter.CustomFilter;
 
 public class ViewUtil {
 
@@ -94,10 +94,6 @@ public class ViewUtil {
 		replace.add(StringEscapeUtils.escapeJavaScript(request.getContextPath()));
 		replace.add(CustomFilter.PACKAGE.getSpecificationVersion());
 		replace.add(message);
-		if(StringUtils.isBlank(message)){
-			search.add("${messageCss}");
-			replace.add("hide");
-		}
 	}
 	
 	private static void cacheHtml(String view, String html){

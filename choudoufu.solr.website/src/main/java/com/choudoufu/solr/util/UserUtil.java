@@ -22,13 +22,9 @@ import com.choudoufu.solr.model.SysUser;
  * @date 2017年2月9日
  */
 public class UserUtil {
-
-	
 	
 	public static void main(String[] args) {
-		for (int i = 0; i < 100; i++) {
-			System.out.println(createTempUser());
-		}
+		
 	}
 	
 	/**
@@ -53,15 +49,20 @@ public class UserUtil {
 	
 	/**
 	 * 创建 临时用户
-	 * @return User
 	 */
-	public static User createTempUser(){
+	public static void createTempUser(HttpServletRequest req){
+		//创建临时用户
 		String loginName = "temporary_"+IdGrowthUtil.getIncrId(IdGrowthConsts.TEMP_USER);
 		String password = RandomStringUtils.randomAlphanumeric(6);
-		return new User(loginName, password);
+		User user =  new User(loginName, password);
+		//登录成功
+		UserUtil.loginSucc(req, user);
+		
+		//日志记录
+		SysLogUtil.saveLog(req, "访客", "sys");
 	}
 	
-	public static User getUser(HttpServletRequest request){
+	public static User getSessionUser(HttpServletRequest request){
 		return (User) request.getSession().getAttribute(SysConsts.USER_SESSION);
 	}
 	
@@ -70,7 +71,7 @@ public class UserUtil {
 	 * @param request
 	 */
 	public static boolean isLogin(HttpServletRequest request){
-		return getUser(request)!=null?true:false;
+		return getSessionUser(request)!=null?true:false;
 	}
 
 	/**
@@ -91,7 +92,7 @@ public class UserUtil {
 	 * @param request
 	 */
 	public static void loginOut(HttpServletRequest request){
-		User user = getUser(request);
+		User user = getSessionUser(request);
 		if(user != null){
 			request.getSession().removeAttribute(SysConsts.USER_SESSION);
 			//减少 在线用户
@@ -107,4 +108,20 @@ public class UserUtil {
 		return EhcacheUtil.getInstance().getCacheSize(CacheConsts.CACHE_USER_SESSION);
 	}
 	
+	/**
+	 * 是否有操作权限 (暂无普通用户)
+	 * @return
+	 */
+	public static boolean isPermission(HttpServletRequest request, String coreName){
+		User user  = getSessionUser(request);
+		if(user != null){
+			if(user.getUserType() == UserTypeEnum.ADMIN.getValue()){
+				return true;
+			}else if(user.getUserType() == UserTypeEnum.TEMP.getValue()){
+				//临时用户
+				return coreName.startsWith(user.getLoginName());
+			}
+		}
+		return false;
+	}
 }
