@@ -19,11 +19,16 @@ import com.choudoufu.solr.analyzer.tokenizer.SeparatorTokenizer;
  */
 public class SeparatorAnalyzer extends Analyzer {
 
-	private final static String DEFAULT_SEPARTOR = ".";
+	public final static String DEFAULT_SEPARTOR = ".";
+	public final static String DEFAULT_SQL_GROUP_SYMBOL = "";//SQL分组符， 针对DIH的sql导入
+	
 	/**
 	 * 分隔符
 	 */
 	private String separator;
+	
+	/** 分组符， 针对DIH的sql导入 */
+	private String sqlGroupSymbol;
 
 	public String getSeparator() {
 		return separator;
@@ -33,16 +38,29 @@ public class SeparatorAnalyzer extends Analyzer {
 		this.separator = separator;
 	}
 
+	public String getSqlGroupSymbol() {
+		return sqlGroupSymbol;
+	}
+
+	public void setSqlGroupSymbol(String sqlGroupSymbol) {
+		this.sqlGroupSymbol = sqlGroupSymbol;
+	}
+
 	public SeparatorAnalyzer() {
-		this(DEFAULT_SEPARTOR);
+		this(DEFAULT_SEPARTOR, DEFAULT_SQL_GROUP_SYMBOL);
 	}
 
 	public SeparatorAnalyzer(String separator) {
+		this(separator, DEFAULT_SQL_GROUP_SYMBOL);
+	}
+	
+	public SeparatorAnalyzer(String separator, String sqlGroupSymbol) {
 		this.separator = separator;
+		this.sqlGroupSymbol = sqlGroupSymbol;
 	}
 
 	protected Analyzer.TokenStreamComponents createComponents(String fieldName, Reader in) {
-		Tokenizer token = new SeparatorTokenizer(in, separator);
+		Tokenizer token = new SeparatorTokenizer(in, separator, sqlGroupSymbol);
 		return new Analyzer.TokenStreamComponents(token);
 	}
 }

@@ -22,15 +22,17 @@ import com.choudoufu.solr.analyzer.tokenizer.SeparatorTokenizer;
  */
 public class SeparatorTokenizerFactory extends TokenizerFactory{  
 	 
-	 private final String separator;  
+	 private final String separator;
+	 private final String sqlGroupSymbol;
 	 
 	 public SeparatorTokenizerFactory(Map<String, String> args) {  
 		 super(args);  
 		 this.separator = get(args, "separator", ".");  
+		 this.sqlGroupSymbol = get(args, "sqlGroupSymbol", "");
 	 }  
 	  
 	 @Override  
 	 public Tokenizer create(AttributeFactory factory, Reader in) {  
-		 return new SeparatorTokenizer(in,this.separator);  
+		 return new SeparatorTokenizer(in, this.separator, this.sqlGroupSymbol);  
 	 }
 }

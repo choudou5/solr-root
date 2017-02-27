@@ -2,10 +2,14 @@ package com.choudoufu.solr.analyzer.tokenizer;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+
+import com.choudoufu.solr.analyzer.SeparatorAnalyzer;
 
 /**
  * <pre>
@@ -20,12 +24,10 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
  */
 public class SeparatorTokenizer extends Tokenizer {
 
-	private final static String DEFAULT_SEPARTOR = ".";
-
-	/**
-	 * 分隔符
-	 */
+	/**分隔符 */
 	private String separator;
+	/** 分组符， 针对DIH的sql导入 */
+	private String sqlGroupSymbol;
 
 	private int offset = 0;
 	private int dataLen = 0;
@@ -36,9 +38,10 @@ public class SeparatorTokenizer extends Tokenizer {
 	private final CharTermAttribute termAtt = (CharTermAttribute) addAttribute(CharTermAttribute.class);
 	private final OffsetAttribute offsetAtt = (OffsetAttribute) addAttribute(OffsetAttribute.class);
 
-	public SeparatorTokenizer(Reader in, String separator) {
+	public SeparatorTokenizer(Reader in, String separator, String sqlGroupSymbol) {
 		super(in);
-		this.separator = separator == null ? DEFAULT_SEPARTOR : separator;
+		this.separator = separator == null ? SeparatorAnalyzer.DEFAULT_SEPARTOR : separator;
+		this.sqlGroupSymbol = sqlGroupSymbol == null? SeparatorAnalyzer.DEFAULT_SQL_GROUP_SYMBOL: sqlGroupSymbol;
 	}
 	
 	public boolean incrementToken() throws IOException {
@@ -55,7 +58,25 @@ public class SeparatorTokenizer extends Tokenizer {
 		if(this.dataLen == 0){
 			this.dataLen = this.input.read(this.ioBuffer);
 			String data = getWord(ioBuffer, dataLen);
-			words = data.split("\\"+separator);
+			//sql分组处理
+			if(!"".equals(sqlGroupSymbol)){
+				String[] sqlSplitArray = data.split("\\"+sqlGroupSymbol);
+				Map<String, String> map = new HashMap<String, String>(sqlSplitArray.length*8);
+				String[] itemArray = null;
+				for (String item : sqlSplitArray) {
+					itemArray = item.split("\\"+separator);
+					for (String node : itemArray) {
+						map.put(node, null);
+					}
+				}
+				words = map.keySet().toArray(new String[map.size()]);
+				//gc回收
+				map = null;
+				itemArray = null;
+				sqlSplitArray = null;
+			}else{
+				words = data.split("\\"+separator);
+			}
 			itemCount = words.length;
 		}
 		if(offset < itemCount){
@@ -88,6 +109,14 @@ public class SeparatorTokenizer extends Tokenizer {
 		this.separator = separator;
 	}
 	
+	public String getSqlGroupSymbol() {
+		return sqlGroupSymbol;
+	}
+
+	public void setSqlGroupSymbol(String sqlGroupSymbol) {
+		this.sqlGroupSymbol = sqlGroupSymbol;
+	}
+
 	private static String getWord(char[] chars, int dataLen){
 		if(dataLen > 0){
 			StringBuilder sb = new StringBuilder();

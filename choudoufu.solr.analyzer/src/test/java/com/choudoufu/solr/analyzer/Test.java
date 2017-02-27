@@ -11,11 +11,6 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import com.chenlb.mmseg4j.analysis.SimpleAnalyzer;
-import com.choudoufu.solr.analyzer.AddressAnalyzer;
-import com.choudoufu.solr.analyzer.MinSplitAnalyzer;
-import com.choudoufu.solr.analyzer.PinyinAnalyzer;
-import com.choudoufu.solr.analyzer.PositiveContinuousSplitAnalyzer;
-import com.choudoufu.solr.analyzer.SeparatorAnalyzer;
 
 public class Test {
 
@@ -35,7 +30,7 @@ public class Test {
 		print("中国北京天安门", new PositiveContinuousSplitAnalyzer());
 		
 		// 符号分词器
-		print("123.456.78910", new SeparatorAnalyzer("."));
+		print("123.456.78910,12312.8888", new SeparatorAnalyzer(".", ","));
 		
 		// 地址分词器
 		print("广东省广州天河区车陂小学", new AddressAnalyzer("city"));
