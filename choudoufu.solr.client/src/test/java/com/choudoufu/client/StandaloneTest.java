@@ -13,17 +13,21 @@ import com.choudoufu.client.server.SolrServer;
 import com.choudoufu.client.service.SolrService;
 import com.choudoufu.client.service.impl.SolrServiceImpl;
 import com.choudoufu.client.util.SolrUtil.ServerType;
+import com.choudoufu.solr.common.util.PropertiesUtil;
 import com.choudoufu.solrj.model.SolrTestModel;
+import com.choudoufu.solrj.model.SysTestModel;
 
 public class StandaloneTest {
 
-	String url = "http://192.168.36.226:9934/";
+//	String url = "http://192.168.36.226:9934/";
+	String url = "http://localhost:80/";
 	String moduleName = "collection1";
 	
 	private SolrService solrAPI;
 	
 	@Before
 	public void init() {
+		PropertiesUtil.init("/conf/system.properties");
 		if(solrAPI == null){
 			SolrServer server = new SolrServer(url, ServerType.SINGLE);
 			solrAPI = new SolrServiceImpl(server);
@@ -98,4 +102,14 @@ public class StandaloneTest {
 		System.out.println(testEntities);
 	}
 
+	Random rd = new Random();
+	
+	@Test
+	public void addSysTestModel(){
+		SysTestModel model = new SysTestModel();
+		model.setId(rd.nextInt(100000)+"");
+		model.setTitle("测试tree sqlGroupSymbol");
+		model.setTree(new String[]{"123.456,789,876"});
+		System.out.println(solrAPI.addObject("sys_test", model));
+	}
 }

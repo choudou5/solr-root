@@ -57,6 +57,8 @@ public class SeparatorTokenizer extends Tokenizer {
 		
 		if(this.dataLen == 0){
 			this.dataLen = this.input.read(this.ioBuffer);
+			if(dataLen == -1)
+				return false;
 			String data = getWord(ioBuffer, dataLen);
 			//sql分组处理
 			if(!"".equals(sqlGroupSymbol)){
@@ -66,8 +68,17 @@ public class SeparatorTokenizer extends Tokenizer {
 				for (String item : sqlSplitArray) {
 					itemArray = item.split("\\"+separator);
 					for (String node : itemArray) {
-						map.put(node, null);
+						if(node != null && !node.isEmpty()){
+							map.put(node, null);
+						}
 					}
+				}
+				
+				if(map.isEmpty()){
+					map = null;
+					itemArray = null;
+					sqlSplitArray = null;
+					return false;
 				}
 				words = map.keySet().toArray(new String[map.size()]);
 				//gc回收

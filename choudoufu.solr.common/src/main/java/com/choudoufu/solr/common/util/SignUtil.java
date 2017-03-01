@@ -18,7 +18,7 @@ public class SignUtil {
 	
 	/** 签名key */
 	private static final String SIG_KEY;
-	private static final int DEF_TIME_OUT;//单位毫秒秒
+	private static final int DEF_TIME_OUT;//单位秒
 	
 	static{
 		SIG_KEY = PropertiesUtil.getString(PropConsts.PROP_KEY_SIG);

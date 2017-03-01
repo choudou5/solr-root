@@ -13,7 +13,7 @@ public class PropertiesUtil {
 		try {
             props = new Properties();
             InputStreamReader inputStream = new InputStreamReader(
-            		PropertiesUtil.class.getClassLoader().getResourceAsStream(filePath), "UTF-8");
+            		PropertiesUtil.class.getResourceAsStream(filePath), "UTF-8");
             props.load(inputStream);
         } catch (Exception e) {
             e.printStackTrace();

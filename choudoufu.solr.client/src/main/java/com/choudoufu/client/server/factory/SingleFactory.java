@@ -2,11 +2,11 @@ package com.choudoufu.client.server.factory;
 
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.impl.BinaryRequestWriter;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.choudoufu.client.server.HttpSolrServer;
 import com.choudoufu.client.server.util.HttpProp;
 import com.choudoufu.client.server.util.SolrConnectPool;
 
