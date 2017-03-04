@@ -20,14 +20,23 @@ public class SysTable implements Serializable{
 	@Field
 	public String id;
 	
-	/** 增长ID */
-	@Field
-	private long growthId = 0;
+	/** 图标*/
+	public String icon;
+	
+	/** 创建人*/
+	public String createBy;
+	
+	/** 字段集合*/
+	public SysTableField[] fields;
 	
 	/** 更新时间 */
 	@Field
 	private Date updateTime;
 
+	/** 增长ID */
+	@Field
+	private long growthId = 0;
+	
 	public String getId() {
 		return id;
 	}

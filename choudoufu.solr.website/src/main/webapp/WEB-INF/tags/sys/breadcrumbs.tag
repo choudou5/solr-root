@@ -11,7 +11,7 @@
 <!--breadcrumbs-->
   <div id="content-header">
     <div id="breadcrumb">
-    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a>
+    	<a href="${ctx }/console/page?path=/index" title="返回首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
     	<c:if test="${not empty secondLevelTitle}">
     		<a href="${empty secondLevelView ?'#':(requestSpace+'/'+secondLevelView)}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${secondLevelTitle }</a>
     	</c:if>
