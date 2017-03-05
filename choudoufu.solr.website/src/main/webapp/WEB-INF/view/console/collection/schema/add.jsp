@@ -29,7 +29,7 @@
       	<!-- begin 添加集合 -->
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-            <h5>添加集合</h5> 
+            <h5>添加集合</h5>
           </div>
           <div class="widget-content nopadding">
             <form id="form-wizard" class="form-horizontal" method="post">
