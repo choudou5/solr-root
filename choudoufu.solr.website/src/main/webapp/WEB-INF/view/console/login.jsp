@@ -63,7 +63,7 @@
 		<script src="${ctxStaticConsole }/js/bootstrap.min.js"></script>
 		<script src="${ctxStaticConsole }/js/jquery.validate.js"></script>
 		<script src="${ctxStatic }/js/lodash-4.17.4/lodash.min.js"></script>
-        <script src="${ctxStaticConsole }/js/matrix.login.js"></script>
+        <script src="${ctxStaticConsole }/js/modules/system.login.js"></script>
     </body>
 
 </html>

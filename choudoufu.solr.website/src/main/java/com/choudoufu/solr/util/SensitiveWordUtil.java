@@ -15,7 +15,7 @@ import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.CacheConsts;
 import com.choudoufu.solr.constants.SysConsts;
-import com.choudoufu.solr.model.plug.SensitiveWord;
+import com.choudoufu.solr.schema.entity.SensitiveWord;
 
 public class SensitiveWordUtil extends BaseLog{
 

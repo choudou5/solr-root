@@ -13,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.constants.SysConsts;
-import com.choudoufu.solr.model.SysUser;
+import com.choudoufu.solr.schema.entity.SysUser;
 import com.choudoufu.solr.util.SolrHelper;
 import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;

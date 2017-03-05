@@ -18,7 +18,7 @@
 <!--main-content-part-->
 <div id="content">
 
-<sys:breadcrumbs requestSpace="/console/" currLevel="1"/>
+<sys:breadcrumbs currLevel="1"/>
 
   <!--container begin-->
   <div class="container-fluid">
@@ -33,12 +33,8 @@
           <div class="widget-content">
             <ul class="quick-actions">
               <li class="bg_lb"> <a href="#"> <i class="icon-book"></i>电子书</a> </li>
-              <li class="bg_lg"> <a href="#"> <i class="icon-tasks"></i> icon-cabinet</a> </li>
-              <li class="bg_ly"> <a href="#"> <i class="icon-calendar"></i> icon-calendar </a> </li>
-              <li class="bg_lo"> <a href="#"> <i class="icon-user"></i> icon-client</a> </li>
-              <li class="bg_lb"> <a href="#"> <i class="icon-envelope-alt"></i>icon-mail </a> </li>
-              <li class="bg_lg"> <a href="#"> <i class="icon-folder-open"></i>icon-folder-open </a> </li>
-              <li class="bg_lg"> <a href="#"> <i class="icon-plus-sign"></i>新建</a> </li>
+              <li class="bg_lo"> <a href="#"> <i class="icon-user"></i> 用户</a> </li>
+              <li class="bg_lg"> <a href="${ctx }/console/page?path=collection/schema/add"> <i class="icon-plus-sign"></i>立即新建</a> </li>
             </ul>
           </div>
         </div>
@@ -168,7 +164,6 @@ $(function () {
 });
 </script> 
 <!--Turning-series-chart-js-->
-<%-- <script src="${ctxStaticConsole }/js/matrix.dashboard.js"></script> --%>
 
 <script type="text/javascript">
   function goPage (newURL) {
