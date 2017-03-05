@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.CacheConsts;
-import com.choudoufu.solr.model.SysTable;
+import com.choudoufu.solr.schema.entity.SysTable;
 
 
 public class IdGrowthUtil {

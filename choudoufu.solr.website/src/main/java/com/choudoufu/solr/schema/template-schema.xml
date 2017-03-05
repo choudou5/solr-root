@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="#modelName" version="1.5">
+
+   <!-- solr必要字段 -->
+   <field name="_version_" type="long" indexed="true" stored="true"/>
+   <field name="_root_" type="string" indexed="true" stored="false"/>
+
+   <!-- 自定义字段 -->
+   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   
+   #fieldArray
+   
+   <field name="text" type="word_ik" indexed="true" stored="false" multiValued="true"/>
+
+   <uniqueKey>id</uniqueKey>
+
+   <defaultSearchField>text</defaultSearchField>
+
+   <!-- 字段复值值 -->
+    #copyField
+    
+   <!-- <copyField source="title" dest="text"/> -->
+
+	<!-- *************************begin 数据类型****************************** -->
+   	<!-- 基本数据类型-->
+    <fieldType name="text" class="solr.TextField" sortMissingLast="true" />
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+    <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+    <fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+    
+    <!-- 基本数据类型  扩展（单词查找树结构） -->
+    <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" positionIncrementGap="0"/>
+    <fieldType name="tdate" class="solr.TrieDateField" precisionStep="6" positionIncrementGap="0"/>
+
+    <fieldtype name="binary" class="solr.BinaryField"/>
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+    
+    <!-- 分词效果示意图：https://www.processon.com/view/5743f8ede4b0cb954afb934b  -->
+	<!-- ik分词器类型 (根据词库来分词)-->
+	<fieldType name="word_ik" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory" useSmart="false"/>
+          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory" useSmart="true"/>
+          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+   <!-- 地区分词类型 -->
+   <fieldType name="word_city" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.AddressTokenizerFactory" code="city"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.AddressTokenizerFactory" code="city"/>
+      </analyzer>
+    </fieldType>
+
+	<!-- 分隔符分词类型 -->
+    <fieldType name="word_split_dot" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.SeparatorTokenizerFactory" separator="." sqlGroupSymbol="," />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.SeparatorTokenizerFactory" separator="." sqlGroupSymbol=","/>
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- 拼音分词类型 -->
+    <fieldType name="word_pinyin" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.PinyinTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.PinyinTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- 正向连续分词类型 -->
+    <fieldType name="word_continuous_split" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.ContinuousTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.ContinuousTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- 最小切割分词类型 -->
+    <fieldType name="word_min_split" class="solr.TextField">
+      <analyzer type="index">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.MinSplitTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+          <tokenizer class="com.choudoufu.solr.analyzer.factory.MinSplitTokenizerFactory" />
+          <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    
+    <!-- *************************end 数据类型****************************** -->
+</schema>

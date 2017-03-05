@@ -17,6 +17,8 @@ import org.apache.solr.client.solrj.beans.DocumentObjectBinder;
 import org.apache.solr.client.solrj.request.UpdateRequest;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.apache.solr.common.SolrException;
+import org.apache.solr.common.SolrException.ErrorCode;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.UpdateParams;
 import org.apache.solr.common.util.ContentStream;
@@ -74,6 +76,25 @@ public class SolrJUtil {
 		return getSolrQuery(null, true);
 	}
 	
+	
+	/**
+	 * 删除 模型数据
+	 * @param delQuery 删除语句
+	 * @param core
+	 */
+	public static <T extends Serializable> void delModelData(String delQuery, SolrCore core){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+		SolrQuery params = getSolrQuery(true);
+		params.add("stream.body", "<delete><query>"+delQuery+"</query></delete>");
+		//&stream.contentType=text/xml;charset=utf-8&commit=true
+	    try {
+	    	ArrayList<ContentStream> streams = new ArrayList<>(1);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
+		} catch (Exception e) {
+			throw new SolrException(ErrorCode.BAD_REQUEST, "delModelData fail", e);
+		}
+	}
+	
 	/**
 	 * 添加 模型数据
 	 * @param bean
@@ -86,7 +107,7 @@ public class SolrJUtil {
 	    	Collection<ContentStream> streams = getContentStreams(bean);
 	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SolrException(ErrorCode.BAD_REQUEST, "addModelData fail", e);
 		}
 	}
 	
@@ -96,6 +117,22 @@ public class SolrJUtil {
 	 * @param core
 	 */
 	public static <T extends Serializable> void addModelDatas(List<T> beans, SolrCore core){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+		SolrQuery params = getSolrQuery(true);
+	    try {
+	    	Collection<ContentStream> streams = getContentStreams(beans);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
+		} catch (Exception e) {
+			throw new SolrException(ErrorCode.BAD_REQUEST, "addModelDatas fail", e);
+		}
+	}
+	
+	/**
+	 * 添加 模型数据集合
+	 * @param beans
+	 * @param core
+	 */
+	public static <T extends Serializable> void addModelDatas(T[] beans, SolrCore core){
 		SolrQueryResponse solrResp = new SolrQueryResponse();
 		SolrQuery params = getSolrQuery(true);
 	    try {
@@ -124,7 +161,7 @@ public class SolrJUtil {
 				return binder.getBean(clasz, doc);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SolrException(ErrorCode.BAD_REQUEST, "getModelData fail", e);
 		}
 	    return null;
 	}
@@ -150,7 +187,7 @@ public class SolrJUtil {
 				return (List<T>) binder.getBeans(clasz, docList);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new SolrException(ErrorCode.BAD_REQUEST, "listModelData fail", e);
 		}
 	    return null;
 	}
@@ -274,10 +311,16 @@ public class SolrJUtil {
 		DocumentObjectBinder binder = new DocumentObjectBinder();
 	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
 	    docs.add(binder.toSolrInputDocument(bean));
-	    UpdateRequest req = new UpdateRequest();
-	    req.add(docs);
-	    req.setCommitWithin(-1);
-	    return req.getContentStreams();
+	    return getContentStreams(docs);
+	}
+	
+	private static <T extends Serializable> Collection<ContentStream> getContentStreams(T[] beans) throws SolrServerException, IOException {
+		DocumentObjectBinder binder = new DocumentObjectBinder();
+	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
+	    for (T bean : beans) {
+	        docs.add(binder.toSolrInputDocument(bean));
+	    }
+	    return getContentStreams(docs);
 	}
 	
 	private static <T extends Serializable> Collection<ContentStream> getContentStreams(List<T> beans) throws SolrServerException, IOException {
@@ -286,11 +329,17 @@ public class SolrJUtil {
 	    for (T bean : beans) {
 	        docs.add(binder.toSolrInputDocument(bean));
 	    }
+	    return getContentStreams(docs);
+	}
+	
+	
+	private static <T extends Serializable> Collection<ContentStream> getContentStreams(ArrayList<SolrInputDocument> docs) throws SolrServerException, IOException {
 	    UpdateRequest req = new UpdateRequest();
 	    req.add(docs);
 	    req.setCommitWithin(-1);
 	    return req.getContentStreams();
 	}
+
 	
 	@SuppressWarnings("unused")
 	private static Collection<ContentStream> getContentStreams(Collection<?> beans) throws SolrServerException, IOException {

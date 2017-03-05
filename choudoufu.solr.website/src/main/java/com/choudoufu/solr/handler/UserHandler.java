@@ -22,7 +22,7 @@ import com.choudoufu.solr.common.params.CustomParams.CustomAction;
 import com.choudoufu.solr.common.util.SignUtil;
 import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.core.request.CustomRequestHandlerBase;
-import com.choudoufu.solr.model.SysUser;
+import com.choudoufu.solr.schema.entity.SysUser;
 import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;
 import com.choudoufu.solr.util.ViewUtil;
