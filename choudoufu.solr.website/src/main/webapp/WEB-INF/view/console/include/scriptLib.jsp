@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 
 
-<script src="${ctxStaticConsole }/js/jquery.min.js"></script> 
+<script src="${ctxStaticConsole }/js/jquery.min.js"></script>
+<script src="${ctxStaticConsole }/js/jquery.ui.custom.js"></script>
 <script src="${ctxStaticConsole }/js/bootstrap.min.js"></script> 
 <script src="${ctxStaticConsole }/js/jquery.flot.min.js"></script>
 <%-- <script src="${ctxStaticConsole }/js/jquery.flot.pie.min.js"></script>  --%>
@@ -29,7 +30,7 @@
 <%-- 
 <script src="${ctxStaticConsole }/js/excanvas.min.js"></script>
 <script src="${ctxStaticConsole }/js/jquery.min.js"></script>
-<script src="${ctxStaticConsole }/js/jquery.ui.custom.js"></script> 
+<script src="${ctxStaticConsole }/js/jquery.ui.custom.js"></script>
 <script src="${ctxStaticConsole }/js/bootstrap.min.js"></script> 
 <script src="${ctxStaticConsole }/js/jquery.flot.min.js"></script>
 <script src="${ctxStaticConsole }/js/jquery.flot.resize.min.js"></script> 

@@ -12,7 +12,7 @@
    <link rel="stylesheet" href="${ctxStaticConsole }/css/bootstrap-responsive.min.css" />
    <link rel="stylesheet" href="${ctxStaticConsole }/font-awesome/css/font-awesome.css" />
    <link rel='stylesheet' href='${ctxStaticConsole }/css/fonts.googleapis.com.css' type='text/css'>
-   <link rel="stylesheet" href="${ctxStaticConsole }/css/matrix-login.css" />
+   <link rel="stylesheet" href="${ctxStaticConsole }/css/system-login.css" />
         
 </head>
     <body>
@@ -26,21 +26,21 @@
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input type="text" name="username" placeholder="Username" id="required"/>
+                            <span class="add-on bg_lg"><i class="icon-user"> </i></span><input value="admin" type="text" name="username" placeholder="账号" id="required"/>
                         </div>
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
-                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input type="password" name="password" placeholder="Password" />
+                            <span class="add-on bg_ly"><i class="icon-lock"></i></span><input value="adminadmin" type="password" name="password" placeholder="密码" />
                         </div>
                     </div>
                 </div>
                 <div class="form-actions">
                     <!-- <span class="pull-left"><a href="#" class="flip-link btn btn-info" id="to-recover">Lost password?</a></span> -->
                     <span class="pull-left"><a href="${ctx }/console/login/visitor" class="flip-link btn btn-info">我是游客</a></span>
-                    <span class="pull-right"><input type="submit" class="btn btn-success" value="Login" /></span>
+                    <span class="pull-right"><input type="submit" class="btn btn-success" value=" 登 录 " /></span>
                 </div>
             </form>
             <form id="recoverform" action="#" class="form-vertical">
@@ -63,7 +63,14 @@
 		<script src="${ctxStaticConsole }/js/bootstrap.min.js"></script>
 		<script src="${ctxStaticConsole }/js/jquery.validate.js"></script>
 		<script src="${ctxStatic }/js/lodash-4.17.4/lodash.min.js"></script>
-        <script src="${ctxStaticConsole }/js/modules/system.login.js"></script>
+        <script src="${ctxStaticConsole }/js/modules/system-login.js"></script>
+        <script type="text/javascript">
+			var message='${message}';
+			console.log("message:"+message);
+			if(!_.isEmpty(message)){
+				$("#messageAlert").show().find("h4").text(message);
+			}
+		</script>
     </body>
 
 </html>

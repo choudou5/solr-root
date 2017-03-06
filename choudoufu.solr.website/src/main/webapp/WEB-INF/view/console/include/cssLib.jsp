@@ -11,5 +11,6 @@
 <link rel="stylesheet" href="${ctxStaticConsole }/css/matrix-style.css" />
 <link rel="stylesheet" href="${ctxStaticConsole }/css/matrix-media.css" />
 <link rel="stylesheet" href="${ctxStaticConsole }/css/jquery.gritter.css" />
+<link rel="stylesheet" href="${ctxStaticConsole }/css/custom.css" />
 
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
