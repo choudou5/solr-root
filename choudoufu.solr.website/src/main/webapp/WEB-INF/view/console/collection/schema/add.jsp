@@ -85,57 +85,64 @@
 		            <span class="label label-none"><a href="javascript:void(0);">配置说明</a></span> 
 		          </div>
 		          <div class="widget-content nopadding">
-		            <table class="table table-bordered table-striped">
+		            <c:set var="fieldTypes" value="${fns:getFieldTypeMap()}" />
+		            <table id="fieldTable" class="table table-bordered table-striped">
 		              <thead>
 		              	<%@include file="/WEB-INF/view/console/collection/schema/table-thead.jsp" %>
 		              </thead>
 		              <tbody>
-		                <tr>
+		                <tr id="templateTr">
 		                  <td>1</td>
 		                  <td>
-							<input type="text" name="title" placeholder="字母 或 下划线 组成" maxlength="10"/>
+							<input id="name" type="text" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10"/>
 						  </td>
 						  <td>
-							<input type="text" name="title" placeholder="简单描述" maxlength="10"/>
+							<input id="label" type="text" name="fields[0].label" placeholder="简单描述" maxlength="10"/>
 						  </td>
 						  <td>
-							<select>
-			                  <option>text</option>
-			                  <option>string</option>
+							<select id="type" name="fields[0].type">
+							  <c:forEach var="fieldType" items="${fieldTypes }">
+							  	<option value="${fieldType.key }">${fieldType.value }</option>
+							  </c:forEach>
 			                </select>
 						  </td>
 		                  <td>
-		                  	<input id="indexed" type="checkbox" name="" value="true"/>
+		                  	<input id="indexed" type="checkbox" name="fields[0].indexed" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="stored" type="checkbox" name="" value="true"/>
+		                  	<input id="stored" type="checkbox" name="fields[0].stored" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="required" type="checkbox" name="" value="true"/>
+		                  	<input id="required" type="checkbox" name="fields[0].required" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="multiValued" type="checkbox" name="" value="true"/>
+		                  	<input id="multiValued" type="checkbox" name="fields[0].multiValued" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="isListShow" type="checkbox" name="" value="true"/>
+		                  	<input id="isListShow" type="checkbox" name="fields[0].isListShow" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="isListSearch" type="checkbox" name="" value="true"/>
+		                  	<input id="isListSearch" type="checkbox" name="fields[0].isListSearch" value="true"/>
 						  </td>
 		                  <td>
-		                	<input id="isListShow" type="radio" name="primaryKey" value="true"/>&nbsp;
+		                	<input id="isListShow" type="radio" name="fields[0].isListShow" value="true"/>&nbsp;
                   		  </td>
                   		  <td>
-		                	<a href="javascript:void(0);">删除</a>
+		                	<a href="javascript:removeFieldRow(this);">删除</a>
                   		  </td>
 		                </tr>
-		                <tr>
+		                <tr id="addFieldBtns">
 		                	<td colspan="12" style="text-align: center;">
-		                		<a href="javascript:void(0);">马上添加</a>
+		                		<a href="javascript:addFieldRow();">马上添加</a>
 		                	</td>
 		                </tr>
 		              </tbody>
 		            </table>
+		            <select id="tplFieldType" class="hide">
+					  <c:forEach var="fieldType" items="${fieldTypes }">
+					  	<option value="${fieldType.key }">${fieldType.value }</option>
+					  </c:forEach>
+	                </select>
 		          </div>
 		        </div>
                 
@@ -166,7 +173,38 @@
 <script src="${ctxStaticConsole }/js/modules/schema-add.js"></script>
 
 <script type="text/javascript">
-
+	function addFieldRow(){
+		var newIndex = $("#fieldTable tbody tr").length-1;
+		
+		var tpl = new StringBuffer();
+		tpl.append('<tr>');
+		tpl.append('<td>'+(newIndex+1)+'</td>');
+		tpl.append('<td><input id="name" type="text" name="fields['+newIndex+'].name" placeholder="字母 或 下划线 组成" maxlength="10"/></td>');
+		tpl.append('<td><input id="label" type="text" name="fields['+newIndex+'].label" placeholder="简单描述" maxlength="10"/></td>');
+		
+		var fieldTypeTpl = $("#tplFieldType").clone();
+		tpl.append('<td><select id="type" name="fields['+newIndex+'].stored">'+fieldTypeTpl.html()+'</select></td>');
+		tpl.append('<td><input id="indexed" type="checkbox" name="fields['+newIndex+'].indexed" value="true"/></td>');
+		tpl.append('<td><input id="stored" type="checkbox" name="fields['+newIndex+'].stored" value="true"/></td>');
+		tpl.append('<td><input id="required" type="checkbox" name="fields['+newIndex+'].required" value="true"/></td>');
+		tpl.append('<td><input id="multiValued" type="checkbox" name="fields['+newIndex+'].multiValued" value="true"/></td>');
+		tpl.append('<td><input id="isListShow" type="checkbox" name="fields['+newIndex+'].isListShow" value="true"/></td>');
+		tpl.append('<td><input id="isListSearch" type="checkbox" name="fields['+newIndex+'].isListSearch" value="true"/></td>');
+		tpl.append('<td><input id="isListShow" type="checkbox" name="fields['+newIndex+'].isListShow" value="true"/></td>');
+		tpl.append('<td><a href="javascript:removeFieldRow(this);">删除</a></td> ');
+		tpl.append('</tr>');
+		$("#addFieldBtns").before(tpl.toString());
+		
+		$("#fieldTable tbody tr:eq("+newIndex+") td select").select2();
+		
+		//fieldTypeTpl.select2();
+	}
+	
+	
+	function removeFieldRow(thi){
+		
+		$(thi).closest("tr").remove();
+	}
 </script>
 </body>
 </html>

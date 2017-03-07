@@ -52,7 +52,7 @@ public class SchemaController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value={"/save"} ,method=RequestMethod.POST)  
-    public String save(SysTable table, SysTableField[] fields,
+    public String save(SysTable table,
     		HttpServletRequest req, HttpServletResponse resp, RedirectAttributes attributes){  
 		//数据 验证
 		if (!beanValidator(attributes, table)){
@@ -60,7 +60,7 @@ public class SchemaController extends BaseController{
 		}
 		
 		try {
-			SchemaService.save(req, table, fields);
+			SchemaService.save(req, table);
 		} catch (SolrException e) {
 			return redirect(PAGE_ADD, attributes, e.getMessage());
 		}

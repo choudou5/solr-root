@@ -13,6 +13,7 @@
 <script src="${ctxStaticConsole }/js/jquery.peity.min.js"></script> 
 
 <script src="${ctxStaticConsole }/js/fullcalendar.min.js"></script>
+<script src="${ctxStaticConsole }/js/custom.js"></script>
 
 <%-- 
 

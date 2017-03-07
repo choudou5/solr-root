@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 	
-	$('input[type=checkbox],input[type=radio],input[type=file]').uniform();
+	/*$('input[type=checkbox],input[type=radio],input[type=file]').uniform();*/
 	
 	$("#form-wizard").formwizard({ 
 		formPluginEnabled: true,

@@ -25,25 +25,29 @@ public class SysTable implements Serializable{
 	@Length(min=1, max=30, message="表名长度必须介于 4 和 30 之间")
 	@Pattern(regexp="^\\w{4,30}$", message="表名由 字母、下划线、或数字组")
 	@Field
-	public String id;
+	private String id;
 	
 	/** 标题*/
 	@NotNull(message="标题不能为空")
 	@Field
-	public String title;
+	private String title;
 	
 	/** 描述*/
 	@NotNull(message="描述不能为空")
 	@Field
-	public String explain;
+	private String explain;
 	
 	/** 图标*/
 	@Field
-	public String icon;
+	private String icon;
+	
+	/** 字段*/
+	@NotNull(message="字段不能为空")
+	private SysTableField[] fields;
 	
 	/** 创建人*/
 	@Field
-	public String createBy;
+	private String createBy;
 	
 	/** 创建时间 */
 	@Field
@@ -51,7 +55,7 @@ public class SysTable implements Serializable{
 	
 	/** 更新人*/
 	@Field
-	public String updateBy;
+	private String updateBy;
 	
 	/** 更新时间 */
 	@Field
@@ -91,6 +95,14 @@ public class SysTable implements Serializable{
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+	
+	public SysTableField[] getFields() {
+		return fields;
+	}
+
+	public void setFields(SysTableField[] fields) {
+		this.fields = fields;
 	}
 
 	public String getCreateBy() {

@@ -39,6 +39,14 @@
     <example>${fns:unescapeHtml(html)}</example>  
   </function>
   
+    <function>
+    <description>字段类型</description>
+    <name>getFieldTypeMap</name>
+    <function-class>com.choudoufu.solr.schema.FieldTypeEnum</function-class>
+    <function-signature>java.util.LinkedHashMap getFieldTypeMap()</function-signature>
+    <example>${fns:getFieldTypeMap()}</example>  
+  </function>
+  
   <!-- StringUtils -->
   <function>
     <description>URL编码</description>

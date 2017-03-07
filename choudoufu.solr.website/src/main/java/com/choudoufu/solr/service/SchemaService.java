@@ -43,11 +43,11 @@ public class SchemaService {
 	 * @param table
 	 * @param fields
 	 */
-	public static void save(HttpServletRequest req, SysTable table, SysTableField[] fields){
+	public static void save(HttpServletRequest req, SysTable table){
 		//保存 表信息
 		saveTable(req, table);
 		//保存 表字段
-		saveTableFields(req, table.getId(), fields);
+		saveTableFields(req, table.getId(), table.getFields());
 	}
 	
 	/**
