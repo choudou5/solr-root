@@ -16,11 +16,9 @@
         
 </head>
     <body>
-        <div id="loginbox">	
-        	<div id="messageAlert" class="alert alert-error alert-block hide">
-        	  <a class="close" data-dismiss="alert" href="#">×</a>
-              <h4 class="alert-heading text-center"></h4>
-            </div>
+        <div id="loginbox">
+        	<!-- 消息提示 -->
+        	<sys:message content="${message }"/>
             <form id="loginform" class="form-vertical" action="${ctx }/console/login" method="post" enctype="multipart/form-data">
 				<div class="control-group normal_text"> <h3><img src="${ctxStatic }/images/logo.png" alt="Logo" /></h3></div>
                 <div class="control-group">
@@ -37,6 +35,19 @@
                         </div>
                     </div>
                 </div>
+                【${isValidateCodeLogin}】
+                <%--需要验证码登录 --%>
+                <c:if test="${isValidateCodeLogin}">
+	                <div class="control-group">
+	                    <div class="controls">
+	                        <div class="main_input_box" style="text-align: left; padding-left: 12px;">
+	                            <span class="add-on bg_ly"><i class="icon-lock"></i></span>
+	                            <sys:validateCode name="validateCode" inputCssStyle="margin-bottom:0;"/>
+	                        </div>
+	                    </div>
+	                </div>
+                </c:if>
+                
                 <div class="form-actions">
                     <!-- <span class="pull-left"><a href="#" class="flip-link btn btn-info" id="to-recover">Lost password?</a></span> -->
                     <span class="pull-left"><a href="${ctx }/console/login/visitor" class="flip-link btn btn-info">我是游客</a></span>
@@ -64,13 +75,6 @@
 		<script src="${ctxStaticConsole }/js/jquery.validate.js"></script>
 		<script src="${ctxStatic }/js/lodash-4.17.4/lodash.min.js"></script>
         <script src="${ctxStaticConsole }/js/modules/system-login.js"></script>
-        <script type="text/javascript">
-			var message='${message}';
-			console.log("message:"+message);
-			if(!_.isEmpty(message)){
-				$("#messageAlert").show().find("h4").text(message);
-			}
-		</script>
     </body>
 
 </html>
