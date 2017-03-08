@@ -43,6 +43,16 @@
 		<filter-name>CustomFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- Validate code -->
+	<servlet>
+		<servlet-name>ValidateCodeServlet</servlet-name>
+		<servlet-class>com.choudoufu.solr.web.servlet.ValidateCodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ValidateCodeServlet</servlet-name>
+		<url-pattern>/servlet/validateCodeServlet</url-pattern>
+	</servlet-mapping>
 
 	<!-- solr 分发器 -->
 	<!-- <filter> <filter-name>SolrRequestFilter</filter-name> <filter-class>org.apache.solr.servlet.SolrDispatchFilter</filter-class> 
