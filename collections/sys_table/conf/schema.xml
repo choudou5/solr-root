@@ -14,7 +14,8 @@
    <field name="createTime" type="tdate" indexed="true" stored="true" />
    <field name="updateBy" type="string" indexed="true" stored="true"/>
    <field name="updateTime" type="tdate" indexed="true" stored="true" />
-   <field name="growthId" type="long" indexed="true" stored="true" />
+   <field name="growthId" type="long" indexed="false" stored="true" />
+   <field name="primaryNo" type="int" indexed="false" stored="true" />
    
    <field name="text" type="word_min_split" indexed="true" stored="false" multiValued="true"/>
 
