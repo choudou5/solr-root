@@ -150,7 +150,7 @@ public class CustomFilter extends SolrDispatchFilter{
 	//是否为 solr静态文件
 	private boolean isSolrStaticFile(String path){
 		return (path.startsWith("/css") || path.startsWith("/img") 
-				|| path.startsWith("/js"));
+				|| path.startsWith("/js") || path.startsWith("/servlet/validateCodeServlet"));
 	}
 	
 	private boolean isUserRequestCollection(String[] array){
