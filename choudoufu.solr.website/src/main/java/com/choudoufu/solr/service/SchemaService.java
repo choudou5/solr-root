@@ -9,11 +9,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.SysConsts;
+import com.choudoufu.solr.constants.UserTypeEnum;
 import com.choudoufu.solr.schema.entity.SysTable;
 import com.choudoufu.solr.schema.entity.SysTableField;
+import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrHelper;
 import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.util.UserUtil;
+import com.choudoufu.sys.entity.User;
 
 public class SchemaService {
 
@@ -57,16 +60,22 @@ public class SchemaService {
 	 */
 	public static void saveTable(HttpServletRequest req, SysTable table){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE);
-		SysTable oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+table.getId()), core, SysTable.class);
+		String tableName = table.getId();
+		User user = UserUtil.getSessionUser(req);
+		if(user.getUserType() == UserTypeEnum.TEMP.getValue()){
+			tableName = user.getLoginName()+table.getId();
+		}
+		SysTable oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+tableName), core, SysTable.class);
 		if(oldTbl != null){//修改
 			oldTbl.setTitle(table.getTitle());
 			oldTbl.setExplain(table.getExplain());
 			oldTbl.setIcon(table.getIcon());
-			oldTbl.setUpdateBy(UserUtil.getSessionUser(req).getLoginName());
+			oldTbl.setUpdateBy(user.getLoginName());
 			oldTbl.setUpdateTime(new Date());
 			SolrJUtil.addModelData(oldTbl, core);
 		}else{//新增
-			table.setCreateBy(UserUtil.getSessionUser(req).getLoginName());
+			table.setId(tableName);
+			table.setCreateBy(user.getLoginName());
 			table.setUpdateTime(new Date());
 			table.setGrowthId(1L);
 			SolrJUtil.addModelData(table, core);
@@ -85,6 +94,15 @@ public class SchemaService {
 		if(CollectionUtils.isNotEmpty(tblFields)){
 			//删除旧数据
 			SolrJUtil.delModelData("table:"+tableName, core);
+		}
+		
+		//设置数据
+		int sortNo = 1;
+		for (SysTableField field : fields) {
+			field.setId(IdGrowthUtil.getIncrIdStr(SysConsts.MODULE_TABLE_FIELD));
+			field.setTable(tableName);
+			field.setSortNo(sortNo);
+			sortNo++;
 		}
 		SolrJUtil.addModelDatas(fields, core);
 	}

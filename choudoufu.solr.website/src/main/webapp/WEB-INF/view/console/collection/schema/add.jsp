@@ -8,7 +8,6 @@
 	<title>${fns:getSiteName()}-控制台</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<%@include file="/WEB-INF/view/console/include/cssLib.jsp" %>
-	<link rel="stylesheet" href="${ctxStaticConsole }/css/uniform.css" />
 	<link rel="stylesheet" href="${ctxStaticConsole }/css/select2.css" />
 	<style type="text/css">
 		.table tbody>tr td:nth-child(n+5){
@@ -44,18 +43,18 @@
             <h5>添加集合</h5>
           </div>
           <div class="widget-content nopadding">
-            <form id="form-wizard" class="form-horizontal" method="post">
+            <form id="addTableForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
               <div id="form-wizard-1" class="step">
                 <div class="control-group">
                   <label class="control-label">模块标识</label>
                   <div class="controls">
-                    <input type="text" name="id" placeholder="由 字母、下划线、或数字组成" maxlength="30"/>
+                    <input type="text" name="id" placeholder="由 字母、下划线、或数字组成" maxlength="30" value="test"/>
                   </div>
                 </div>
                 <div class="control-group">
                   <label class="control-label">模块名称</label>
                   <div class="controls">
-                    <input type="text" name="title" class="span3" placeholder="请输入模块名称" maxlength="10"/>
+                    <input type="text" name="title" class="span3" placeholder="请输入模块名称" maxlength="10" value="test..."/>
                   </div>
                 </div>
                 <div class="control-group">
@@ -78,7 +77,6 @@
               </div>
               <div id="form-wizard-2" class="step">
               
-              
                 <div class="widget-box">
 		          <div class="widget-title"> <span class="icon"> <i class="icon-cogs"></i> </span>
 		            <h5>定义结构</h5>
@@ -94,41 +92,41 @@
 		                <tr id="templateTr">
 		                  <td>1</td>
 		                  <td>
-							<input id="name" type="text" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10"/>
+							<input class="required isVariable" type="text" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10"/>
 						  </td>
 						  <td>
-							<input id="label" type="text" name="fields[0].label" placeholder="简单描述" maxlength="10"/>
+							<input class="required" type="text" name="fields[0].label" placeholder="简单描述" minlength="2" maxlength="10"/>
 						  </td>
 						  <td>
-							<select id="type" name="fields[0].type">
+							<select id="selectType" name="fields[0].type">
 							  <c:forEach var="fieldType" items="${fieldTypes }">
 							  	<option value="${fieldType.key }">${fieldType.value }</option>
 							  </c:forEach>
 			                </select>
 						  </td>
 		                  <td>
-		                  	<input id="indexed" type="checkbox" name="fields[0].indexed" value="true"/>
+		                  	<input type="checkbox" name="fields[0].indexed" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="stored" type="checkbox" name="fields[0].stored" value="true"/>
+		                  	<input type="checkbox" name="fields[0].stored" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="required" type="checkbox" name="fields[0].required" value="true"/>
+		                  	<input type="checkbox" name="fields[0].required" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="multiValued" type="checkbox" name="fields[0].multiValued" value="true"/>
+		                  	<input type="checkbox" name="fields[0].multiValued" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="isListShow" type="checkbox" name="fields[0].isListShow" value="true"/>
+		                  	<input type="checkbox" name="fields[0].isListShow" value="true"/>
 						  </td>
 		                  <td>
-		                  	<input id="isListSearch" type="checkbox" name="fields[0].isListSearch" value="true"/>
+		                  	<input type="checkbox" name="fields[0].isListSearch" value="true"/>
 						  </td>
 		                  <td>
-		                	<input id="isListShow" type="radio" name="fields[0].isListShow" value="true"/>&nbsp;
+		                	<input type="radio" name="isPrimaryKey" value="0" class="required"/>&nbsp;
                   		  </td>
                   		  <td>
-		                	<a href="javascript:removeFieldRow(this);">删除</a>
+		                	<a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a>
                   		  </td>
 		                </tr>
 		                <tr id="addFieldBtns">
@@ -173,31 +171,34 @@
 <script src="${ctxStaticConsole }/js/modules/schema-add.js"></script>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+	    $("#addTableForm").validate();
+	});
+
 	function addFieldRow(){
 		var newIndex = $("#fieldTable tbody tr").length-1;
 		
 		var tpl = new StringBuffer();
 		tpl.append('<tr>');
 		tpl.append('<td>'+(newIndex+1)+'</td>');
-		tpl.append('<td><input id="name" type="text" name="fields['+newIndex+'].name" placeholder="字母 或 下划线 组成" maxlength="10"/></td>');
-		tpl.append('<td><input id="label" type="text" name="fields['+newIndex+'].label" placeholder="简单描述" maxlength="10"/></td>');
-		
+		tpl.append('<td><input class="required isVariable" type="text" name="fields['+newIndex+'].name" placeholder="字母 或 下划线 组成" maxlength="10"/></td>');
+		tpl.append('<td><input class="required" type="text" name="fields['+newIndex+'].label" placeholder="简单描述" minlength="2" maxlength="10"/></td>');
+			
 		var fieldTypeTpl = $("#tplFieldType").clone();
-		tpl.append('<td><select id="type" name="fields['+newIndex+'].stored">'+fieldTypeTpl.html()+'</select></td>');
-		tpl.append('<td><input id="indexed" type="checkbox" name="fields['+newIndex+'].indexed" value="true"/></td>');
-		tpl.append('<td><input id="stored" type="checkbox" name="fields['+newIndex+'].stored" value="true"/></td>');
-		tpl.append('<td><input id="required" type="checkbox" name="fields['+newIndex+'].required" value="true"/></td>');
-		tpl.append('<td><input id="multiValued" type="checkbox" name="fields['+newIndex+'].multiValued" value="true"/></td>');
-		tpl.append('<td><input id="isListShow" type="checkbox" name="fields['+newIndex+'].isListShow" value="true"/></td>');
-		tpl.append('<td><input id="isListSearch" type="checkbox" name="fields['+newIndex+'].isListSearch" value="true"/></td>');
-		tpl.append('<td><input id="isListShow" type="checkbox" name="fields['+newIndex+'].isListShow" value="true"/></td>');
-		tpl.append('<td><a href="javascript:removeFieldRow(this);">删除</a></td> ');
+		tpl.append('<td><select name="fields['+newIndex+'].type">'+fieldTypeTpl.html()+'</select></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].indexed" value="true"/></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].stored" value="true"/></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].required" value="true"/></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].multiValued" value="true"/></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].isListShow" value="true"/></td>');
+		tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].isListSearch" value="true"/></td>');
+		tpl.append('<td><input type="radio" name="isPrimaryKey" value="'+newIndex+'"/></td>');
+		tpl.append('<td><a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a></td> ');
 		tpl.append('</tr>');
 		$("#addFieldBtns").before(tpl.toString());
 		
 		$("#fieldTable tbody tr:eq("+newIndex+") td select").select2();
-		
-		//fieldTypeTpl.select2();
 	}
 	
 	
@@ -205,6 +206,7 @@
 		
 		$(thi).closest("tr").remove();
 	}
+	
 </script>
 </body>
 </html>

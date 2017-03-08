@@ -36,19 +36,19 @@ public class SysTableField implements Serializable{
 	
 	/** 是否被索引*/
 	@Field
-	public Boolean indexed;
+	public Boolean indexed = false;
 	
 	/** 是否被存储*/
 	@Field
-	public Boolean stored;
+	public Boolean stored = false;
 	
 	/** 是否必填*/
 	@Field
-	public Boolean required;
+	public Boolean required = false;
 	
 	/** 是否有多个值*/
 	@Field
-	public Boolean multiValued;
+	public Boolean multiValued = false;
 	
 	/** 是否使用gzip压缩（只有TextField和StrField可以压缩）*/
 	@Field
@@ -56,11 +56,11 @@ public class SysTableField implements Serializable{
 	
 	/** 是否列表展示*/
 	@Field
-	public Boolean isListShow;
+	public Boolean isListShow = false;
 	
 	/** 是否列表搜索*/
 	@Field
-	public Boolean isListSearch;
+	public Boolean isListSearch = false;
 	
 	/** 排序号*/
 	@Field

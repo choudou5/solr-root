@@ -22,7 +22,7 @@ public class SysTable implements Serializable{
 	
 	/** id: 主键（表名） */
 	@NotNull(message="表名不能为空")
-	@Length(min=1, max=30, message="表名长度必须介于 4 和 30 之间")
+	@Length(min=4, max=30, message="表名长度必须介于 4 和 30 之间")
 	@Pattern(regexp="^\\w{4,30}$", message="表名由 字母、下划线、或数字组")
 	@Field
 	private String id;
@@ -64,6 +64,10 @@ public class SysTable implements Serializable{
 	/** 增长ID */
 	@Field
 	private long growthId = 0;
+	
+	/** 主键序号*/
+	@Field
+	public Integer primaryNo = 0;
 	
 	public String getId() {
 		return id;
@@ -143,6 +147,14 @@ public class SysTable implements Serializable{
 
 	public void setGrowthId(long growthId) {
 		this.growthId = growthId;
+	}
+	
+	public Integer getPrimaryNo() {
+		return primaryNo;
+	}
+
+	public void setPrimaryNo(Integer primaryNo) {
+		this.primaryNo = primaryNo;
 	}
 
 	@Override

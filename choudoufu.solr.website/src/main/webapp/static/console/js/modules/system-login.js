@@ -15,7 +15,12 @@ $(document).ready(function(){
 				minlength:6,
 				maxlength:20
 			},
+			validateCode: {remote: "/servlet/validateCodeServlet"}
 		},
+		messages: {
+			validateCode: {remote: "验证码不正确.", required: "请填写验证码."}
+		},
+//		errorLabelContainer: "#messageBox",
 		errorClass: "help-inline",
 		errorElement: "span",
 		highlight:function(element, errorClass, validClass) {

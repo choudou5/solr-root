@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choudoufu.solr.schema.entity.SysTable;
-import com.choudoufu.solr.schema.entity.SysTableField;
 import com.choudoufu.solr.service.SchemaService;
 import com.choudoufu.solr.web.modules.BaseController;
 
