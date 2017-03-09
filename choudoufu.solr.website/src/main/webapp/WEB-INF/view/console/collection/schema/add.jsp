@@ -10,14 +10,8 @@
 	<%@include file="/WEB-INF/view/console/include/cssLib.jsp" %>
 	<link rel="stylesheet" href="${ctxStaticConsole }/css/select2.css" />
 	<style type="text/css">
-		.table tbody>tr td:nth-child(n+5){
-			text-align: center;
-			width: 70px;
-		}
-		.table tbody>tr td:nth-child(1){
-			text-align: center;
-			width: 50px;
-		}
+		.table tbody>tr td:nth-child(n+5){text-align: center;width: 70px;}
+		.table tbody>tr td:nth-child(1){text-align: center;width: 50px;}
 	</style>
 </head>
 <body>
@@ -91,9 +85,7 @@
 		              <tbody>
 		                <tr id="templateTr">
 		                  <td>1</td>
-		                  <td>
-							<input class="required isVariable" type="text" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10"/>
-						  </td>
+		                  <td><input class="required isVariable" type="text" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10"/> </td>
 						  <td>
 							<input class="required" type="text" name="fields[0].label" placeholder="简单描述" minlength="2" maxlength="10"/>
 						  </td>
@@ -104,30 +96,20 @@
 							  </c:forEach>
 			                </select>
 						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].indexed" value="true"/>
+						  <td>
+						  	<div id="filterDiv">
+							  	<input type="hidden" name="fields[0].filters" value=""/>
+							  	<a title="" href="#chooseFilterModal" data-toggle="modal"><i class="icon icon-plus"></i></a>
+						  	</div>
 						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].stored" value="true"/>
-						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].required" value="true"/>
-						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].multiValued" value="true"/>
-						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].isListShow" value="true"/>
-						  </td>
-		                  <td>
-		                  	<input type="checkbox" name="fields[0].isListSearch" value="true"/>
-						  </td>
-		                  <td>
-		                	<input type="radio" name="isPrimaryKey" value="0" class="required"/>&nbsp;
-                  		  </td>
-                  		  <td>
-		                	<a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a>
-                  		  </td>
+		                  <td><input type="checkbox" name="fields[0].indexed" value="true"/></td>
+		                  <td><input type="checkbox" name="fields[0].stored" value="true"/></td>
+		                  <td><input type="checkbox" name="fields[0].required" value="true"/></td>
+		                  <td><input type="checkbox" name="fields[0].multiValued" value="true"/></td>
+		                  <td><input type="checkbox" name="fields[0].isListShow" value="true"/></td>
+		                  <td><input type="checkbox" name="fields[0].isListSearch" value="true"/></td>
+		                  <td><input type="radio" name="isPrimaryKey" value="0" class="required"/></td>
+                  		  <td><a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a></td>
 		                </tr>
 		                <tr id="addFieldBtns">
 		                	<td colspan="12" style="text-align: center;">
@@ -163,6 +145,27 @@
   </div><!--end-container-->
   
 </div><!--end-main-content-part-->
+
+
+<div id="chooseFilterModal" class="modal hide">
+  <div class="modal-header">
+    <button data-dismiss="modal" class="close" type="button">×</button>
+    <h3>添加过滤器</h3>
+  </div>
+  <div class="modal-body">
+    <p><input type="checkbox" name="filter" value="true"/>HTML过滤器</p>
+    <p><input type="checkbox" name="filter" value="lowerCase"/>小写转换过滤器</p>
+    <p><input type="checkbox" name="filter" value="stop"/>停词过滤器</p>
+    <p><input type="checkbox" name="filter" value="synonym"/>同义词过滤器</p>
+    <p><input type="checkbox" name="filter" value="englishPossessive"/>EnglishPossessive过滤器</p>
+    <p><input type="checkbox" name="filter" value="removeDuplicatesToken"/>RemoveDuplicatesToken过滤器</p>
+    <p><input type="checkbox" name="filter" value="trim"/>空格过滤器</p>
+  </div> 
+  <div class="modal-footer">
+	  <a class="btn btn-primary" href="javascript:void(0);">确定</a>
+	  <a data-dismiss="modal" class="btn" href="#">取消</a> 
+  </div>
+</div>
 
 <%@include file="/WEB-INF/view/console/include/footer.jsp" %>
 

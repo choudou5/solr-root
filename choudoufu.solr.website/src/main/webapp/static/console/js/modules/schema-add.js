@@ -22,7 +22,7 @@ $(document).ready(function(){
 		},
 		validationOptions : {
 			rules: {
-				id: {required: true, rangelength: [4,30], isVariable: true},
+				id: {required: true, rangelength: [4, 30], isVariable: true},
 				title: "required",
 			},
 			errorClass: "help-inline",
@@ -43,7 +43,11 @@ $(document).ready(function(){
      });
 	// 变量验证   
 	jQuery.validator.addMethod("isVariable", function(value, element) {   
-	    var expr = /^[A-Za-z0-9_]{2,20}$/;
+	    var expr = /^\d+[a-zA-Z_]\d*$|^[a-zA-Z_][\w_]*$/;
+	    
+	    //^[A-Za-z0-9_]{2,20}$
+	    // /^\d+[a-zA-Z_]\d*$|^[a-zA-Z_][\w_]*$/
+	    // 英文字母、数字、下划线组成，非纯数字，不超过30个字符；命名后不可更改 
 	    return this.optional(element) || (expr.test(value));
-	}, "由：字母、下划线、或数字组成");
+	}, "由：英文字母、数字、下划线组成，非纯数字");
 });

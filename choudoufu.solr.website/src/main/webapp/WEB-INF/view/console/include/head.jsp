@@ -32,6 +32,9 @@
     </li>
     <!-- <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li> -->
     <li class=""><a title="" href="${ctx }/console/login/out"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+    
+    <li class=""><a title="" href="${ctx }/admin.html" target="_blank"><i class="icon icon-hand-right"></i> <span class="text">Admin</span></a></li>
+    
   </ul>
 </div>
 <!--close-top-Header-menu-->
