@@ -9,7 +9,6 @@
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="title" type="word_min_split" indexed="true" stored="true"/>
    <field name="explain" type="word_min_split" indexed="true" stored="true"/>
-   <field name="icon" type="string" indexed="false" stored="true"/>
    <field name="createBy" type="string" indexed="true" stored="true"/>
    <field name="createTime" type="tdate" indexed="true" stored="true" />
    <field name="updateBy" type="string" indexed="true" stored="true"/>

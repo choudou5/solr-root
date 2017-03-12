@@ -69,7 +69,6 @@ public class SchemaService {
 		if(oldTbl != null){//修改
 			oldTbl.setTitle(table.getTitle());
 			oldTbl.setExplain(table.getExplain());
-			oldTbl.setIcon(table.getIcon());
 			oldTbl.setUpdateBy(user.getLoginName());
 			oldTbl.setUpdateTime(new Date());
 			SolrJUtil.addModelData(oldTbl, core);

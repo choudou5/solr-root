@@ -11,8 +11,11 @@
 <%-- <script src="${ctxStaticConsole }/js/jquery.flot.resize.min.js"></script> --%>
 <script src="${ctxStaticConsole }/js/matrix.js"></script> 
 <script src="${ctxStaticConsole }/js/jquery.peity.min.js"></script> 
-
 <script src="${ctxStaticConsole }/js/fullcalendar.min.js"></script>
+<%--jBox --%>
+<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.min.js"></script>
+<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.Confirm.min.js"></script>
+
 <script src="${ctxStaticConsole }/js/custom.js"></script>
 
 <%-- 

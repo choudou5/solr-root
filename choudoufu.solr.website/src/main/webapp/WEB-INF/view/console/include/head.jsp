@@ -10,7 +10,7 @@
 <!--top-Header-menu-->
 <div id="user-nav" class="navbar navbar-inverse">
   <ul class="nav">
-    <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome User</span><b class="caret"></b></a>
+   <!--  <li  class="dropdown" id="profile-messages" ><a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i>  <span class="text">Welcome User</span><b class="caret"></b></a>
       <ul class="dropdown-menu">
         <li><a href="#"><i class="icon-user"></i> My Profile</a></li>
         <li class="divider"></li>
@@ -18,8 +18,12 @@
         <li class="divider"></li>
         <li><a href="login.html"><i class="icon-key"></i> Log Out</a></li>
       </ul>
-    </li>
-    <li class="dropdown" id="menu-messages"><a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle"><i class="icon icon-envelope"></i> <span class="text">Messages</span> <span class="label label-important">5</span> <b class="caret"></b></a>
+    </li> -->
+    <li class="dropdown" id="menu-messages">
+      <a href="#" data-toggle="dropdown" data-target="#menu-messages" class="dropdown-toggle">
+      	<i class="icon icon-envelope"></i> 
+      	<span class="text">邮件</span> <span class="label label-important">5</span> <b class="caret"></b>
+      </a>
       <ul class="dropdown-menu">
         <li><a class="sAdd" title="" href="#"><i class="icon-plus"></i> new message</a></li>
         <li class="divider"></li>
@@ -31,10 +35,7 @@
       </ul>
     </li>
     <!-- <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li> -->
-    <li class=""><a title="" href="${ctx }/console/login/out"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
-    
-    <li class=""><a title="" href="${ctx }/admin.html" target="_blank"><i class="icon icon-hand-right"></i> <span class="text">Admin</span></a></li>
-    
+    <li class=""><a title="" href="${ctx }/console/login/out"><i class="icon icon-share-alt"></i> <span class="text">退出</span></a></li>
   </ul>
 </div>
 <!--close-top-Header-menu-->

@@ -53,8 +53,8 @@ hr{ border-top-color:#dadada;}
 	z-index: -9;
 }
 #header h1 {
-	background: url("../img/logo.png") no-repeat scroll 0 0 transparent;
-	height: 31px;
+	background: url("/static/images/logo.png") no-repeat scroll 0 0 transparent;
+	height: 35px;
 	left: 20px;
 	line-height: 600px;
 	overflow: hidden;
@@ -62,6 +62,7 @@ hr{ border-top-color:#dadada;}
 	top: 26px;
 	width: 191px;
 }
+/** ../img/logo.png */
 #header h1 a {
 	display: block;
 }

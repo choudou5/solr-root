@@ -37,10 +37,6 @@ public class SysTable implements Serializable{
 	@Field
 	private String explain;
 	
-	/** 图标*/
-	@Field
-	private String icon;
-	
 	/** 字段*/
 	@NotNull(message="字段不能为空")
 	private SysTableField[] fields;
@@ -93,14 +89,6 @@ public class SysTable implements Serializable{
 		this.explain = explain;
 	}
 
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
-	
 	public SysTableField[] getFields() {
 		return fields;
 	}

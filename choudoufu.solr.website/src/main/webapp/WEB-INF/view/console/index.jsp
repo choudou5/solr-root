@@ -28,7 +28,7 @@
       
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-hand-right"></i> </span>
-            <h5>集合列表</h5>
+            <h5>应用列表</h5>
           </div>
           <div class="widget-content">
             <ul class="quick-actions">

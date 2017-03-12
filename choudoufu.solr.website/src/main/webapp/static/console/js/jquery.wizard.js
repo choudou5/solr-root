@@ -189,6 +189,10 @@
 				if(this.options.historyEnabled){
 					this._updateHistory(this.activatedSteps[this.activatedSteps.length - 2]);
 				}else{
+					//回调
+					if( typeof (this.options.backEvent) === "function"){
+						this.options.backEvent(this.currentStep);
+					}
 					this._show(this.activatedSteps[this.activatedSteps.length - 2], true);
 				}
 			}
@@ -196,6 +200,11 @@
 		},
 
 		_continueToNextStep : function(){
+			//回调
+			if( typeof (this.options.nextSuccess) === "function"){
+				this.options.nextSuccess(this.currentStep);
+			}
+			
 			if(this.isLastStep){
 				for(var i = 0; i < this.activatedSteps.length; i++){
 					this.steps.filter("#" + this.activatedSteps[i]).find(":input").not(".wizard-ignore").removeAttr("disabled");
@@ -436,7 +445,9 @@
 			linkClass	: ".link",
 			submitStepClass : "submit_step",
 			back : ":reset",
+			backEvent: null,
 			next : ":submit",
+			nextSuccess: null,
 			textSubmit : 'Submit',
 			textNext : 'Next',
 			textBack : 'Back',
@@ -449,7 +460,7 @@
 			focusFirstInput : false,
 			disableInputFields : true,
 			formOptions : { reset: true, success: function(data) { if( (window['console'] !== undefined) ){console.log("%s", "form submit successful");}},
-			disableUIStyles : false
+			disableUIStyles : false,
 		}
    }
  });

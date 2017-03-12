@@ -8,15 +8,15 @@
 <%@ attribute name="threeLevelView" type="java.lang.String" required="false" description="三级跳转视图"%>
 
 <!--breadcrumbs-->
-  <div id="content-header">
-    <div id="breadcrumb">
-    	<a href="${ctx }/console/page?path=/index" title="返回首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
-    	<c:if test="${not empty secondLevelTitle}">
-    		<a href="${empty secondLevelView ?'#':secondLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${secondLevelTitle }</a>
-    	</c:if>
-    	<c:if test="${not empty threeLevelTitle}">
-    		<a href="${empty threeLevelView ?'#':threeLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${threeLevelTitle }</a>
-    	</c:if>
-    </div>
-  </div>
+<div id="content-header">
+   <div id="breadcrumb">
+   	<a href="${ctx }/console/page?path=/index" title="返回首页" class="tip-bottom"><i class="icon-home"></i> 首页</a>
+   	<c:if test="${not empty secondLevelTitle}">
+   		<a href="${empty secondLevelView ?'javascript:;':secondLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${secondLevelTitle }</a>
+   	</c:if>
+   	<c:if test="${not empty threeLevelTitle}">
+   		<a href="${empty threeLevelView ?'javascript:;':threeLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${threeLevelTitle }</a>
+   	</c:if>
+   </div>
+</div>
 <!--End-breadcrumbs-->

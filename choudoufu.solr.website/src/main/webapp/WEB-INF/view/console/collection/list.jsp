@@ -26,7 +26,7 @@
 <!--main-content-part-->
 <div id="content">
 
-<sys:breadcrumbs currLevel="2" threeLevelTitle="创建应用" secondLevelTitle="应用列表" secondLevelView="/console/page?path=collection/list"/>
+<sys:breadcrumbs currLevel="2" secondLevelTitle="创建集合" secondLevelView="/console/page?path=collection/schema/add"/>
 
   <!--container begin-->
   <div class="container-fluid">
@@ -34,37 +34,37 @@
     <div class="row-fluid">
       <div class="span12">
       	<sys:message content="${message }"/>
-      	<!-- begin 添加应用 -->
+      	<!-- begin 添加集合 -->
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-            <h5>添加应用</h5>
+            <h5>添加集合</h5>
           </div>
           <div class="widget-content nopadding">
             <form id="addTableForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
               
               <ol class="formwizard-steps">
 				<li class="active current"><span class="label">1</span>填写基本信息</li>
-				<li><span class="label">2</span>字段配置</li>
+				<li><span class="label">2</span>定义索引结构</li>
 				<li><span class="label">3</span>创建成功</li>
 			  </ol>
               
               <div id="form-wizard-1" class="step">
                 <div class="control-group">
-                  <label class="control-label">应用标识</label>
+                  <label class="control-label">模块标识</label>
                   <div class="controls">
                     <input type="text" name="id" placeholder="由 字母、下划线、或数字组成" maxlength="30" value="test"/>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label">应用名称</label>
+                  <label class="control-label">模块名称</label>
                   <div class="controls">
-                    <input type="text" name="title" class="span3" placeholder="请输入应用名称" maxlength="10" value="test..."/>
+                    <input type="text" name="title" class="span3" placeholder="请输入模块名称" maxlength="10" value="test..."/>
                   </div>
                 </div>
                 <div class="control-group">
                   <label class="control-label">说明</label>
                   <div class="controls">
-                    <textarea name="explain" class="span5" rows="3" maxlength="120" placeholder="请简单描述您的应用"></textarea>
+                    <textarea name="explain" class="span5" rows="3" maxlength="120" placeholder="请简单描述您的模块"></textarea>
                   </div>
                 </div>
               </div>
@@ -126,8 +126,8 @@
 		        
               </div>
               <div class="form-actions">
-                <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;
-                <input id="next" class="btn btn-danger" type="submit" value="下一步" />
+                <input id="back" class="btn btn-primary" type="reset" value="上一步" />
+                <input id="next" class="btn btn-primary" type="submit" value="下一步" />
                 <div id="status"></div>
               </div>
               <div id="submitted"></div>
