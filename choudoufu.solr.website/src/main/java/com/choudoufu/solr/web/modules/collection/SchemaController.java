@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.choudoufu.solr.schema.entity.SysTable;
+import com.choudoufu.solr.schema.entity.Schema;
 import com.choudoufu.solr.service.SchemaService;
 import com.choudoufu.solr.web.modules.BaseController;
 
@@ -36,8 +36,8 @@ public class SchemaController extends BaseController{
 	 */
 	@RequestMapping(value="/edit",method=RequestMethod.GET)
     public String edit(String tableName, HttpServletRequest req, Model model){
-		model.addAttribute("table", SchemaService.getTableInfo(tableName));
-		model.addAttribute("tableFields", SchemaService.getTableFields(tableName));
+		model.addAttribute("table", SchemaService.getSchema(tableName));
+		model.addAttribute("tableFields", SchemaService.getSchemaFields(tableName));
 		return "/console/collection/schema/edit";
     }
 	
@@ -51,7 +51,7 @@ public class SchemaController extends BaseController{
 	 * @return
 	 */
 	@RequestMapping(value={"/save"} ,method=RequestMethod.POST)  
-    public String save(SysTable table,
+    public String save(Schema table,
     		HttpServletRequest req, HttpServletResponse resp, RedirectAttributes attributes){  
 		//数据 验证
 		if (!beanValidator(attributes, table)){

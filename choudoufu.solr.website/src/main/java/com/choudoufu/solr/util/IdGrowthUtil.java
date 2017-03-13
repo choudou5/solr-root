@@ -6,9 +6,13 @@ import java.util.Date;
 import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.CacheConsts;
-import com.choudoufu.solr.schema.entity.SysTable;
+import com.choudoufu.solr.schema.entity.Schema;
 
-
+/**
+ * ID增长 工具类
+ * @author xuhaowen
+ * @date 2017年3月13日
+ */
 public class IdGrowthUtil {
 
 	private static volatile SolrCore core;
@@ -20,12 +24,12 @@ public class IdGrowthUtil {
 	}
 	
 	private static long getGrowthId(String module){
-		SysTable sysTable = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+module), core, SysTable.class);
+		Schema sysTable = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+module), core, Schema.class);
 		return sysTable == null ? -1L : sysTable.getGrowthId();
 	}
 	
 	private static void addGrowthId(String module, long id){
-		SysTable sysTable = new SysTable(module);
+		Schema sysTable = new Schema(module);
 		sysTable.setGrowthId(id);
 		sysTable.setUpdateTime(new Date());
 		SolrJUtil.addModelData(sysTable, core);

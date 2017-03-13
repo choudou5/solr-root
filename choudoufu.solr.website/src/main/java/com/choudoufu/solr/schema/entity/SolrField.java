@@ -5,66 +5,70 @@ import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 
+import com.choudoufu.solr.util.JsonUtil;
+
 /**
- * 系统-表字段
+ * solr-字段
  * @author xuhaowen
  * @date 2017年3月4日
  */
-public class SysTableField implements Serializable{
+public class SolrField implements Serializable{
 
 	private static final long serialVersionUID = -218902660217120481L;
 	
 	/** 主键 */
 	@Field
-	public String id;
+	private String id;
 	
-	/** 表 */
+	/** 应用名  */
 	@Field
-	public String table;
+	private String schemaName;
 	
 	/** 字段名*/
 	@Field
-	public String name;
+	private String name;
 	
 	/** 类型*/
+	private FieldType type;
+	
 	@Field
-	public String type;
+	private String typeJson;
 	
 	/** 标签*/
 	@Field
-	public String label;
+	private String label;
 	
 	/** 是否被索引*/
 	@Field
-	public Boolean indexed = false;
+	private Boolean indexed = false;
 	
 	/** 是否被存储*/
 	@Field
-	public Boolean stored = false;
+	private Boolean stored = false;
 	
 	/** 是否必填*/
 	@Field
-	public Boolean required = false;
+	private Boolean required = false;
 	
 	/** 是否有多个值*/
 	@Field
-	public Boolean multiValued = false;
+	private Boolean multiValued = false;
 	
 	/** 是否使用gzip压缩（只有TextField和StrField可以压缩）*/
 	@Field
-	public Boolean compressed = false;
+	private Boolean compressed = false;
 	
 	/** 是否列表展示*/
 	@Field
-	public Boolean isListShow = false;
+	private Boolean isListShow = false;
 	
 	/** 是否列表搜索*/
 	@Field
-	public Boolean isListSearch = false;
+	private Boolean isListSearch = false;
 	
 	/** 排序号*/
 	@Field
-	public Integer sortNo;
+	private Integer sortNo;
 	
 	public String getId() {
 		return id;
@@ -74,28 +78,40 @@ public class SysTableField implements Serializable{
 		this.id = id;
 	}
 	
-	public String getTable() {
-		return table;
-	}
-
-	public void setTable(String table) {
-		this.table = table;
-	}
-
 	public String getName() {
 		return name;
+	}
+
+	public String getSchemaName() {
+		return schemaName;
+	}
+
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getType() {
+	public FieldType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(FieldType type) {
 		this.type = type;
+	}
+	
+	public String getTypeJson() {
+		return typeJson;
+	}
+
+	public void setTypeJson(String typeJson) {
+		if(this.type != null){
+			this.typeJson = JsonUtil.toString(type);
+		}else{
+			this.typeJson = typeJson;
+		}
 	}
 
 	public String getLabel() {

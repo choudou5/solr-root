@@ -5,8 +5,8 @@ public interface SysConsts {
 	String USER_SESSION = "user_session";
 	
 	/** 模块 */
-	String MODULE_TABLE = "sys_table";
-	String MODULE_TABLE_FIELD = "sys_table_field";
+	String MODULE_SOLR_SCHEMA = "solr_schema";
+	String MODULE_SOLR_FIELD = "solr_field";
 	String MODULE_USER = "sys_user";
 	String MODULE_LOG_HI = "sys_log_history";
 	String MODULE_PLUG_SENSITIVE_WORD = "plug_sensitive_word";

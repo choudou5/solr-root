@@ -10,8 +10,8 @@ import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.constants.UserTypeEnum;
-import com.choudoufu.solr.schema.entity.SysTable;
-import com.choudoufu.solr.schema.entity.SysTableField;
+import com.choudoufu.solr.schema.entity.Schema;
+import com.choudoufu.solr.schema.entity.SolrField;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrHelper;
 import com.choudoufu.solr.util.SolrJUtil;
@@ -21,85 +21,87 @@ import com.choudoufu.sys.entity.User;
 public class SchemaService {
 
 	/**
-	 * 获得 表信息
-	 * @param tableName
+	 * 获得 应用信息
+	 * @param schemaName
 	 * @return
 	 */
-	public static SysTable getTableInfo(String tableName){
-		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE);
-		return SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+tableName), core, SysTable.class);
+	public static Schema getSchema(String schemaName){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		return SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
 	}
 	
 	/**
-	 * 获得 表字段信息
-	 * @param tableName
+	 * 获得 应用字段信息
+	 * @param schemaName
 	 * @return
 	 */
-	public static List<SysTableField> getTableFields(String tableName){
-		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE_FIELD);
-		return SolrJUtil.listModelData(SolrJUtil.getSolrQuery("table:"+tableName), core, SysTableField.class);
+	public static List<SolrField> getSchemaFields(String schemaName){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD);
+		return SolrJUtil.listModelData(SolrJUtil.getSolrQuery("schemaName:"+schemaName), core, SolrField.class);
 	}
 	
 	/**
 	 * 保存
 	 * @param req
-	 * @param table
+	 * @param schema
 	 * @param fields
 	 */
-	public static void save(HttpServletRequest req, SysTable table){
-		//保存 表信息
-		saveTable(req, table);
-		//保存 表字段
-		saveTableFields(req, table.getId(), table.getFields());
+	public static void save(HttpServletRequest req, Schema schema){
+		//保存 应用信息
+		saveSchema(req, schema);
+		//保存 应用字段
+		saveSchemaFields(req, schema.getName(), schema.getFields());
 	}
 	
 	/**
-	 * 保存 表信息
+	 * 保存 应用信息
 	 * @param req
-	 * @param table
+	 * @param schema
 	 */
-	public static void saveTable(HttpServletRequest req, SysTable table){
-		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE);
-		String tableName = table.getId();
+	public static void saveSchema(HttpServletRequest req, Schema schema){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		String schemaName = schema.getName();
 		User user = UserUtil.getSessionUser(req);
 		if(user.getUserType() == UserTypeEnum.TEMP.getValue()){
-			tableName = user.getLoginName()+table.getId();
+			schemaName = user.getLoginName()+schema.getName();
 		}
-		SysTable oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+tableName), core, SysTable.class);
+		Schema oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
 		if(oldTbl != null){//修改
-			oldTbl.setTitle(table.getTitle());
-			oldTbl.setExplain(table.getExplain());
+			oldTbl.setTitle(schema.getTitle());
+			oldTbl.setExplain(schema.getExplain());
 			oldTbl.setUpdateBy(user.getLoginName());
 			oldTbl.setUpdateTime(new Date());
 			SolrJUtil.addModelData(oldTbl, core);
 		}else{//新增
-			table.setId(tableName);
-			table.setCreateBy(user.getLoginName());
-			table.setUpdateTime(new Date());
-			table.setGrowthId(1L);
-			SolrJUtil.addModelData(table, core);
+			schema.setName(schemaName);
+			schema.setCreateBy(user.getLoginName());
+			schema.setUpdateTime(new Date());
+			schema.setGrowthId(1L);
+			SolrJUtil.addModelData(schema, core);
 		}
+		
 	}
 	
 	
 	/**
-	 * 保存 表字段信息
+	 * 保存 应用字段信息
 	 * @param req
-	 * @param tableName
+	 * @param schemaName
+	 * @param fields
 	 */
-	public static void saveTableFields(HttpServletRequest req, String tableName, SysTableField[] fields){
-		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE_FIELD);
-		List<SysTableField> tblFields = getTableFields(tableName);
+	public static void saveSchemaFields(HttpServletRequest req, String schemaName, SolrField[] fields){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD);
+		List<SolrField> tblFields = getSchemaFields(schemaName);
 		if(CollectionUtils.isNotEmpty(tblFields)){
 			//删除旧数据
-			SolrJUtil.delModelData("table:"+tableName, core);
+			SolrJUtil.delModelData("schemaName:"+schemaName, core);
 		}
 		
 		//设置数据
 		int sortNo = 1;
-		for (SysTableField field : fields) {
-			field.setId(IdGrowthUtil.getIncrIdStr(SysConsts.MODULE_TABLE_FIELD));
-			field.setTable(tableName);
+		for (SolrField field : fields) {
+			field.setId(IdGrowthUtil.getIncrIdStr(SysConsts.MODULE_SOLR_FIELD));
+			field.setSchemaName(schemaName);
 			field.setSortNo(sortNo);
 			sortNo++;
 		}
@@ -108,14 +110,14 @@ public class SchemaService {
 	
 	
 	/**
-	 * 是否存在表
-	 * @param tableName
+	 * 是否存在应用
+	 * @param schemaName
 	 * @return
 	 */
-	public static boolean existTable(String tableName){
-		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_TABLE);
-		SysTable table = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("id:"+tableName), core, SysTable.class);
-		return table==null?false:true;
+	public static boolean existSchema(String schemaName){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		Schema schema = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
+		return schema==null?false:true;
 	}
 	
 }

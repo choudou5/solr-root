@@ -10,22 +10,27 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 import org.hibernate.validator.constraints.Length;
 
-public class SysTable implements Serializable{
+/**
+ * 模型
+ * @author xuhaowen
+ * @date 2017年3月13日
+ */
+public class Schema implements Serializable{
 
 	private static final long serialVersionUID = -218902660217120481L;
 
-	public SysTable(){}
+	public Schema(){}
 	
-	public SysTable(String table){
-		this.id = table;
+	public Schema(String name){
+		this.name = name;
 	}
 	
 	/** id: 主键（表名） */
-	@NotNull(message="表名不能为空")
-	@Length(min=4, max=30, message="表名长度必须介于 4 和 30 之间")
-	@Pattern(regexp="^\\w{4,30}$", message="表名由 字母、下划线、或数字组")
+	@NotNull(message="应用名不能为空")
+	@Length(min=4, max=30, message="应用名长度必须介于 4 和 30 之间")
+	@Pattern(regexp="^\\w{4,30}$", message="应用名由 字母、下划线、或数字组")
 	@Field
-	private String id;
+	private String name;
 	
 	/** 标题*/
 	@NotNull(message="标题不能为空")
@@ -39,7 +44,9 @@ public class SysTable implements Serializable{
 	
 	/** 字段*/
 	@NotNull(message="字段不能为空")
-	private SysTableField[] fields;
+	private SolrField[] fields;
+	
+	private CopyField[] copyFields;
 	
 	/** 创建人*/
 	@Field
@@ -56,7 +63,7 @@ public class SysTable implements Serializable{
 	/** 更新时间 */
 	@Field
 	private Date updateTime;
-
+	
 	/** 增长ID */
 	@Field
 	private long growthId = 0;
@@ -65,12 +72,13 @@ public class SysTable implements Serializable{
 	@Field
 	public Integer primaryNo = 0;
 	
-	public String getId() {
-		return id;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getTitle() {
@@ -89,12 +97,20 @@ public class SysTable implements Serializable{
 		this.explain = explain;
 	}
 
-	public SysTableField[] getFields() {
+	public SolrField[] getFields() {
 		return fields;
 	}
 
-	public void setFields(SysTableField[] fields) {
+	public void setFields(SolrField[] fields) {
 		this.fields = fields;
+	}
+	
+	public CopyField[] getCopyFields() {
+		return copyFields;
+	}
+
+	public void setCopyFields(CopyField[] copyFields) {
+		this.copyFields = copyFields;
 	}
 
 	public String getCreateBy() {

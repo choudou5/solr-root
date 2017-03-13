@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="sys_table" version="1.5">
+<schema name="solr_schema" version="1.5">
 
    <!-- solr必要字段 -->
    <field name="_version_" type="long" indexed="true" stored="true"/>
    <field name="_root_" type="string" indexed="true" stored="false"/>
 
    <!-- 自定义字段 -->
-   <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
+   <field name="name" type="string" indexed="true" stored="true" required="true" multiValued="false" />
    <field name="title" type="word_min_split" indexed="true" stored="true"/>
    <field name="explain" type="word_min_split" indexed="true" stored="true"/>
    <field name="createBy" type="string" indexed="true" stored="true"/>
@@ -19,11 +19,11 @@
    <field name="text" type="word_min_split" indexed="true" stored="false" multiValued="true"/>
 
    <!-- 字段复值值 -->
-   <copyField source="id" dest="text"/>
+   <copyField source="name" dest="text"/>
    <copyField source="title" dest="text"/>
    <copyField source="explain" dest="text"/>
    
-   <uniqueKey>id</uniqueKey>
+   <uniqueKey>name</uniqueKey>
 
    <defaultSearchField>text</defaultSearchField>
  

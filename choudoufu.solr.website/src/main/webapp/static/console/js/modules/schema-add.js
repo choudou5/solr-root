@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 	
-	fw = $("#addTableForm").formwizard({ 
+	$("#addTableForm").formwizard({ 
 		formPluginEnabled: true,
 		validationEnabled: true,
 		focusFirstInput : true,
@@ -21,7 +21,7 @@ $(document).ready(function(){
 		},
 		validationOptions : {
 			rules: {
-				id: {required: true, rangelength: [4, 30], isVariable: true},
+				name: {required: true, rangelength: [4, 30], isVariable: true},
 				title: "required",
 			},
 			errorClass: "help-inline",
@@ -66,15 +66,18 @@ $(document).ready(function(){
 });
 
 /**
- * 挑选 过滤器
+ * 挑选 分析仪
  * @param index
  */
-function chooseFilterModal(index){
-	var htm = $("#chooseFilterModal").html();
+function chooseAnalyzerModal(index){
+	var htm = $("#chooseAnalyzerModal").html();
+	htm = htm.replaceAll(new RegExp(/(tab_index)/g), "tab_index_"+getRandom());
+	htm = htm.replace(new RegExp(/(tab_query)/g), "tab_query_"+getRandom());
+	
 	new jBox('Confirm', {
 		id: "jbox-confirm" ,
-	    width: 220,
-	    title: '添加过滤器',
+	    width: 400,
+	    title: '数据加工',
 	    overlay: false,
 	    content: htm,
 	    repositionOnOpen: false,
@@ -83,7 +86,7 @@ function chooseFilterModal(index){
 	    cancelButton: '取消',
     	confirm: function(){
     		var chooseFilters = new Array();
-    		$('.jBox-content #filterTemplate input:checked').each(function(){
+    		$('.jBox-content #analyzerTemplate input:checked').each(function(){
     			chooseFilters.push($(this).val());
     		});
 			if(_.isEmpty(chooseFilters)){
@@ -91,8 +94,8 @@ function chooseFilterModal(index){
 			}
 			console.log("choose:"+chooseFilters);
 			$("#fieldTable tbody tr:eq("+index+") td #filters").val(chooseFilters.join(","));
-			$("#fieldTable tbody tr:eq("+index+") td #fltersTagCount").text(chooseFilters.length);
-			$('.jBox-content #filterTemplate input').prop("checked", false);
+			$("#fieldTable tbody tr:eq("+index+") td #analyzerTag").text(chooseFilters.length);
+			$('.jBox-content #analyzerTemplate input').prop("checked", false);
     	},
 	}).open().show();
 }
@@ -111,7 +114,22 @@ function addFieldRow(){
 		
 	var fieldTypeTpl = $("#tplFieldType").clone();
 	tpl.append('<td><select name="fields['+newIndex+'].type">'+fieldTypeTpl.html()+'</select></td>');
-	    tpl.append('<td><div id="filterDiv"><input id="filters" type="hidden" name="fields['+newIndex+'].filters" value=""/><a id="chooseFilterModalBtn" href="javascript:chooseFilterModal('+newIndex+')">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a><span id="fltersTagCount" class="badge badge-info"></span></div></td>');
+	tpl.append('<td><div id="analyzerDiv">');
+	tpl.append('<input id="analyzerIndex" type="hidden" name="fields['+newIndex+'].type.tokenizerClass" value=""/>');
+	tpl.append('<input id="analyzerIndexUseSmart" type="hidden" name="fields['+newIndex+'].type.index.useSmart" value=""/>');
+	tpl.append('<input id="analyzerIndexCode" type="hidden" name="fields['+newIndex+'].type.index.code" value=""/>');
+	tpl.append('<input id="analyzerIndexSeparator" type="hidden" name="fields['+newIndex+'].type.index.separator" value=""/>');
+	tpl.append('<input id="analyzerIndexSqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.index.sqlGroupSymbol" value=""/>');
+	tpl.append('<input id="analyzerIndexFilters" type="hidden" name="fields['+newIndex+'].type.index.filters" value=""/>');
+	
+	tpl.append('<input id="analyzerQueryUseSmart" type="hidden" name="fields['+newIndex+'].type.query.useSmart" value=""/>');
+	tpl.append('<input id="analyzerQueryCode" type="hidden" name="fields['+newIndex+'].type.query.code" value=""/>');
+	tpl.append('<input id="analyzerQuerySeparator" type="hidden" name="fields['+newIndex+'].type.query.separator" value=""/>');
+	tpl.append('<input id="analyzerQuerySqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.query.sqlGroupSymbol" value=""/>');
+	tpl.append('<input id="analyzerQueryFilters" type="hidden" name="fields['+newIndex+'].type.query.filters" value=""/>');
+	tpl.append('<a href="javascript:chooseAnalyzerModal('+newIndex+')">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>');
+	tpl.append('<span id="analyzerTag" class="badge badge-info"></span>');
+	tpl.append('</div></td>');
 	tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].indexed" value="true"/></td>');
 	tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].stored" value="true"/></td>');
 	tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].required" value="true"/></td>');

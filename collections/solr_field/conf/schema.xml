@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<schema name="sys_table_field" version="1.5">
+<schema name="solr_field" version="1.5">
      
 	<!-- 基本数据类型-->
     <fieldType name="text" class="solr.TextField" sortMissingLast="true" />
@@ -37,7 +37,7 @@
 
    <!-- 自定义字段 -->
    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-   <field name="table" type="string" indexed="true" stored="true" />
+   <field name="schemaName" type="string" indexed="true" stored="true" />
    <field name="name" type="word_min_split" indexed="true" stored="true" />
    <field name="type" type="string" indexed="true" stored="true" />
    <field name="label" type="string" indexed="true" stored="true" />

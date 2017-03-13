@@ -1,3 +1,9 @@
+function getRandom(){
+	var time = new Date().getTime();
+	var baseNum = (Math.ceil(Math.random()*1000));
+	return time*baseNum;
+}
+
 /**
  * 调用
  * var buffer = new StringBuffer();

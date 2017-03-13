@@ -15,7 +15,7 @@ public class SysUser implements Serializable{
 
 	/** id: 主键 */
 	@Field
-	public String id;
+	private String id;
 
 	/** 登录名 */
 	@Field

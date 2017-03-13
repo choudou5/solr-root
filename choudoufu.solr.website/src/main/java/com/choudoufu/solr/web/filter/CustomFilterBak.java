@@ -100,7 +100,7 @@ public class CustomFilterBak extends SolrDispatchFilter{
 	private void initSystem(){
 		log.info("SolrCustomFilter.initSystem()");
 		//ID增长
-		IdGrowthUtil.init(cores.getCore(SysConsts.MODULE_TABLE));
+		IdGrowthUtil.init(cores.getCore(SysConsts.MODULE_SOLR_SCHEMA));
 		//属性资源
 		PropertiesUtil.init(SysPropConsts.PROP_PATH);
 		
