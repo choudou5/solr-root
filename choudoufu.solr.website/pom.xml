@@ -24,6 +24,7 @@
 		<http.version>4.4.1</http.version>
 		<ehcache-core.version>2.6.11</ehcache-core.version>
 		<ant.version>1.7.1</ant.version>
+		<fastjson.version>1.2.24</fastjson.version>
 		
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
@@ -130,6 +131,19 @@
 		    <artifactId>commons-collections</artifactId>
 		    <version>${commons-collections}</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>fastjson</artifactId>
+		    <version>${fastjson.version}</version>
+		    <exclusions>
+		    	<exclusion>
+		    		<groupId>*</groupId>
+		    		<artifactId>*</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+				
 				
 		
 
