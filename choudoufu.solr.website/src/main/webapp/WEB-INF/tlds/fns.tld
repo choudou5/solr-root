@@ -41,10 +41,10 @@
   
     <function>
     <description>字段类型</description>
-    <name>getFieldTypeMap</name>
+    <name>getFieldTypeArray</name>
     <function-class>com.choudoufu.solr.schema.FieldTypeEnum</function-class>
-    <function-signature>java.util.LinkedHashMap getFieldTypeMap()</function-signature>
-    <example>${fns:getFieldTypeMap()}</example>  
+    <function-signature>com.choudoufu.solr.schema.FieldTypeEnum getFieldTypeArray()</function-signature>
+    <example>${fns:getFieldTypeArray()}</example>  
   </function>
   
   <!-- StringUtils -->

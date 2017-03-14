@@ -15,7 +15,7 @@
 <%--jBox --%>
 <script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.min.js"></script>
 <script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.Confirm.min.js"></script>
-
+<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.Notice.min.js"></script>
 <script src="${ctxStaticConsole }/js/custom.js"></script>
 
 <%-- 

@@ -1,4 +1,4 @@
-package com.choudoufu.solr.schema.entity;
+package com.choudoufu.solr.schema.model;
 
 import java.io.Serializable;
 

@@ -15,7 +15,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.choudoufu.solr.constants.ActionTypeEnum;
 import com.choudoufu.solr.constants.SysConsts;
-import com.choudoufu.solr.schema.entity.SysLogHistory;
+import com.choudoufu.solr.schema.model.SysLogHistory;
 import com.choudoufu.sys.entity.User;
 
 public class SysLogUtil {

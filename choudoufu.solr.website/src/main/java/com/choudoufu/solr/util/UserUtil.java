@@ -13,7 +13,7 @@ import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.constants.SysConsts.DataStatusEnum;
 import com.choudoufu.solr.constants.SysPropConsts;
 import com.choudoufu.solr.constants.UserTypeEnum;
-import com.choudoufu.solr.schema.entity.SysUser;
+import com.choudoufu.solr.schema.model.SysUser;
 import com.choudoufu.sys.entity.User;
 
 /**

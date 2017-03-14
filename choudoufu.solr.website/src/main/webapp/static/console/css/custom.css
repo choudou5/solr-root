@@ -4,11 +4,18 @@
 	background-color: #efefef;
 }
 
+.mgl-10{margin-left: 10px}
+
+
+/** color */
+.green{color: #468847;}
+.orange{color: #c09853;}
+.red{color: #b94a48;}
+.blue{color: #3a87ad;}
+
 
 /** bootstrap扩展*/
 .nav-tabs-center> li{text-align: center ;min-width: 80px;}
-
-
 
 
 /** 表单验证 */

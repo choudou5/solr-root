@@ -7,7 +7,7 @@
       <span class="label label-none"><a href="javascript:void(0);">配置说明</a></span>
     </div>
     <div class="widget-content nopadding">
-      <c:set var="fieldTypes" value="${fns:getFieldTypeMap()}" />
+      <c:set var="fieldTypes" value="${fns:getFieldTypeArray()}" />
       <table id="fieldTable" class="table table-bordered table-striped">
         <thead>
           <%@include file="/WEB-INF/view/console/collection/schema/table-thead.jsp" %>
@@ -20,9 +20,10 @@
             <td>
               <input class="required" type="text" name="fields[0].label" placeholder="简单描述" minlength="2" maxlength="10" /></td>
             <td>
-              <select id="selectType" name="fields[0].type.name">
+              <select id="selectType" name="fields[0].type.name" class="tip-right" data-original-title="Tooltip in right" >
                   <c:forEach var="fieldType" items="${fieldTypes }">
-                  <option value="${fieldType.key }">${fieldType.value }</option></c:forEach>
+                  <option type="${fieldType.type }" classz="${fieldType.classz }" value="${fieldType.value }">${fieldType.explain }</option>
+                  </c:forEach>
               </select>
             </td>
             <td>
@@ -48,7 +49,8 @@
       </table>
       <select id="tplFieldType" class="hide">
           <c:forEach var="fieldType" items="${fieldTypes }">
-          <option value="${fieldType.key }">${fieldType.value }</option></c:forEach>
+          <option type="${fieldType.type }" classz="${fieldType.classz }" value="${fieldType.value }">${fieldType.explain }</option>
+          </c:forEach>
       </select>
     </div>
   </div>

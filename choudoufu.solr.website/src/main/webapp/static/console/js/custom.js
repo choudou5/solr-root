@@ -1,8 +1,57 @@
+$(function(){
+	
+//	$(".tip-right").tooltip();
+	
+});
+
+/**
+ * 获得 随机数
+ * @returns {Number}
+ */
 function getRandom(){
 	var time = new Date().getTime();
 	var baseNum = (Math.ceil(Math.random()*1000));
 	return time*baseNum;
 }
+
+function gritterTip(title, content){
+	$.gritter.add({
+		title: title,
+		text: content,
+		sticky: false,
+	});
+}
+
+
+
+function jTooltip(attach, title){
+	new jBox('Tooltip', {
+	  attach: attach,
+	  content: title
+	}).show();
+}
+
+function jNotice(title, color){
+	color = color==undefined?'green':color;
+	new jBox('Notice', {content: title, color: color, autoClose: 3000}).show();
+}
+
+var __screenH = document.body.clientHeight;
+var __screenW = document.body.clientWidth;
+
+function jNoticeCenter(title, color){
+	color = color==undefined?'green':color;
+	new jBox('Notice', {
+		content: title, 
+		color: color, 
+		autoClose: 3000,
+		position: {
+	      x: __screenW/2,
+	      y: 200
+	    },
+	}).show();
+}
+
 
 /**
  * 调用

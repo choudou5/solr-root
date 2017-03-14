@@ -44,7 +44,7 @@ import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.constants.SysPropConsts;
 import com.choudoufu.solr.core.CustomContainer;
 import com.choudoufu.solr.core.request.CustomRequestHandler;
-import com.choudoufu.solr.schema.entity.SysUser;
+import com.choudoufu.solr.schema.model.SysUser;
 import com.choudoufu.solr.util.EhcacheUtil;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.IpUtil;

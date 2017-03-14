@@ -63,6 +63,7 @@ $(document).ready(function(){
 	}, "由：英文字母、数字、下划线组成，非纯数字");
 	
 	$("#addTableForm").validate();
+	
 });
 
 /**
@@ -70,13 +71,25 @@ $(document).ready(function(){
  * @param index
  */
 function chooseAnalyzerModal(index){
-	var htm = $("#chooseAnalyzerModal").html();
-	htm = htm.replaceAll(new RegExp(/(tab_index)/g), "tab_index_"+getRandom());
-	htm = htm.replace(new RegExp(/(tab_query)/g), "tab_query_"+getRandom());
+	var typeSelectOpt = $("#fieldTable tbody tr:eq("+index+") td #selectType option:selected");
+	var typeVal = typeSelectOpt.attr("value");
+	if("analyzer" != typeSelectOpt.attr("type")){
+		jNoticeCenter("基本类型 无需加工!", 'red');
+		return;
+	}
 	
+	var htm = $("#chooseAnalyzerModal").html();
+	htm = htm.replace(new RegExp(/(tab_index)/g), "tab_index_"+getRandom());
+	htm = htm.replace(new RegExp(/(tab_query)/g), "tab_query_"+getRandom());
+	htm = htm.replace(new RegExp(typeVal+" hide", 'g'), "show");
+	
+	var w = 400;
+	if(typeVal == "word_separator")
+		w = 580;
 	new jBox('Confirm', {
 		id: "jbox-confirm" ,
-	    width: 400,
+	    width: w,
+	    maxWidth: 600,
 	    title: '数据加工',
 	    overlay: false,
 	    content: htm,
@@ -84,7 +97,7 @@ function chooseAnalyzerModal(index){
 	    repositionOnContent: true,
 	    confirmButton: '确定!',
 	    cancelButton: '取消',
-    	confirm: function(){
+    	confirm: function(){ 
     		var chooseFilters = new Array();
     		$('.jBox-content #analyzerTemplate input:checked').each(function(){
     			chooseFilters.push($(this).val());

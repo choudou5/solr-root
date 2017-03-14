@@ -14,5 +14,5 @@
 <input id="analyzerQuerySqlGroupSymbol" type="hidden" name="fields[0].type.query.sqlGroupSymbol" value=""/>
 <input id="analyzerQueryFilters" type="hidden" name="fields[0].type.query.filters" value=""/>
 
-<a href="javascript:chooseAnalyzerModal(0)">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>
+<a href="javascript:chooseAnalyzerModal(0)" class="mgl-10">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>
 <span id="analyzerTag" class="badge badge-info"></span>
