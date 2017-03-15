@@ -67,7 +67,24 @@ $(document).ready(function(){
 });
 
 /**
- * 挑选 分析仪
+ * 数据类型 change事件
+ * @param index
+ */
+function changeSelectType(index){
+	var selectOpt = $("#fieldTable tbody tr:eq("+index+") td #selectType option:selected");
+	var tokenizerClass = selectOpt.attr("classz");
+	var type = selectOpt.attr("type");
+	$("#fieldTable tbody tr:eq("+index+") td #analyzer_tokenizerClass").val(tokenizerClass);
+	if("analyzer" != type){
+		$("#fieldTable tbody tr:eq("+index+") td #chooseAnalyzerBtn").hide();
+	}else{
+		$("#fieldTable tbody tr:eq("+index+") td #chooseAnalyzerBtn").show();
+	}
+}
+
+
+/**
+ * 挑选 分析器
  * @param index
  */
 function chooseAnalyzerModal(index){
@@ -79,8 +96,11 @@ function chooseAnalyzerModal(index){
 	}
 	
 	var htm = $("#chooseAnalyzerModal").html();
-	htm = htm.replace(new RegExp(/(tab_index)/g), "tab_index_"+getRandom());
-	htm = htm.replace(new RegExp(/(tab_query)/g), "tab_query_"+getRandom());
+	var rd = getRandom();
+	var boxId = "analyzerBox_"+rd;
+	htm = htm.replace("analyzerBox_", boxId);
+	htm = htm.replace(new RegExp(/(tab_index)/g), "tab_index_"+rd);
+	htm = htm.replace(new RegExp(/(tab_query)/g), "tab_query_"+rd);
 	htm = htm.replace(new RegExp(typeVal+" hide", 'g'), "show");
 	
 	var w = 400;
@@ -97,21 +117,171 @@ function chooseAnalyzerModal(index){
 	    repositionOnContent: true,
 	    confirmButton: '确定!',
 	    cancelButton: '取消',
-    	confirm: function(){ 
-    		var chooseFilters = new Array();
-    		$('.jBox-content #analyzerTemplate input:checked').each(function(){
-    			chooseFilters.push($(this).val());
-    		});
-			if(_.isEmpty(chooseFilters)){
-				return;
-			}
-			console.log("choose:"+chooseFilters);
-			$("#fieldTable tbody tr:eq("+index+") td #filters").val(chooseFilters.join(","));
-			$("#fieldTable tbody tr:eq("+index+") td #analyzerTag").text(chooseFilters.length);
-			$('.jBox-content #analyzerTemplate input').prop("checked", false);
+	    onInit: function(){
+	    	setTimeout(function(){
+	    		//绑定参数值
+		    	bindBoxParamVal(boxId, index);
+	    	}, 600);
+	    },
+    	confirm: function(){
+    		//提交参数
+    		boxSubmitParam(boxId, index);
     	},
 	}).open().show();
 }
+
+
+/**
+ * 绑定 box 参数值
+ * @param boxId
+ * @param index 下标
+ */
+function bindBoxParamVal(boxId, index){
+	//设置 过滤器
+	bindBoxCheckedParamVal(boxId, index, "index", "filters");
+	bindBoxCheckedParamVal(boxId, index, "query", "filters");
+	
+	//设置 IK的 useSmart
+	bindBoxCheckedParamVal(boxId, index, "index", "useSmart");
+	bindBoxCheckedParamVal(boxId, index, "query", "useSmart");
+	
+	//设置 地区提取类型code
+	bindBoxCheckedParamVal(boxId, index, "index", "code");
+	bindBoxCheckedParamVal(boxId, index, "query", "code");
+
+	//设置 符号切割符号
+	bindBoxInputParam(boxId, index, "index", "separator");
+	bindBoxInputParam(boxId, index, "query", "separator");
+	bindBoxInputParam(boxId, index, "index", "sqlGroupSymbol");
+	bindBoxInputParam(boxId, index, "query", "sqlGroupSymbol");
+}
+
+/**
+ * 绑定 选中参数
+ * @param boxId
+ * @param type {index/query}
+ * @param index 下标
+ * @param name 参数名
+ */
+function bindBoxCheckedParamVal(boxId, index, type, name){
+	var paramVal = getAnalyzerHiddenParamVal(type, index, name);
+	if(!_.isEmpty(paramVal)){
+		var array = paramVal.split(",");
+		for (var i in array) {
+			var val = array[i];
+			console.log(" set: "+boxId+":input[name="+type+"_"+name+"]:"+val);
+			$('#'+boxId+' input[name='+type+'_'+name+']').each(function(){
+				var currVal = $(this).val().toString();
+				if(currVal == val){
+					$(this).prop("checked", true);
+				}
+			});
+		}
+	}
+}
+
+/**
+ * 绑定 输入框参数
+ * @param boxId
+ * @param index 下标
+ * @param type {index/query}
+ * @param name 参数名
+ */
+function bindBoxInputParam(boxId, index, type, name){
+	var paramVal = getAnalyzerHiddenParamVal(type, index, name);
+	if(!_.isEmpty(paramVal)){
+		$('#'+boxId+' input[name='+type+'_'+name+']').val(paramVal);
+	}
+}
+
+
+/**
+ * 提交参数
+ * @param boxId
+ * @param index 下标
+ */
+function boxSubmitParam(boxId, index){
+	var setCount = 0;
+	//设置 过滤器
+	setCount += boxSubmitCheckedParam(boxId, index, "index", "filters");
+	setCount += boxSubmitCheckedParam(boxId, index, "query", "filters");
+	
+	//设置 IK的 useSmart
+	setCount += boxSubmitCheckedParam(boxId, index, "index", "useSmart");
+	setCount += boxSubmitCheckedParam(boxId, index, "query", "useSmart");
+	
+	//设置 地区提取类型code
+	setCount += boxSubmitCheckedParam(boxId, index, "index", "code");
+	setCount += boxSubmitCheckedParam(boxId, index, "query", "code");
+
+	//设置 符号切割符号
+	setCount += boxSubmitInputParam(boxId, index, "index", "separator");
+	setCount += boxSubmitInputParam(boxId, index, "query", "separator");
+	setCount += boxSubmitInputParam(boxId, index, "index", "sqlGroupSymbol");
+	setCount += boxSubmitInputParam(boxId, index, "query", "sqlGroupSymbol");
+	
+	var starTag = setCount!=0?"<i class='icon-star'></i>":"";
+	$("#fieldTable tbody tr:eq("+index+") td #analyzerTag").html(starTag);
+}
+
+/**
+ * 设置 输入框参数
+ * @param boxId
+ * @param index 下标
+ * @param type {index/query}
+ * @param name 参数名
+ */
+function boxSubmitInputParam(boxId, index, type, name){
+	var inputVal = $('#'+boxId+' input[name='+type+'_'+name+']').val();
+	//设置 分析器隐藏参数
+	return setAnalyzerHiddenParam(type, index, name, inputVal);
+}
+
+/**
+ * 设置 选中参数
+ * @param boxId
+ * @param type {index/query}
+ * @param index 下标
+ * @param name 参数名
+ */
+function boxSubmitCheckedParam(boxId, index, type, name){
+	var chooseFilters = new Array();
+	$('#'+boxId+' input[name='+type+'_'+name+']:checked').each(function(){
+		chooseFilters.push($(this).val());
+	});
+	//设置 分析器隐藏参数
+	return setAnalyzerHiddenParam(type, index, name, chooseFilters.join(","));
+}
+
+
+/**
+ * 设置 分析器隐藏参数
+ * @param type {index/query}
+ * @param index 下标
+ * @param name 参数名
+ * @param val
+ * @return 状态（0=未设值，1=设值成功）
+ */
+function setAnalyzerHiddenParam(type, index, name, val){
+	console.log("index:"+index+", "+type+"_"+name+", val:"+val);
+	$("#fieldTable tbody tr:eq("+index+") td #analyzer_"+type+"_"+name).val(val);
+	return _.isEmpty(val)?0:1;
+}
+
+/**
+ * 获取 分析器隐藏参数
+ * @param type {index/query}
+ * @param index 下标
+ * @param name 参数名
+ * @return val
+ */
+function getAnalyzerHiddenParamVal(type, index, name){
+	var val = $("#fieldTable tbody tr:eq("+index+") td #analyzer_"+type+"_"+name).val();
+	console.log(index+", get:"+type+"."+name+":"+val);
+	return val;
+}
+
+
 
 /**
  * 添加 字段
@@ -126,22 +296,22 @@ function addFieldRow(){
 	tpl.append('<td><input class="required" type="text" name="fields['+newIndex+'].label" placeholder="简单描述" minlength="2" maxlength="10"/></td>');
 		
 	var fieldTypeTpl = $("#tplFieldType").clone();
-	tpl.append('<td><select name="fields['+newIndex+'].type">'+fieldTypeTpl.html()+'</select></td>');
+	tpl.append('<td><select id="selectType" name="fields['+newIndex+'].type.name" onchange="changeSelectType('+newIndex+')">'+fieldTypeTpl.html()+'</select></td>');
 	tpl.append('<td><div id="analyzerDiv">');
-	tpl.append('<input id="analyzerIndex" type="hidden" name="fields['+newIndex+'].type.tokenizerClass" value=""/>');
-	tpl.append('<input id="analyzerIndexUseSmart" type="hidden" name="fields['+newIndex+'].type.index.useSmart" value=""/>');
-	tpl.append('<input id="analyzerIndexCode" type="hidden" name="fields['+newIndex+'].type.index.code" value=""/>');
-	tpl.append('<input id="analyzerIndexSeparator" type="hidden" name="fields['+newIndex+'].type.index.separator" value=""/>');
-	tpl.append('<input id="analyzerIndexSqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.index.sqlGroupSymbol" value=""/>');
-	tpl.append('<input id="analyzerIndexFilters" type="hidden" name="fields['+newIndex+'].type.index.filters" value=""/>');
+	tpl.append('<input id="analyzer_tokenizerClass" type="hidden" name="fields['+newIndex+'].type.tokenizerClass" value=""/>');
+	tpl.append('<input id="analyzer_index_useSmart" type="hidden" name="fields['+newIndex+'].type.index.useSmart" value=""/>');
+	tpl.append('<input id="analyzer_index_code" type="hidden" name="fields['+newIndex+'].type.index.code" value=""/>');
+	tpl.append('<input id="analyzer_index_separator" type="hidden" name="fields['+newIndex+'].type.index.separator" value=""/>');
+	tpl.append('<input id="analyzer_index_sqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.index.sqlGroupSymbol" value=""/>');
+	tpl.append('<input id="analyzer_index_filters" type="hidden" name="fields['+newIndex+'].type.index.filters" value=""/>');
 	
-	tpl.append('<input id="analyzerQueryUseSmart" type="hidden" name="fields['+newIndex+'].type.query.useSmart" value=""/>');
-	tpl.append('<input id="analyzerQueryCode" type="hidden" name="fields['+newIndex+'].type.query.code" value=""/>');
-	tpl.append('<input id="analyzerQuerySeparator" type="hidden" name="fields['+newIndex+'].type.query.separator" value=""/>');
-	tpl.append('<input id="analyzerQuerySqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.query.sqlGroupSymbol" value=""/>');
-	tpl.append('<input id="analyzerQueryFilters" type="hidden" name="fields['+newIndex+'].type.query.filters" value=""/>');
-	tpl.append('<a href="javascript:chooseAnalyzerModal('+newIndex+')">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>');
-	tpl.append('<span id="analyzerTag" class="badge badge-info"></span>');
+	tpl.append('<input id="analyzer_query_useSmart" type="hidden" name="fields['+newIndex+'].type.query.useSmart" value=""/>');
+	tpl.append('<input id="analyzer_query_code" type="hidden" name="fields['+newIndex+'].type.query.code" value=""/>');
+	tpl.append('<input id="analyzer_query_separator" type="hidden" name="fields['+newIndex+'].type.query.separator" value=""/>');
+	tpl.append('<input id="analyzer_query_sqlGroupSymbol" type="hidden" name="fields['+newIndex+'].type.query.sqlGroupSymbol" value=""/>');
+	tpl.append('<input id="analyzer_query_filters" type="hidden" name="fields['+newIndex+'].type.query.filters" value=""/>');
+	tpl.append('<a id="chooseAnalyzerBtn" href="javascript:chooseAnalyzerModal('+newIndex+')" class="mgl-10">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>');
+	tpl.append('<span id="analyzerTag" class="mgl-10 label label-success"></span>');
 	tpl.append('</div></td>');
 	tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].indexed" value="true"/></td>');
 	tpl.append('<td><input type="checkbox" name="fields['+newIndex+'].stored" value="true"/></td>');

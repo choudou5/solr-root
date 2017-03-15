@@ -45,11 +45,13 @@
               <ol class="formwizard-steps">
 				<li class="active current"><span class="label">1</span>填写基本信息</li>
 				<li><span class="label">2</span>字段配置</li>
-				<li><span class="label">3</span>创建成功</li>
+				<li><span class="label">3</span>高级配置</li>
+				<li><span class="label">4</span>创建成功</li>
 			  </ol>
 			  
               <%@include file="/WEB-INF/view/console/collection/schema/add-step1.jsp" %>
               <%@include file="/WEB-INF/view/console/collection/schema/add-step2.jsp" %>
+              <%@include file="/WEB-INF/view/console/collection/schema/add-step3.jsp" %>
 
               <div class="form-actions">
                 <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;

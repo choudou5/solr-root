@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- 定义结构 -->
-<div id="form-wizard-2" class="step hide">
+<!-- 高级配置结构 -->
+<div id="form-wizard-3" class="step hide">
   <div class="widget-box">
     <div class="widget-title">
-      <span class="label label-none"><a href="javascript:void(0);">配置说明</a></span>
+      <h5>字段组合</h5>
     </div>
     <div class="widget-content nopadding">
       <c:set var="fieldTypes" value="${fns:getFieldTypeArray()}" />

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<!-- 基本信息 -->
 <div id="form-wizard-1" class="step">
   <div class="control-group">
     <label class="control-label">应用标识</label>
