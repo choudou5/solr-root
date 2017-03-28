@@ -13,7 +13,7 @@ public class Analyzer implements Serializable{
 
 	private static final long serialVersionUID = -6205603186486014523L;
 	
-	private boolean useSmart = false;
+	private Boolean useSmart;
 	
 	private String code;
 	
@@ -23,11 +23,11 @@ public class Analyzer implements Serializable{
 	/** 过滤器 (多个逗号隔开) */
 	private String filters;
 
-	public boolean isUseSmart() {
+	public Boolean getUseSmart() {
 		return useSmart;
 	}
 
-	public void setUseSmart(boolean useSmart) {
+	public void setUseSmart(Boolean useSmart) {
 		this.useSmart = useSmart;
 	}
 

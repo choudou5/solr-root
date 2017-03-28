@@ -13,7 +13,7 @@
 	  	<div id="tab_index" class="tab-pane active">
 	  		<%-- 扩展 参数 --%>
 	  	    <div class="alert alert-info word_ik hide">
-		    	<span>是否智能：</span>
+		    	<span>是否智能分词：</span>
 		    	<input type="radio" name="index_useSmart" value="true"/>是否 &nbsp;&nbsp;
 		    	<input type="radio" name="index_useSmart" value="false"/>否
 		    </div>

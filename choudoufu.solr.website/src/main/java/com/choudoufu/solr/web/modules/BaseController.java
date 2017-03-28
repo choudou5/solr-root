@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choudoufu.solr.common.beanvalidator.BeanValidators;
+import com.choudoufu.solr.constants.SysConsts.DataStatusEnum;
 
 public abstract class BaseController {
 	
@@ -103,6 +104,15 @@ public abstract class BaseController {
 	protected String redirect(String path, RedirectAttributes attributes, String message) {
 		attributes.addFlashAttribute("message", message);
 		return "redirect:"+path;
+	}
+	
+	/**
+	 * 返回状态
+	 * @param status
+	 * @return Y/N
+	 */
+	protected String retrunStatus(boolean status) {
+		return status?DataStatusEnum.YES.getValue():DataStatusEnum.NO.getValue();
 	}
 	
 }
