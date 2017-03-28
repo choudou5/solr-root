@@ -43,5 +43,9 @@ public class SolrHelper {
 		}
 		return null;
 	}
+	
+	public static String getSolrHome() {
+		return coreContainer.getSolrHome();
+	}
 
 }

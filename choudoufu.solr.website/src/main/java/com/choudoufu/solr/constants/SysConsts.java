@@ -2,6 +2,8 @@ package com.choudoufu.solr.constants;
 
 public interface SysConsts {
 	
+	String ENCODING = "UTF-8";
+	
 	String USER_SESSION = "user_session";
 	
 	/** 模块 */
@@ -13,6 +15,12 @@ public interface SysConsts {
 	
 	String VIEW_INDEX = "/console/page?path=/index";	//首页
 	String VIEW_LOGIN = "/console/page?path=/login";	//登录页
+	
+	
+	
+	String CHAR_UNDERLINE = "_";
+	String CHAR_COMMA = ",";
+	String CHAR_NEW_LINE = "\r\n";
 	
 	/**
 	 * 数据状态: YES/NO

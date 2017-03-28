@@ -52,6 +52,15 @@ public enum SolrFilterEnum {
 		return ftMap;
 	}
 	
+	public static String getTagXml(String type){
+		SolrFilterEnum[] enums = SolrFilterEnum.values();
+		for (SolrFilterEnum ftEnum : enums) {
+			if(ftEnum.getValue().equals(type))
+				return ftEnum.getTag();
+		}
+		return "";
+	}
+	
 	public String getValue() {
 		return value;
 	}

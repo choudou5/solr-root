@@ -11,7 +11,9 @@ import org.apache.solr.core.SolrCore;
 import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.constants.UserTypeEnum;
 import com.choudoufu.solr.schema.entity.Schema;
+import com.choudoufu.solr.schema.entity.SolrConfig;
 import com.choudoufu.solr.schema.entity.SolrField;
+import com.choudoufu.solr.util.GenFileUtil;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrHelper;
 import com.choudoufu.solr.util.SolrJUtil;
@@ -46,11 +48,13 @@ public class SchemaService {
 	 * @param schema
 	 * @param fields
 	 */
-	public static void save(HttpServletRequest req, Schema schema){
+	public static void save(HttpServletRequest req, Schema schema, SolrConfig solrConfig){
 		//保存 应用信息
 		saveSchema(req, schema);
 		//保存 应用字段
 		saveSchemaFields(req, schema.getName(), schema.getFields());
+		String savePath = SolrHelper.getSolrHome();
+		GenFileUtil.genSchema(savePath, solrConfig, schema);
 	}
 	
 	/**
@@ -60,11 +64,8 @@ public class SchemaService {
 	 */
 	public static void saveSchema(HttpServletRequest req, Schema schema){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
-		String schemaName = schema.getName();
 		User user = UserUtil.getSessionUser(req);
-		if(user.getUserType() == UserTypeEnum.TEMP.getValue()){
-			schemaName = user.getLoginName()+schema.getName();
-		}
+		String schemaName = getSchemaName(schema.getName(), user);
 		Schema oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
 		if(oldTbl != null){//修改
 			oldTbl.setTitle(schema.getTitle());
@@ -82,6 +83,12 @@ public class SchemaService {
 		
 	}
 	
+	private static String getSchemaName(String schemaName,  User user){
+		if(user != null && user.getUserType() == UserTypeEnum.TEMP.getValue()){
+			schemaName = user.getLoginName()+SysConsts.CHAR_UNDERLINE+schemaName;
+		}
+		return schemaName;
+	}
 	
 	/**
 	 * 保存 应用字段信息
@@ -114,9 +121,10 @@ public class SchemaService {
 	 * @param schemaName
 	 * @return
 	 */
-	public static boolean existSchema(String schemaName){
+	public static boolean existSchema(String schemaName, HttpServletRequest req){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
-		Schema schema = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
+		User user = UserUtil.getSessionUser(req);
+		Schema schema = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+getSchemaName(schemaName, user)), core, Schema.class);
 		return schema==null?false:true;
 	}
 	

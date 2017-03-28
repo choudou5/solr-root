@@ -21,8 +21,11 @@ $(document).ready(function(){
 		},
 		validationOptions : {
 			rules: {
-				name: {required: true, rangelength: [4, 30], isVariable: true},
+				name: {required: true, rangelength: [4, 30], isVariable: true, remote: ctx+"/console/collection/schema/checkSchemaName"},
 				title: "required",
+			},
+			messages: {
+				name: {remote: "已存在此应用标识"}
 			},
 			errorClass: "help-inline",
 			errorElement: "span",
