@@ -65,10 +65,10 @@ System.out.println("getSolrConfigStr len:"+coreBuilder.length());
 	private static String getSchemaXmlStr(Schema schema){
 		SolrField[] fields = schema.getFields();
 		
-		StringBuilder strBuilder = new StringBuilder(1000+(schema.getFields().length*60));
+		StringBuilder strBuilder = new StringBuilder(350);
 		
-		strBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"\" >"+SysConsts.CHAR_NEW_LINE);
-		strBuilder.append("<schema name=\""+schema.getName()+"\" title="+schema.getTitle()+" version=\"1.5\">"+SysConsts.CHAR_NEW_LINE);
+		strBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"\" >");
+		strBuilder.append("<schema name=\""+schema.getName()+"\" title="+schema.getTitle()+" version=\"1.5\">");
 		
 		//字段（必要）
 		strBuilder.append("<field name=\"_version_\" type=\"long\" indexed=\"true\" stored=\"true\"/>"+SysConsts.CHAR_NEW_LINE);
@@ -80,15 +80,12 @@ System.out.println("getSolrConfigStr len:"+coreBuilder.length());
 					+"\" indexed=\""+field.getIndexed()+"\" stored=\""+field.getStored()
 					+"\" required=\""+field.getRequired()+"\" multiValued=\""+field.getMultiValued()+"\"/>"+SysConsts.CHAR_NEW_LINE);
 		}
-		
 		strBuilder.append(SysConsts.CHAR_NEW_LINE);
-		
 		//uniqueKey（主键）
 		String uniqueKey = fields[schema.getPrimaryNo()].getName();
 		strBuilder.append("<uniqueKey>"+uniqueKey+"</uniqueKey>");
 		
 		//<defaultSearchField>text</defaultSearchField>
-		
 		strBuilder.append(SysConsts.CHAR_NEW_LINE);
 		//字段类型（基本）
 		strBuilder.append("<fieldType name=\"string\" class=\"solr.StrField\" sortMissingLast=\"true\" />"+SysConsts.CHAR_NEW_LINE);
