@@ -5,11 +5,11 @@
 <div id="sidebar"><a href="${ctx }/console/page?path=/index" class="visible-phone"><i class="icon icon-home"></i>首页</a>
   <ul>
     <li class="active"><a href="${ctx }/console/page?path=/index"><i class="icon icon-home"></i> <span>首页</span></a> </li>
-    <li><a href="interface.html"><i class="icon icon-list"></i><span>应用列表</span></a></li>
+    <li><a href="${ctx }/console/collection/list"><i class="icon icon-list"></i><span>应用列表</span></a></li>
     <li class="submenu"> 
     	<a href="#"><i class="icon icon-cog"></i><span>基本配置</span></a>
       <ul>
-        <li><a href="form-common.html">字段配置</a></li>
+        <li><a href="${ctx }/console/page?path=collection/schema/add">字段配置</a></li>
         <li><a href="form-validation.html">数据源</a></li>
         <li><a href="form-wizard.html">重建索引</a></li>
       </ul>

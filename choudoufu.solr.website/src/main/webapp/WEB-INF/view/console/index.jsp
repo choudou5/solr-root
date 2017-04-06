@@ -26,16 +26,13 @@
     <div class="row-fluid">
       <div class="span12">
       
-      	<div class="widget-box">
+      	<div id="app-list" class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-hand-right"></i> </span>
             <h5>应用列表</h5>
+            <a href="${ctx }/console/page?path=collection/schema/add" class="fr label label-info"> <i class="icon-plus-sign"></i>&nbsp;新建</a>
           </div>
           <div class="widget-content">
-            <ul class="quick-actions">
-              <li class="bg_lb"> <a href="#"> <i class="icon-book"></i>电子书</a> </li>
-              <li class="bg_lo"> <a href="#"> <i class="icon-user"></i> 用户</a> </li>
-              <li class="bg_lg"> <a href="${ctx }/console/page?path=collection/schema/add"> <i class="icon-plus-sign"></i>立即新建</a> </li>
-            </ul>
+            <ul class="quick-actions"></ul>
           </div>
         </div>
         
@@ -180,6 +177,29 @@ $(function () {
 function resetMenu() {
    document.gomenu.selector.selectedIndex = 2;
 }
+
+$.ajax({
+    type: "GET",
+    cache: false,
+    async: true,
+    dataType: "json",
+    url: "/console/index/appList",
+    data: {},
+    success: function(data, textStatus){
+    	if(!_.isEmpty(data)){
+    		var bg_list = ["bg_lb", "bg_dy", "bg_lg", "bg_lr", "bg_ly", "bg_db", "bg_ls", "bg_lo", "bg_dg", "bg_lv", "bg_lh"];
+    		for (var index in data) {
+    			var color = bg_list.length%(parseInt(index)+1);
+				var schema = data[index];
+				$("#app-list ul.quick-actions").append('<li class="'+bg_list[color]+'"><a href="#">'+schema.name+'</a></li>');
+			}
+    	}else{
+    		info(data);
+    	}
+    }
+});
+
+
 </script>
 </body>
 </html>

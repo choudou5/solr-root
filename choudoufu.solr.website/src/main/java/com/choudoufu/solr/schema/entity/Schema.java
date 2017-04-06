@@ -66,7 +66,7 @@ public class Schema implements Serializable{
 	
 	/** 增长ID */
 	@Field
-	private long growthId = 0;
+	private transient long growthId = 0;
 	
 	/** 主键序号*/
 	@Field

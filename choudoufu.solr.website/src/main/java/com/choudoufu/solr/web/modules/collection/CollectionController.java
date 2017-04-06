@@ -1,17 +1,15 @@
-package com.choudoufu.solr.web.modules.report;
+package com.choudoufu.solr.web.modules.collection;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.core.SolrCore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choudoufu.solr.constants.SysConsts;
 import com.choudoufu.solr.schema.entity.Schema;
@@ -20,29 +18,28 @@ import com.choudoufu.solr.util.SolrJUtil;
 import com.choudoufu.solr.web.modules.BaseController;
 
 /**
- * 首页统计
- * @author xuhaowen
- * @date 2017年3月1日
+ * 集合 Controller
+ * @author xuhaowende
+ * @date 2017年4月4日
  */
 @Controller  
 @Scope("prototype")   
-@RequestMapping("/console/index")  
-public class IndexStatisticalController extends BaseController{
+@RequestMapping("/console/collection")  
+public class CollectionController extends BaseController{
 
 	
 	/**
-	 * app列表
+	 * 列表
 	 * @param req
-	 * @param resp
-	 * @param attributes
+	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value={"/appList"} ,method=RequestMethod.GET)  
-	@ResponseBody
-    public String appList(HttpServletRequest req, HttpServletResponse resp, RedirectAttributes attributes){  
+	@RequestMapping(value={"/list"},method=RequestMethod.GET)
+    public String list(HttpServletRequest req, Model model){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
 		List<Schema> schemas = SolrJUtil.listModelData(SolrJUtil.getSolrQuery(SolrJUtil.QUERY_ALL), core, Schema.class);
-		return retrunJson(schemas);
+		model.addAttribute("schemas", schemas);
+		return "/console/collection/list";
     }
 	
 }

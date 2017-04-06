@@ -376,7 +376,7 @@ hr{ border-top-color:#dadada;}
 	margin: 0 10px 20px;
 }
 .quick-actions li a {
-	padding:10px 30px; 
+	padding:20px 30px; 
 }
 .stats-plain li h4 {
 	font-size: 40px;
@@ -392,7 +392,7 @@ hr{ border-top-color:#dadada;}
 }
 .quick-actions li a, .quick-actions-horizontal li a {
 	display: block;
-	color: #fff; font-size:14px;
+	color: #fff; font-size:18px;
 	font-weight:lighter;
 }
 .quick-actions li a i[class^="icon-"], .quick-actions li a i[class*=" icon-"] {

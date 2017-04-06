@@ -242,8 +242,11 @@ public class SolrJUtil {
 		Set<String> fieldNames = fields.getLuceneFieldNames();
 		int size = ids.size();
 		IndexSchema schema = req.getSchema();
+		DocIterator iterator = ids.iterator();
 		for (int i=0; i<size; i++) {
-			docs.add(getSolrDocument(ids.iterator(), req.getSearcher(), transformer, schema, fieldNames));
+			if(!iterator.hasNext())
+				break;
+			docs.add(getSolrDocument(iterator.nextDoc(), req.getSearcher(), transformer, schema, fieldNames));
 		}
 		if( transformer != null ) {
 			transformer.setContext( null );
@@ -277,18 +280,17 @@ public class SolrJUtil {
 		}
 		Set<String> fieldNames = fields.getLuceneFieldNames();
 		IndexSchema schema = req.getSchema();
-		SolrDocument doc = getSolrDocument(ids.iterator(), req.getSearcher(), transformer, schema, fieldNames);
+		
+		if(!context.iterator.hasNext())
+			return null;
+		SolrDocument doc = getSolrDocument(context.iterator.nextDoc(), req.getSearcher(), transformer, schema, fieldNames);
 		if( transformer != null ) {
 			transformer.setContext( null );
 		}
 		return doc;
 	}
 	
-	private static SolrDocument getSolrDocument(DocIterator iterator, SolrIndexSearcher searcher, DocTransformer transformer, IndexSchema schema, Set<String> fieldNameSet) throws IOException{
-		if(!iterator.hasNext())
-			return null;
-		
-		int id = iterator.nextDoc();
+	private static SolrDocument getSolrDocument(int id, SolrIndexSearcher searcher, DocTransformer transformer, IndexSchema schema, Set<String> fieldNameSet) throws IOException{
 		Document doc = searcher.doc(id, fieldNameSet);
 		Set<String> fieldNames = schema.getFields().keySet();
 		SolrDocument d = new SolrDocument();

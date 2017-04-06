@@ -4,6 +4,15 @@ $(function(){
 	
 });
 
+
+function info(message) {
+	console.log("info:"+message);
+}
+
+function error(message, e) {
+	console.log("error:"+message+", e:"+e);
+}
+
 /**
  * 获得 随机数
  * @returns {Number}

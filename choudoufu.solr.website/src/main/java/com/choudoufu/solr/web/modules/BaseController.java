@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choudoufu.solr.common.beanvalidator.BeanValidators;
 import com.choudoufu.solr.constants.SysConsts.DataStatusEnum;
+import com.choudoufu.solr.util.JsonUtil;
 
 public abstract class BaseController {
 	
@@ -113,6 +114,10 @@ public abstract class BaseController {
 	 */
 	protected String retrunStatus(boolean status) {
 		return status?DataStatusEnum.YES.getValue():DataStatusEnum.NO.getValue();
+	}
+	
+	protected String retrunJson(Object obj) {
+		return JsonUtil.toString(obj);
 	}
 	
 }
