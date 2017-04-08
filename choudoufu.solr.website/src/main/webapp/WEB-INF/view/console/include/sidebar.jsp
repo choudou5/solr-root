@@ -3,8 +3,8 @@
 
 <!--sidebar-menu-->
 <div id="sidebar"><a href="${ctx }/console/page?path=/index" class="visible-phone"><i class="icon icon-home"></i>首页</a>
-  <ul>
-    <li class="active"><a href="${ctx }/console/page?path=/index"><i class="icon icon-home"></i> <span>首页</span></a> </li>
+  <ul id="oneLevelSideBar">
+    <li class=""><a href="${ctx }/console/page?path=/index"><i class="icon icon-home"></i> <span>首页</span></a> </li>
     <li><a href="${ctx }/console/collection/list"><i class="icon icon-list"></i><span>应用列表</span></a></li>
     <li class="submenu"> 
     	<a href="#"><i class="icon icon-cog"></i><span>基本配置</span></a>

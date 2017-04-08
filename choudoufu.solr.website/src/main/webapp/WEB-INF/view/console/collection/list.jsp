@@ -58,7 +58,7 @@
 		                  	<a href="javascript:void(0);">修改结构</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">数据源</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">重建索引</a>&nbsp;&nbsp;
-		                  	<a href="javascript:void(0);">删除${status.index }</a>
+		                  	<a href="javascript:void(0);">删除</a>
 		                  </td>
 		                </tr>
 	              	</c:forEach>

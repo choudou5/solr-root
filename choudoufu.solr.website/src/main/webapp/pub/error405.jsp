@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>404-找不到页面</title>
+<title>405-请求出错</title>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" href="/static/images/favicon.ico">
@@ -14,7 +14,7 @@
 
 <div id="content" style="margin-left: 0px;min-height:90%;">
   <div id="content-header" style="margin-top: -20px;">
-    <h1>Error 404</h1>
+    <h1>Error 405</h1>
   </div>
   <div class="container-fluid">
     <div class="row-fluid">
@@ -22,8 +22,9 @@
         <div class="widget-box">
           <div class="widget-content">
             <div class="error_ex">
-              <h1>404</h1>
-              <h3>很抱歉，您所访问的页面不存在！</h3>
+              <h1>405</h1>
+              <h3>很抱歉，内部错误 -方法参数类型与标准不一致！</h3>
+              <p>请联系管理员</p>
               <a class="btn btn-warning btn-big" href="/console/page?path=/index">返回首页</a>&nbsp;&nbsp;&nbsp;
               <a class="btn btn-big" href="javascript:history.go(-1);">返回上一页</a>
              </div>

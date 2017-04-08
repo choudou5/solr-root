@@ -5,6 +5,35 @@ $(function(){
 });
 
 
+/**
+ * 获得 地址栏
+ * @returns
+ */
+function getLocalHref(){
+    return window.location.href;
+}
+
+function getLocalPath(){
+    return window.location.pathname;
+}
+
+function getLocalFullPath(){
+    return window.location.pathname+window.location.search;
+}
+
+/**
+ * 获得地址栏查询参数
+ * @param paramName
+ * @returns
+ */
+function getLocalQueryParam(paramName){
+     var reg = new RegExp("(^|&)"+ paramName +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+
+
 function info(message) {
 	console.log("info:"+message);
 }

@@ -149,7 +149,8 @@
 		<welcome-file>admin.html</welcome-file>
 	</welcome-file-list>
 
-<!-- 	<error-page>
+	<!-- 默认错误页面 -->
+	<error-page>
 		<error-code>403</error-code>
 		<location>/pub/error403.jsp</location>
 	</error-page>
@@ -158,10 +159,14 @@
 		<location>/pub/error404.jsp</location>
 	</error-page>
 	<error-page>
+		<error-code>405</error-code>
+		<location>/pub/error405.jsp</location>
+	</error-page>
+	<error-page>
 		<error-code>500</error-code>
 		<location>/pub/error500.jsp</location>
 	</error-page>
- -->
+	
 	<!-- Exception -->
 	<!-- <error-page> <exception-type>java.lang.Exception</exception-type> <location>/error.jsp</location> 
 		</error-page> <error-page> <exception-type>java.lang.NullPointerException 
