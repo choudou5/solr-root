@@ -29,7 +29,7 @@
       	<div id="app-list" class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-hand-right"></i> </span>
             <h5>应用列表</h5>
-            <a href="${ctx }/console/page?path=collection/schema/add" class="fr label label-info"> <i class="icon-plus-sign"></i>&nbsp;新建</a>
+            <a href="${ctx }/console/page?path=collection/schema/add" class="fl label label-info"> <i class="icon-plus-sign"></i>&nbsp;新建</a>
           </div>
           <div class="widget-content">
             <ul class="quick-actions"></ul>

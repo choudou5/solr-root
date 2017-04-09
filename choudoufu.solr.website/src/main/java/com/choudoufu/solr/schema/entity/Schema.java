@@ -72,6 +72,9 @@ public class Schema implements Serializable{
 	@Field
 	public Integer primaryNo = 0;
 	
+	@Field
+	public boolean isSys = false;
+	
 	
 	public String getName() {
 		return name;
@@ -159,6 +162,14 @@ public class Schema implements Serializable{
 
 	public void setPrimaryNo(Integer primaryNo) {
 		this.primaryNo = primaryNo;
+	}
+
+	public boolean getIsSys() {
+		return isSys;
+	}
+
+	public void setIsSys(boolean isSys) {
+		this.isSys = isSys;
 	}
 
 	@Override

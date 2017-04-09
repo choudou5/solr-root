@@ -1,10 +1,14 @@
 package com.choudoufu.solr.web.modules;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import org.apache.solr.common.SolrException;
+import org.apache.solr.common.SolrException.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ public abstract class BaseController {
 	
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+	protected int STATUS_OK = 200;
+	
 	/**
 	 * 验证Bean实例对象
 	 */
@@ -72,8 +78,6 @@ public abstract class BaseController {
 		BeanValidators.validateWithException(validator, object, groups);
 	}
 	
-	
-	
 	/**
 	 * 添加Model消息
 	 * @param message
@@ -108,16 +112,46 @@ public abstract class BaseController {
 	}
 	
 	/**
-	 * 返回状态
+	 * 输出状态
 	 * @param status
 	 * @return Y/N
 	 */
-	protected String retrunStatus(boolean status) {
+	protected String writeStatus(boolean status) {
 		return status?DataStatusEnum.YES.getValue():DataStatusEnum.NO.getValue();
 	}
 	
-	protected String retrunJson(Object obj) {
+	protected String writeJson(Object obj) {
 		return JsonUtil.toString(obj);
+	}
+	
+	protected String writeJson(int status, Object content){
+		return writeJson(status, content, null, null);
+	}
+	
+	protected String writeJson(int status, Object content, Map<String, Object> extParam){
+		return writeJson(status, content, extParam, null);
+	}
+	
+	protected String writeJson(int status, Object content, Exception e){
+		return writeJson(status, content, null, e);
+	}
+	
+	protected String writeJson(String defMsg, Exception e){
+		log.error(defMsg, e);
+		if(e instanceof SolrException){
+			SolrException se = (SolrException)e;
+			return writeJson(se.code(), se.getMessage(), null, e);
+		}
+		return writeJson(ErrorCode.BAD_REQUEST.code, defMsg, null, e);
+	}
+	
+	protected String writeJson(int status, Object content, Map<String, Object> extParam, Exception e){
+		Map<String, Object> result = new HashMap<String, Object>(4);
+		result.put("status", status);
+		result.put("content", content);
+		if(extParam != null) result.put("extParam", extParam);
+		if(e != null) result.put("error", e.getMessage());
+		return JsonUtil.toString(result);
 	}
 	
 }

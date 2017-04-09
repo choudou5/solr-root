@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.common.SolrException;
+import org.apache.solr.common.SolrException.ErrorCode;
 import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.SysConsts;
@@ -53,8 +56,54 @@ public class SchemaService {
 		saveSchema(req, schema);
 		//保存 应用字段
 		saveSchemaFields(req, schema.getName(), schema.getFields());
-		String savePath = SolrHelper.getSolrHome();
-		GenFileUtil.genSchema(savePath, solrConfig, schema);
+		GenFileUtil.genSchema(SolrHelper.getSolrHome(), solrConfig, schema);
+	}
+	
+	/**
+	 * 删除 schema
+	 * @param req
+	 * @param schemaName
+	 */
+	public static void delete(HttpServletRequest req, String schemaName){
+		//权限校验
+		if(!isPermission(req, schemaName))
+			throw new SolrException(ErrorCode.FORBIDDEN, "对不起，您无权操作!");
+		
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		//删除 schema数据
+		SolrJUtil.delModelData("name:"+schemaName, core);
+		//删除 应用字段
+		deleteSchemaFields(req, SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD), schemaName);
+		//删除 配置文件
+		GenFileUtil.deleteSchema(SolrHelper.getSolrHome(), schemaName);
+	}
+	
+	/**
+	 * 权限校验（校验是否为：管理员 或 创建人）
+	 * @param request
+	 * @return
+	 */
+	public static boolean isPermission(HttpServletRequest req, String schemaName){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		Schema oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
+		User user = UserUtil.getSessionUser(req);
+		if(oldTbl == null || user == null)
+			return false;
+		if(user.getUserType() == UserTypeEnum.ADMIN.getValue() || oldTbl.getCreateBy().equals(user.getLoginName()))
+			return true;
+		return false;
+	}
+	
+	/**
+	 * 添加数据过滤
+	 * @param req
+	 * @param query
+	 */
+	public static void addDataFilter(HttpServletRequest req, SolrQuery query){
+		User user = UserUtil.getSessionUser(req);
+		if(user != null && user.getUserType() != UserTypeEnum.ADMIN.getValue()){
+			query.addFilterQuery("createBy:"+user.getLoginName());
+		}
 	}
 	
 	/**
@@ -98,11 +147,8 @@ public class SchemaService {
 	 */
 	public static void saveSchemaFields(HttpServletRequest req, String schemaName, SolrField[] fields){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD);
-		List<SolrField> tblFields = getSchemaFields(schemaName);
-		if(CollectionUtils.isNotEmpty(tblFields)){
-			//删除旧数据
-			SolrJUtil.delModelData("schemaName:"+schemaName, core);
-		}
+		//删除旧数据
+		deleteSchemaFields(req, core, schemaName);
 		
 		//设置数据
 		int sortNo = 1;
@@ -114,6 +160,15 @@ public class SchemaService {
 		}
 		SolrJUtil.addModelDatas(fields, core);
 	}
+	
+	private static void deleteSchemaFields(HttpServletRequest req, SolrCore core, String schemaName){
+		List<SolrField> tblFields = getSchemaFields(schemaName);
+		if(CollectionUtils.isNotEmpty(tblFields)){
+			//删除旧数据
+			SolrJUtil.delModelData("schemaName:"+schemaName, core);
+		}
+	}
+	
 	
 	
 	/**

@@ -19,7 +19,7 @@
             <td>
               <input class="required isVariable" type="text" attrname="fields.name" name="fields.name" placeholder="字母 或 下划线 组成" maxlength="10" /></td>
             <td>
-              <input class="required" type="text" attrname="fields.label" name="fields.label" placeholder="简单描述" name=""  minlength="2" maxlength="10" /></td>
+              <input class="required span10" type="text" attrname="fields.label" name="fields.label" placeholder="简单描述" name=""  minlength="2" maxlength="10" /></td>
             <td>
               <select id="selectType" attrname="fields.type.name" name="fields.type.name"  onchange="changeSelectType(0)" >
                   <c:forEach var="fieldType" items="${fieldTypes }">

@@ -128,6 +128,7 @@ jQuery(document).ready(function () {
         el.css('margin-' + this.options.attributes.y, margin);
         
       }.bind(this));
+      this.show();
     },
     
     

@@ -71,7 +71,7 @@ function jTooltip(attach, title){
 
 function jNotice(title, color){
 	color = color==undefined?'green':color;
-	new jBox('Notice', {content: title, color: color, autoClose: 3000}).show();
+	new jBox('Notice', {content: title, color: color, autoClose: 3000});
 }
 
 var __screenH = document.body.clientHeight;
@@ -87,7 +87,7 @@ function jNoticeCenter(title, color){
 	      x: __screenW/2,
 	      y: 200
 	    },
-	}).show();
+	});
 }
 
 

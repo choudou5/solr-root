@@ -1,6 +1,15 @@
 
 $(document).ready(function(){
 	
+	$("#fieldTable thead tr th input[type=checkbox]").click(function(){
+		var attrname = $(this).attr("targetAttrName");
+		if($(this).is(':checked')){
+			$("input[type=checkbox][attrname='"+attrname+"']").prop("checked", true);
+		}else{
+			$("input[type=checkbox][attrname='"+attrname+"']").prop("checked", false);
+		}
+	});
+	
 	$("#addTableForm").formwizard({ 
 		formPluginEnabled: true,
 		validationEnabled: true,
@@ -297,7 +306,7 @@ function addFieldRow(){
 	tpl.append('<tr id="tr_'+groupId+'">');
 	tpl.append('<td>'+(newIndex+2)+'</td>');
 	tpl.append('<td><input class="required isVariable" type="text" attrname="fields.name" placeholder="字母 或 下划线 组成" maxlength="10"/></td>');
-	tpl.append('<td><input class="required" type="text" attrname="fields.label" placeholder="简单描述" minlength="2" maxlength="10"/></td>');
+	tpl.append('<td><input class="required span10" type="text" attrname="fields.label" placeholder="简单描述" minlength="2" maxlength="10"/></td>');
 		
 	var fieldTypeTpl = $("#tplFieldType").clone();
 	tpl.append('<td><select id="selectType" attrname="fields.type.name" onchange="changeSelectType(\''+groupId+'\')">'+fieldTypeTpl.html()+'</select></td>');

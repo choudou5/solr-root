@@ -67,6 +67,7 @@ jQuery(document).ready(function () {
     {
       // Set the new action for the submit button
       this.submitButton.off('click.jBox-Confirm' + this.id).on('click.jBox-Confirm' + this.id, function () { this.options.confirm ? this.options.confirm() : eval(this.source.data('jBox-Confirm-submit')); this.options.closeOnConfirm && this.close(); }.bind(this));
+      this.show();
     }
     
   });
