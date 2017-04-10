@@ -36,7 +36,7 @@ $(document).ready(function(){
 			messages: {
 				name: {remote: "应用标识 已存在"}
 			},
-			errorClass: "help-inline",
+			errorClass: "help-inline-error",
 			errorElement: "span",
 			highlight:function(element, errorClass, validClass) {
 				$(element).parents('.control-group').addClass('error');
@@ -306,7 +306,7 @@ function addFieldRow(){
 	tpl.append('<tr id="tr_'+groupId+'">');
 	tpl.append('<td>'+(newIndex+2)+'</td>');
 	tpl.append('<td><input class="required isVariable" type="text" attrname="fields.name" placeholder="字母 或 下划线 组成" maxlength="10"/></td>');
-	tpl.append('<td><input class="required span10" type="text" attrname="fields.label" placeholder="简单描述" minlength="2" maxlength="10"/></td>');
+	tpl.append('<td><input class="span10" type="text" attrname="fields.label" placeholder="简单描述" maxlength="10"/></td>');
 		
 	var fieldTypeTpl = $("#tplFieldType").clone();
 	tpl.append('<td><select id="selectType" attrname="fields.type.name" onchange="changeSelectType(\''+groupId+'\')">'+fieldTypeTpl.html()+'</select></td>');
@@ -323,7 +323,7 @@ function addFieldRow(){
 	tpl.append('<input id="analyzer_query_separator" type="hidden" attrname="fields.type.query.separator" value=""/>');
 	tpl.append('<input id="analyzer_query_sqlGroupSymbol" type="hidden" attrname="fields.type.query.sqlGroupSymbol" value=""/>');
 	tpl.append('<input id="analyzer_query_filters" type="hidden" attrname="fields.type.query.filters" value=""/>');
-	tpl.append('<a id="chooseAnalyzerBtn" href="javascript:chooseAnalyzerModal(\''+groupId+'\')" class="mgl-10">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>');
+	tpl.append('<a id="chooseAnalyzerBtn" href="javascript:chooseAnalyzerModal(\''+groupId+'\')" class="mgl-10 hide">&nbsp;<i class="icon icon-plus"></i>&nbsp;</a>');
 	tpl.append('<span id="analyzerTag" class="mgl-10 label label-success"></span>');
 	tpl.append('</div></td>');
 	tpl.append('<td><input type="checkbox" attrname="fields.indexed" value="true"/></td>');

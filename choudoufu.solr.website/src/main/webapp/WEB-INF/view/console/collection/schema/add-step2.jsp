@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- 定义结构 -->
 <div id="form-wizard-2" class="step hide">
@@ -17,11 +16,11 @@
           <tr id="tr_0">
             <td>1</td>
             <td>
-              <input class="required isVariable" type="text" attrname="fields.name" name="fields.name" placeholder="字母 或 下划线 组成" maxlength="10" /></td>
+              <input class="required isVariable" type="text" attrname="fields.name" name="fields[0].name" placeholder="字母 或 下划线 组成" maxlength="10" /></td>
             <td>
-              <input class="required span10" type="text" attrname="fields.label" name="fields.label" placeholder="简单描述" name=""  minlength="2" maxlength="10" /></td>
+              <input class="span10" type="text" attrname="fields.label" name="fields[0].label" placeholder="简单描述" name=""  maxlength="10" /></td>
             <td>
-              <select id="selectType" attrname="fields.type.name" name="fields.type.name"  onchange="changeSelectType(0)" >
+              <select id="selectType" attrname="fields.type.name" name="fields[0].type.name"  onchange="changeSelectType(0)">
                   <c:forEach var="fieldType" items="${fieldTypes }">
                   <option type="${fieldType.type }" classz="${fieldType.classz }" value="${fieldType.value }">${fieldType.explain }</option>
                   </c:forEach>
@@ -32,12 +31,12 @@
                 <%@include file="/WEB-INF/view/console/collection/schema/analyzerDefHidden.jsp" %>
               </div>
             </td>
-            <td><input type="checkbox" attrname="fields.indexed" name="fields.indexed"  value="true"  /></td>
-            <td><input type="checkbox" attrname="fields.stored" name="fields.stored"  value="true" /></td>
-            <td><input type="checkbox" attrname="fields.required" name="fields.required"  value="true" /></td>
-            <td><input type="checkbox" attrname="fields.multiValued" name="fields.multiValued"  value="true" /></td>
-            <td><input type="checkbox" attrname="fields.isListShow" name="fields.isListShow"  value="true" /></td>
-            <td><input type="checkbox" attrname="fields.isListSearch" name="fields.isListSearch"  value="true" /></td>
+            <td><input type="checkbox" attrname="fields.indexed" name="fields[0].indexed"  value="true"  /></td>
+            <td><input type="checkbox" attrname="fields.stored" name="fields[0].stored"  value="true" /></td>
+            <td><input type="checkbox" attrname="fields.required" name="fields[0].required"  value="true" /></td>
+            <td><input type="checkbox" attrname="fields.multiValued" name="fields[0].multiValued"  value="true" /></td>
+            <td><input type="checkbox" attrname="fields.isListShow" name="fields[0].isListShow"  value="true" /></td>
+            <td><input type="checkbox" attrname="fields.isListSearch" name="fields[0].isListSearch"  value="true" /></td>
             <td><input type="radio" attrname="isPrimaryKey" value="0" name="isPrimaryKey"  class="required" /></td>
             <td></td>
           </tr>

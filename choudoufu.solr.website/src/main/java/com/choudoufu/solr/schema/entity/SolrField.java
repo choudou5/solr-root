@@ -2,6 +2,8 @@ package com.choudoufu.solr.schema.entity;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 
@@ -25,10 +27,12 @@ public class SolrField implements Serializable{
 	private String schemaName;
 	
 	/** 字段名*/
+	@NotNull(message="字段名不能为空")
 	@Field
 	private String name;
 	
 	/** 类型*/
+	@NotNull(message="字段类型不能为空")
 	private FieldType type;
 	
 	@Field

@@ -25,6 +25,7 @@ public abstract class BaseController {
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	protected int STATUS_OK = 200;
+	protected int STATUS_UNVALID_PARAM = 403;
 	
 	/**
 	 * 验证Bean实例对象

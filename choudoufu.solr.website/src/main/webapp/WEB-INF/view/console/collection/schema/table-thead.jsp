@@ -3,7 +3,7 @@
 <tr>
   <th>编号</th>
   <th>字段名称</th>
-  <th width="220">字段描述</th>
+  <th width="220">字段描述（选填）</th>
   <th width="130">数据类型</th>
   <th width="80">数据加工</th>
   <th><input type="checkbox" class="fl" targetAttrName="fields.indexed">被索引</th>

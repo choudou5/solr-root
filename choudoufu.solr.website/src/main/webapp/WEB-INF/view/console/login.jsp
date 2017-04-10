@@ -35,7 +35,6 @@
                         </div>
                     </div>
                 </div>
-                【${isValidateCodeLogin}】
                 <%--需要验证码登录 --%>
                 <c:if test="${isValidateCodeLogin}">
 	                <div class="control-group">

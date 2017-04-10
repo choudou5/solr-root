@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.core.SolrCore;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -47,6 +48,7 @@ public class IndexStatisticalController extends BaseController{
 		SolrQuery query = SolrJUtil.getSolrQuery(SolrJUtil.QUERY_ALL);
 		//添加数据过滤
 		SchemaService.addDataFilter(req, query);
+		query.addSort("createTime", ORDER.desc);
 		List<Schema> schemas = SolrJUtil.listModelData(query, core, Schema.class);
 		return writeJson(schemas);
     }

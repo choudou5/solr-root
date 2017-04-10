@@ -109,25 +109,26 @@ public class SchemaService {
 	/**
 	 * 保存 应用信息
 	 * @param req
-	 * @param schema
+	 * @param model
 	 */
-	public static void saveSchema(HttpServletRequest req, Schema schema){
+	public static void saveSchema(HttpServletRequest req, Schema model){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
 		User user = UserUtil.getSessionUser(req);
-		String schemaName = getSchemaName(schema.getName(), user);
-		Schema oldTbl = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
-		if(oldTbl != null){//修改
-			oldTbl.setTitle(schema.getTitle());
-			oldTbl.setExplain(schema.getExplain());
-			oldTbl.setUpdateBy(user.getLoginName());
-			oldTbl.setUpdateTime(new Date());
-			SolrJUtil.addModelData(oldTbl, core);
+		String schemaName = getSchemaName(model.getName(), user);
+		Schema oldModel = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
+		Date now = new Date();
+		if(oldModel != null){//修改
+			oldModel.setTitle(model.getTitle());
+			oldModel.setExplain(model.getExplain());
+			oldModel.setUpdateBy(user.getLoginName());
+			oldModel.setUpdateTime(now);
+			SolrJUtil.addModelData(oldModel, core);
 		}else{//新增
-			schema.setName(schemaName);
-			schema.setCreateBy(user.getLoginName());
-			schema.setUpdateTime(new Date());
-			schema.setGrowthId(1L);
-			SolrJUtil.addModelData(schema, core);
+			model.setName(schemaName);
+			model.setCreateBy(user.getLoginName());
+			model.setCreateTime(now);
+			model.setGrowthId(1L);
+			SolrJUtil.addModelData(model, core);
 		}
 		
 	}

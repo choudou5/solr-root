@@ -14,8 +14,8 @@ import com.choudoufu.solr.schema.entity.FieldType;
  */
 public enum FieldTypeEnum {
 
-	TEXT("analyzer", "text", "text", "solr.TextField"),
 	STRING("base", "string", "string", "solr.StrField"),
+	TEXT("analyzer", "text", "text", "solr.TextField"),
 	BOOLEAN("base", "boolean", "boolean", "solr.BoolField"),
 	INT("base", "int", "int", "solr.TrieIntField"),
 	LONG("base", "long", "long", "solr.TrieLongField"),

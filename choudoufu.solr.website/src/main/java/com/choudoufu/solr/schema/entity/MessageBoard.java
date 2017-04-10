@@ -35,6 +35,11 @@ public class MessageBoard implements Serializable{
 	/** 创建时间 */
 	@Field
 	private Date createTime;
+	
+	/** 已读 */
+	@Field
+	private boolean read = false;
+	
 	public String getId() {
 		return id;
 	}
@@ -65,5 +70,12 @@ public class MessageBoard implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	public boolean getRead() {
+		return read;
+	}
+	public void setRead(boolean read) {
+		this.read = read;
+	}
+	
 	
 }

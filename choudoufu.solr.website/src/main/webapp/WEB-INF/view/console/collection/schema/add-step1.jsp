@@ -3,10 +3,16 @@
 
 <!-- 基本信息 -->
 <div id="form-wizard-1" class="step">
+	<div class="control-group">
+    <label class="control-label">应用标识</label>
+    <div class="controls">
+      <input type="checkbox" name="isSys" value="true"/>&nbsp;<span class="help-inline-tip">系统表（系统表将不可删除）</span>
+    </div>
+  </div>
   <div class="control-group">
     <label class="control-label">应用标识</label>
     <div class="controls">
-      <input type="text" name="name" placeholder="由 字母、下划线、或数字组成" maxlength="30" value="test"/>
+      <input type="text" name="name" placeholder="由 字母、下划线、或数字组成" maxlength="30" value=""/>
     </div>
   </div>
   <div class="control-group">

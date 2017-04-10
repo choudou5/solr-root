@@ -8,6 +8,7 @@
 
 .add-row{text-align: center;margin: 5px auto}
 
+
 /** color */
 .green{color: #468847;}
 .orange{color: #c09853;}
@@ -35,3 +36,6 @@
 .formwizard-steps .current span{color:#fff;cursor:default; background-color: #333;}
 @media(max-width:480px){.formwizard-steps li,.formwizard-steps li.active,.formwizard-steps li:first-child,.formwizard-steps li:last-child{background-color:transparent;padding:0;margin-right:0}
 .formwizard-steps li:after,.formwizard-steps li:before{border:0}}
+
+.help-inline-tip{padding-left: 5px;}
+.help-inline-error{color: #f44;display: inline-block;margin-bottom: 0;vertical-align: middle;padding-left: 5px;}

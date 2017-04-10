@@ -41,10 +41,12 @@
 	            <table class="table table-bordered data-table">
 	              <thead>
 	                <tr>
-	                  <th>应用标识</th>
-	                  <th>应用名称</th>
-	                  <th>创建人</th>
-	                  <th>创建时间</th>
+	                  <th width="180">应用标识</th>
+	                  <th width="180">应用名称</th>
+	                  <th>描述</th>
+	                  <th width="100">创建人</th>
+	                  <th width="120">创建时间</th>
+	                  <th width="80px">是否为系统表</th>
 	                  <th width="15%">操作</th>
 	                </tr>
 	              </thead>
@@ -53,13 +55,20 @@
 	              		<tr class="">
 		                  <td>${schema.name }</td>
 		                  <td>${schema.title }</td>
-		                  <td>${schema.createBy }</td>
-		                  <td>${schema.updateBy }</td>
+		                  <td>${schema.explain }</td>
+		                  <td style="text-align: center">${schema.createBy }</td>
+		                  <td><fmt:formatDate value="${schema.createTime }" pattern="yyyy-MM-dd HH:mm:ss"/>  </td>
+		                  <td style="text-align: center">
+		                  	<c:if test="${schema.isSys }"><span class="label label-important">是</span></c:if>
+		                  	<c:if test="${!schema.isSys }"><span class="label">否</span></c:if>
+		                  </td>
 		                  <td class="center">
 		                  	<a href="javascript:void(0);">修改结构</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">数据源</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">重建索引</a>&nbsp;&nbsp;
-		                  	<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
+		                  	<c:if test="${!schema.isSys }">
+		                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
+		                  	</c:if>
 		                  </td>
 		                </tr>
 	              	</c:forEach>

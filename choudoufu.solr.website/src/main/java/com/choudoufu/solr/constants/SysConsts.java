@@ -13,6 +13,7 @@ public interface SysConsts {
 	String MODULE_LOG_HI = "sys_log_history";
 	String MODULE_PLUG_SENSITIVE_WORD = "plug_sensitive_word";
 	
+	
 	String VIEW_INDEX = "/console/page?path=/index";	//首页
 	String VIEW_LOGIN = "/console/page?path=/login";	//登录页
 	

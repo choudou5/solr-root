@@ -40,7 +40,7 @@ hr{ border-top-color:#dadada;}
 .bg_lh{ background:#b6b3b3;}
 
 body { background-color:#95a5a6;    padding: 0;    margin-top:15%;
- background-image: url(/website/images/home-bg-slideshow1.jpg)
+ background-image: url(/static/console/img/login_bg.jpg)
 }
 #logo, #loginbox {    width: 26%;    margin-left: auto;    margin-right: auto;    position: relative;}
 #logo img {  margin: 0 auto;    display: block;}
