@@ -66,8 +66,8 @@ public class SchemaService {
 	 */
 	public static void delete(HttpServletRequest req, String schemaName){
 		//权限校验
-		if(!isPermission(req, schemaName))
-			throw new SolrException(ErrorCode.FORBIDDEN, "对不起，您无权操作!");
+//		if(!isPermission(req, schemaName))
+//			throw new SolrException(ErrorCode.FORBIDDEN, "对不起，您无权操作!");
 		
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
 		//删除 schema数据

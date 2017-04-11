@@ -66,7 +66,7 @@
 		                  	<a href="javascript:void(0);">修改结构</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">数据源</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">重建索引</a>&nbsp;&nbsp;
-		                  	<c:if test="${!schema.isSys }">
+		                  	<c:if test="${schema.isSys }">
 		                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
 		                  	</c:if>
 		                  </td>

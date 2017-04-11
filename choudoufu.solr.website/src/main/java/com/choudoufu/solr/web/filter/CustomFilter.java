@@ -147,10 +147,15 @@ public class CustomFilter extends SolrDispatchFilter{
 		return (path.startsWith("/console/page") && "/login".equals(viewName));
 	}
 	
-	//是否为 solr静态文件
-	private boolean isSolrStaticFile(String path){
-		return (path.startsWith("/css") || path.startsWith("/img") 
-				|| path.startsWith("/js") || path.startsWith("/servlet/validateCodeServlet"));
+	/**
+	 * 是否为 功能请求
+	 * @param path
+	 * @return
+	 */
+	private boolean isPublicRequest(String path){
+		return (path.startsWith("/website") || path.startsWith("/static") || path.startsWith("/console/common") 
+				|| path.startsWith("/css") || path.startsWith("/img") || path.startsWith("/js") 
+				|| path.startsWith("/servlet/validateCodeServlet"));
 	}
 	
 	private boolean isUserRequestCollection(String[] array){
@@ -188,8 +193,8 @@ public class CustomFilter extends SolrDispatchFilter{
 	        	path += req.getPathInfo();
 	        }
 			
-	        //静态资源 放行
-	        if(path.startsWith("/website") || path.startsWith("/static") || isSolrStaticFile(path)){
+	        //公共资源 放行
+	        if(isPublicRequest(path)){
 	        	chain.doFilter(request, response);
 	        	return;
 	        }

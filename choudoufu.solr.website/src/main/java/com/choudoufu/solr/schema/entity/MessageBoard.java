@@ -20,11 +20,16 @@ public class MessageBoard implements Serializable{
 	private String id;
 	
 	/** 联系人 */
+	@NotNull(message="联系人 不能为空")
 	@Field
 	private String linkman;
 	
+	/** 邮箱 */
+	@Field
+	private String email;
+	
 	/** 留言 */
-	@NotNull(message="留言信息不能为空")
+	@NotNull(message="留言信息 不能为空")
 	@Field
 	private String message;
 	
