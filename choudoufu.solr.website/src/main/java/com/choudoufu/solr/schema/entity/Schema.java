@@ -70,11 +70,15 @@ public class Schema implements Serializable{
 	
 	/** 主键序号*/
 	@Field
-	public Integer primaryNo = 0;
+	private Integer primaryNo = 0;
 	
+	/** 是否为系统应用 */
 	@Field
-	public boolean isSys = false;
+	private boolean isSys = false;
 	
+	/** 默认搜索表达式 */
+	@Field
+	private String defSearchExpr;
 	
 	public String getName() {
 		return name;
@@ -170,6 +174,14 @@ public class Schema implements Serializable{
 
 	public void setIsSys(boolean isSys) {
 		this.isSys = isSys;
+	}
+	
+	public String getDefSearchExpr() {
+		return defSearchExpr;
+	}
+
+	public void setDefSearchExpr(String defSearchExpr) {
+		this.defSearchExpr = defSearchExpr;
 	}
 
 	@Override

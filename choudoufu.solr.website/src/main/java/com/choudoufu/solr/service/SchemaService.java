@@ -7,8 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.common.SolrException;
-import org.apache.solr.common.SolrException.ErrorCode;
+import org.apache.solr.client.solrj.SolrQuery.ORDER;
 import org.apache.solr.core.SolrCore;
 
 import com.choudoufu.solr.constants.SysConsts;
@@ -16,6 +15,7 @@ import com.choudoufu.solr.constants.UserTypeEnum;
 import com.choudoufu.solr.schema.entity.Schema;
 import com.choudoufu.solr.schema.entity.SolrConfig;
 import com.choudoufu.solr.schema.entity.SolrField;
+import com.choudoufu.solr.util.EhcacheUtil;
 import com.choudoufu.solr.util.GenFileUtil;
 import com.choudoufu.solr.util.IdGrowthUtil;
 import com.choudoufu.solr.util.SolrHelper;
@@ -25,6 +25,27 @@ import com.choudoufu.sys.entity.User;
 
 public class SchemaService {
 
+	private final static String CACHE_PREFIX = "cache_schema_"; 
+	
+	public static Schema getCacheSchema(String schemaName){
+		String cacheKey = CACHE_PREFIX+schemaName;
+		Object obj = EhcacheUtil.getInstance().getCacheVal(cacheKey);
+		if(obj == null){
+			SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+			Schema schema = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
+			EhcacheUtil.getInstance().put(cacheKey, schema);
+			return schema;
+		}else{
+			return (Schema)obj;
+		}
+	}
+	
+	public static void removeCache(String schemaName){
+		String cacheKey = CACHE_PREFIX+schemaName;
+		EhcacheUtil.getInstance().remove(cacheKey);
+	}
+	
+	
 	/**
 	 * 获得 应用信息
 	 * @param schemaName
@@ -35,6 +56,7 @@ public class SchemaService {
 		return SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
 	}
 	
+	
 	/**
 	 * 获得 应用字段信息
 	 * @param schemaName
@@ -43,6 +65,20 @@ public class SchemaService {
 	public static List<SolrField> getSchemaFields(String schemaName){
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD);
 		return SolrJUtil.listModelData(SolrJUtil.getSolrQuery("schemaName:"+schemaName), core, SolrField.class);
+	}
+	
+	/**
+	 * 获取 集合列表
+	 * @param req
+	 * @return
+	 */
+	public static List<Schema> listSchemas(HttpServletRequest req){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
+		SolrQuery query = SolrJUtil.getSolrQuery(SolrJUtil.QUERY_ALL);
+		//添加数据过滤
+		SchemaService.addDataFilter(req, query);
+		query.addSort("createTime", ORDER.desc);
+		return SolrJUtil.listModelData(query, core, Schema.class);
 	}
 	
 	/**
@@ -57,6 +93,8 @@ public class SchemaService {
 		//保存 应用字段
 		saveSchemaFields(req, schema.getName(), schema.getFields());
 		GenFileUtil.genSchema(SolrHelper.getSolrHome(), solrConfig, schema);
+		//移除缓存
+		removeCache(schema.getName());
 	}
 	
 	/**
@@ -76,6 +114,8 @@ public class SchemaService {
 		deleteSchemaFields(req, SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD), schemaName);
 		//删除 配置文件
 		GenFileUtil.deleteSchema(SolrHelper.getSolrHome(), schemaName);
+		//移除缓存
+		removeCache(schemaName);
 	}
 	
 	/**
@@ -115,6 +155,7 @@ public class SchemaService {
 		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_SCHEMA);
 		User user = UserUtil.getSessionUser(req);
 		String schemaName = getSchemaName(model.getName(), user);
+		model.setName(schemaName);
 		Schema oldModel = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+schemaName), core, Schema.class);
 		Date now = new Date();
 		if(oldModel != null){//修改
@@ -135,7 +176,9 @@ public class SchemaService {
 	
 	private static String getSchemaName(String schemaName,  User user){
 		if(user != null && user.getUserType() == UserTypeEnum.TEMP.getValue()){
-			schemaName = user.getLoginName()+SysConsts.CHAR_UNDERLINE+schemaName;
+			if(!schemaName.startsWith(user.getLoginName())){
+				schemaName = user.getLoginName()+SysConsts.CHAR_UNDERLINE+schemaName;
+			}
 		}
 		return schemaName;
 	}
@@ -170,8 +213,6 @@ public class SchemaService {
 		}
 	}
 	
-	
-	
 	/**
 	 * 是否存在应用
 	 * @param schemaName
@@ -182,6 +223,18 @@ public class SchemaService {
 		User user = UserUtil.getSessionUser(req);
 		Schema schema = SolrJUtil.getModelData(SolrJUtil.getSolrQuery("name:"+getSchemaName(schemaName, user)), core, Schema.class);
 		return schema==null?false:true;
+	}
+	
+	/**
+	 * 获取字段
+	 * @param schemaName
+	 * @param req
+	 * @return
+	 */
+	public static List<SolrField> getFields(String schemaName, HttpServletRequest req){
+		SolrCore core = SolrHelper.getCore(SysConsts.MODULE_SOLR_FIELD);
+		User user = UserUtil.getSessionUser(req);
+		return SolrJUtil.listModelData(SolrJUtil.getSolrQuery("schemaName:"+getSchemaName(schemaName, user)), core, SolrField.class);
 	}
 	
 }

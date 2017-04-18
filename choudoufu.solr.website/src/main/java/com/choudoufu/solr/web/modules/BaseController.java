@@ -24,8 +24,11 @@ public abstract class BaseController {
 	
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	protected int STATUS_OK = 200;
-	protected int STATUS_UNVALID_PARAM = 403;
+	protected final int STATUS_OK = 200;
+	protected final int STATUS_UNVALID_PARAM = 403;
+	
+	protected final String NO_PERMISSION = "对不起，您无权操作！";
+	
 	
 	/**
 	 * 验证Bean实例对象
@@ -92,11 +95,26 @@ public abstract class BaseController {
 	}
 	
 	
+	protected void addMessage(Model model, String defMsg, Exception e) {
+		log.error(defMsg, e);
+		if(e != null){
+			model.addAttribute("message", e.getMessage());
+		}else{
+			model.addAttribute("message", defMsg);
+		}
+	}
+	
+	
 	protected ModelAndView toView(String viewName, String message) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName(viewName);
 		mv.addObject("message", message);
 		return mv;
+	}
+	
+	protected String toView(String path, String message, Model model) {
+		model.addAttribute("message", message);
+		return path;
 	}
 	
 	protected String redirect(String path) {
@@ -111,6 +129,18 @@ public abstract class BaseController {
 		attributes.addFlashAttribute("message", message);
 		return "redirect:"+path;
 	}
+	
+	protected String redirect(String path, RedirectAttributes attributes, String defMsg, Exception e) {
+		log.error(defMsg, e);
+		if(e != null){
+			attributes.addFlashAttribute("message", e.getMessage());
+		}else{
+			attributes.addFlashAttribute("message", defMsg);
+		}
+		return "redirect:"+path;
+	}
+	
+	
 	
 	/**
 	 * 输出状态

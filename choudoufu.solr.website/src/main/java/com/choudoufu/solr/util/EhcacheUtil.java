@@ -2,6 +2,8 @@ package com.choudoufu.solr.util;
 
 import java.net.URL;
 
+import com.choudoufu.solr.constants.CacheConsts;
+
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.Element;
@@ -27,7 +29,13 @@ public class EhcacheUtil {
         }  
         return ehCache;  
     }  
-  
+    
+    public void put(String key, Object value) {  
+        Cache cache = manager.getCache(CacheConsts.CACHE_SYS);
+        Element element = new Element(key, value);  
+        cache.put(element);
+    }
+    
     public void put(String cacheName, String key, Object value) {  
         Cache cache = manager.getCache(cacheName);
         Element element = new Element(key, value);  
@@ -45,8 +53,20 @@ public class EhcacheUtil {
         Cache cache = manager.getCache(cacheName);  
         Element element = cache.get(key);  
         return element == null ? null : element.getObjectValue();  
-    }  
+    }
   
+    public Object getCacheVal(String key) {  
+        Cache cache = manager.getCache(CacheConsts.CACHE_SYS);  
+        Element element = cache.get(key);  
+        return element == null ? null : element.getObjectValue();  
+    }
+    
+    public Object getCacheStrVal(String key) {  
+        Cache cache = manager.getCache(CacheConsts.CACHE_SYS);  
+        Element element = cache.get(key);  
+        return element == null ? null : element.getObjectValue().toString();  
+    }
+    
     public Cache get(String cacheName) {  
         return manager.getCache(cacheName);  
     } 
@@ -57,6 +77,11 @@ public class EhcacheUtil {
     
     public void remove(String cacheName, String key) {  
         Cache cache = manager.getCache(cacheName);  
+        cache.remove(key);  
+    }
+    
+    public void remove(String key) {  
+        Cache cache = manager.getCache(CacheConsts.CACHE_SYS);  
         cache.remove(key);  
     }
     

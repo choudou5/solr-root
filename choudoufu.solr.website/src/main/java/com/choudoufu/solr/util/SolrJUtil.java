@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.lucene.document.Document;
@@ -92,6 +93,28 @@ public class SolrJUtil {
 	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
 		} catch (Exception e) {
 			throw new SolrException(ErrorCode.BAD_REQUEST, "delModelData fail", e);
+		}
+	}
+	
+	/**
+	 * 添加 模型数据
+	 * @param dataMap
+	 * @param core
+	 */
+	public static <T extends Serializable> void addModelData(Map<String, String> inputMap, SolrCore core){
+		SolrQueryResponse solrResp = new SolrQueryResponse();
+		SolrQuery params = getSolrQuery(true);
+	    try {
+		    ArrayList<SolrInputDocument> docs =  new ArrayList<SolrInputDocument>(1);
+		    SolrInputDocument doc = new SolrInputDocument();
+		    for (String field : inputMap.keySet()) {
+		    	doc.addField(field, inputMap.get(field));
+			}
+		    docs.add(doc);
+		    Collection<ContentStream> streams = getContentStreams(docs);
+	    	SolrQueryRequest sreq = execute(QT_UPDATE, core, params, streams, solrResp);
+		} catch (Exception e) {
+			throw new SolrException(ErrorCode.BAD_REQUEST, "addModelData by dataMap fail", e);
 		}
 	}
 	
@@ -311,14 +334,14 @@ public class SolrJUtil {
 	
 	private static <T extends Serializable> Collection<ContentStream> getContentStreams(T bean) throws SolrServerException, IOException {
 		DocumentObjectBinder binder = new DocumentObjectBinder();
-	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
+	    ArrayList<SolrInputDocument> docs =  new ArrayList<SolrInputDocument>(1);
 	    docs.add(binder.toSolrInputDocument(bean));
 	    return getContentStreams(docs);
 	}
 	
 	private static <T extends Serializable> Collection<ContentStream> getContentStreams(T[] beans) throws SolrServerException, IOException {
 		DocumentObjectBinder binder = new DocumentObjectBinder();
-	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
+	    ArrayList<SolrInputDocument> docs =  new ArrayList<SolrInputDocument>(1);
 	    for (T bean : beans) {
 	        docs.add(binder.toSolrInputDocument(bean));
 	    }
@@ -327,7 +350,7 @@ public class SolrJUtil {
 	
 	private static <T extends Serializable> Collection<ContentStream> getContentStreams(List<T> beans) throws SolrServerException, IOException {
 		DocumentObjectBinder binder = new DocumentObjectBinder();
-	    ArrayList<SolrInputDocument> docs =  new ArrayList<>(1);
+	    ArrayList<SolrInputDocument> docs =  new ArrayList<SolrInputDocument>(1);
 	    for (T bean : beans) {
 	        docs.add(binder.toSolrInputDocument(bean));
 	    }

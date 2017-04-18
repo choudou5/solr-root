@@ -8,4 +8,5 @@ public interface CacheConsts {
 	
 	String CACHE_TO_DISK = "persistentDisk";
 	
+	
 }

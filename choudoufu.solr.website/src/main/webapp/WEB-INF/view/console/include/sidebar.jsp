@@ -35,7 +35,7 @@
         <li><a href="error404.html">日志</a></li>
       </ul>
     </li>
-    <li><a href="interface.html"><i class="icon icon-play"></i><span>搜索测试</span></a></li>
+    <li><a href="${ctx }/console/collection/data/search"><i class="icon icon-play"></i><span>体验搜索</span></a></li>
     <li><a href="${ctx}/admin.html" target="_blank"><i class="icon icon-sitemap"></i><span>Solr后台</span></a></li>
     <li class="content">&nbsp;&nbsp; <span>内存使用率</span>
       <div class="progress progress-mini progress-danger active progress-striped">

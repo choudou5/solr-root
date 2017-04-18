@@ -117,10 +117,9 @@
   <function>
     <description>随机数</description>
     <name>randomInt</name>
-    <function-class>com.choudoufu.solr.util.IdGrowthUtil</function-class>
+    <function-class>com.choudoufu.solr.util.SchemaUtil</function-class>
     <function-signature>int randomInt()</function-signature>
     <example>${fns:randomInt()}</example>  
   </function>
-  
   
 </taglib>

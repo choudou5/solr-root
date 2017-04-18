@@ -14,7 +14,7 @@
 		<c:set var="ctype" value="${type}"/>
 	</c:if>
 	<c:if test="${empty type}">
-		<c:set var="ctype" value="${(fn:indexOf(content,'失败') ne -1 or fn:indexOf(content,'错误') ne -1 or fn:indexOf(content,'有误') ne -1)?'error':'success'}"/>
+		<c:set var="ctype" value="${(fn:indexOf(content,'失败') ne -1 or fn:indexOf(content,'对不起') ne -1 or fn:indexOf(content,'错误') ne -1 or fn:indexOf(content,'有误') ne -1)?'error':'success'}"/>
 	</c:if>
 	
 	<div id="messageBox" class="alert alert-${ctype} alert-block hide">
