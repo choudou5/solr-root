@@ -22,6 +22,7 @@
 		<module>choudoufu.solr.admin</module>
 		<module>choudoufu.solr.console</module>
 		<module>choudoufu.solr.website</module>
+		<module>choudoufu.solr.bbs</module>
 	</modules> 
 
 	<dependencies>
