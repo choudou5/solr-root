@@ -54,7 +54,7 @@
 	              	<c:forEach var="schema" items="${schemas }" varStatus="status">
 	              		<tr class="">
 		                  <td>${schema.name }</td>
-		                  <td>${schema.title }</td>
+		                  <td><a href="${ctx }/console/collection/data/list?schemaName=${schema.name }">${schema.title }</a></td>
 		                  <td>${schema.explain }</td>
 		                  <td style="text-align: center">${schema.createBy }</td>
 		                  <td><fmt:formatDate value="${schema.createTime }" pattern="yyyy-MM-dd HH:mm:ss"/>  </td>
@@ -63,11 +63,11 @@
 		                  	<c:if test="${!schema.isSys }"><span class="label">否</span></c:if>
 		                  </td>
 		                  <td class="center">
-		                  	<a href="javascript:void(0);">修改结构</a>&nbsp;&nbsp;
+		                  	<a href="${ctx }/console/collection/schema/add?schemaName=${schema.name }">修改结构</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">数据源</a>&nbsp;&nbsp;
 		                  	<a href="javascript:void(0);">重建索引</a>&nbsp;&nbsp;
-		                  	<c:if test="${schema.isSys }">
-		                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
+		                  	<c:if test="${!schema.isSys }">
+		                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复喔）">删除</a>
 		                  	</c:if>
 		                  </td>
 		                </tr>
@@ -103,7 +103,6 @@
 	});
 	
 	function deleteColl(schemaName){
-		
 		$.ajax({
 		   url: ctx+'/console/collection/delete',
 		   type: "get",

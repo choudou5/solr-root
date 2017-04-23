@@ -2,11 +2,14 @@
  * 激活 菜单样式
  */
 function activeMenuCss(){
-	var localPath = getLocalFullPath();
+	var localPath = getLocalPath();
 	info(localPath);
 	var sidebar_li = $("#sidebar ul li").each(function(){
 		var href = $(this).find("a").attr("href");
-		if(localPath == href){
+//		info("href:"+href);
+		var path = getHrefPath(href);
+//		info("path:"+path);
+		if(localPath == href || localPath.indexOf(path) != -1){
 			$(this).addClass('active');//激活当前菜单
 			var ul_id = $(this).closest("ul").attr("id");
 			//是否为二级菜单

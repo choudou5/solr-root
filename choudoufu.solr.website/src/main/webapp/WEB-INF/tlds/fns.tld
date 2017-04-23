@@ -11,18 +11,14 @@
   <short-name>fns</short-name>
   <uri>http://java.sun.com/jsp/jstl/functionss</uri>
 
-
   <function>
     <description>获取站点</description>
     <name>getSiteName</name>
     <function-class>com.choudoufu.solr.util.SysUtil</function-class>
-    <function-signature>com.lianj.admin.modules.cms.entity.Site getSiteName()</function-signature>
+    <function-signature>java.lang.String getSiteName()</function-signature>
     <example>${fns:getSiteName()}</example>  
   </function>
   
-  <!-- UserUtils -->
-  
-
   <!-- Encodes -->
   <function>
     <description>HTML编码</description>
@@ -42,8 +38,8 @@
     <function>
     <description>字段类型</description>
     <name>getFieldTypeArray</name>
-    <function-class>com.choudoufu.solr.schema.FieldTypeEnum</function-class>
-    <function-signature>com.choudoufu.solr.schema.FieldTypeEnum getFieldTypeArray()</function-signature>
+    <function-class>com.choudoufu.solr.modules.console.schema.FieldTypeEnum</function-class>
+    <function-signature>com.choudoufu.solr.modules.console.schema.FieldTypeEnum getFieldTypeArray()</function-signature>
     <example>${fns:getFieldTypeArray()}</example>  
   </function>
   
@@ -117,7 +113,7 @@
   <function>
     <description>随机数</description>
     <name>randomInt</name>
-    <function-class>com.choudoufu.solr.util.SchemaUtil</function-class>
+    <function-class>com.choudoufu.solr.util.IdGrowthUtil</function-class>
     <function-signature>int randomInt()</function-signature>
     <example>${fns:randomInt()}</example>  
   </function>

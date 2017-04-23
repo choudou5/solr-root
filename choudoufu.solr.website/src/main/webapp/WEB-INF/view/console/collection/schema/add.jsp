@@ -40,7 +40,7 @@
             <h5>添加应用</h5>
           </div>
           <div class="widget-content nopadding">
-            <form id="addTableForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
+            <form id="addSchemaForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
               
               <ol class="formwizard-steps">
 				<li class="active current"><span class="label">1</span>填写基本信息</li>

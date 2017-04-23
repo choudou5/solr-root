@@ -4,9 +4,12 @@
 	background-color: #efefef;
 }
 
+.pd-10{padding: 10px;}
 .mg-10{margin: 10px;}
 .mgl-10{margin-left: 10px}
 
+.text-left{text-align: left;}
+.text-right{text-align: right;}
 
 .add-row{text-align: center;margin: 5px auto}
 
@@ -38,6 +41,27 @@
 .formwizard-steps .current span{color:#fff;cursor:default; background-color: #333;}
 @media(max-width:480px){.formwizard-steps li,.formwizard-steps li.active,.formwizard-steps li:first-child,.formwizard-steps li:last-child{background-color:transparent;padding:0;margin-right:0}
 .formwizard-steps li:after,.formwizard-steps li:before{border:0}}
+
+/** 搜索*/
+.search{margin:5px;min-width:150px}
+.search input[type=text]{padding:5pt;width:180px;border-radius:5px;color:#333333;font-size:1.0875rem}
+.search button{margin-left:-7px;padding:5pt;width:60px;border-radius:5px;background-color:#28b779}
+.search button i{color:#fff;opacity:.8}
+.search button:active i,.search button:hover i{opacity:1}
+
+.search .clear{display: none;position: absolute;width: 15px;cursor:pointer;height: 15px;margin: 10px 0 0 -24px;background: url('/static/images/clear.png') no-repeat center center;;}
+.search input::-ms-clear { display: none; }
+
+
+@media screen and (min-width: 601px) and (max-width: 1200px) {
+
+}
+@media screen and (min-width: 1201px) {
+
+}
+
+
+
 
 .help-inline-tip{padding-left: 5px;}
 .help-inline-error{color: #f44;display: inline-block;margin-bottom: 0;vertical-align: middle;padding-left: 5px;}

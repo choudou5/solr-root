@@ -1,8 +1,32 @@
 $(function(){
 	
-//	$(".tip-right").tooltip();
+	$("input[class=need_clear]").bind("keydown", function(e){
+		 if(e){
+			 //65到90-->>a到z（A到Z） 48到57-->>0到9
+			 if((e.keyCode>=48 && e.keyCode<=57) || (e.keyCode>=65 && e.keyCode<=90)){
+				 var val = $(this).val();
+				 var inputName = $(this).attr("name");
+				 if(val.length != 0){
+					 $("a#clear_input_"+inputName).show();
+				 }else{
+					 $("a#clear_input_"+inputName).hide();
+				 }
+			 }
+		 }
+	});
+	
+	
 	
 });
+
+/**
+ * 清楚 文本框值
+ * @param inputName
+ */
+function clearInputByName(inputName){
+	$("input[name="+inputName+"]").val('');
+	$("a#clear_input_"+inputName).hide();
+}
 
 
 /**
@@ -32,8 +56,19 @@ function getLocalQueryParam(paramName){
      if(r!=null)return  unescape(r[2]); return null;
 }
 
+/**
+ * 获得地址栏 path
+ * @param href
+ * @returns
+ */
+function getHrefPath(href){
+	 if(href==undefined) return null;
+     var reg = new RegExp("path=([^&]*)(&|$)");
+     var r = href.substr(1).match(reg);
+     if(r!=null)return  unescape(r[1]); return null;
+}
 
-
+/** 日志*/
 function info(message) {
 	console.log("info:"+message);
 }
