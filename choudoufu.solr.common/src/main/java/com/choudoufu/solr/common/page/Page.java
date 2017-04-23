@@ -1,6 +1,7 @@
 package com.choudoufu.solr.common.page;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class Page<T extends Serializable>{
 	
 	protected int pageNo = 1;
 	protected int pageSize = 10;
+	protected int length = 6;// 显示页面长度
+	protected int rangeEnd = 0;// 范围页尾
 	protected List<T> result = Collections.emptyList();
 	protected List<FacetField> facets;//分片数据
 	protected long totalCount = 0;
@@ -114,6 +117,7 @@ public class Page<T extends Serializable>{
 		this.qTime = qTime;
 	}
 
+	/** 返回 总页数 */
 	public long getTotalPages() {
 		if (totalCount <= 0)
 			return 0;
@@ -125,6 +129,7 @@ public class Page<T extends Serializable>{
 		return count;
 	}
 	
+	/** 返回 整数型 总页数 */
 	public int getIntTotalPages() {
 		if (totalCount <= 0)
 			return 0;
@@ -136,10 +141,12 @@ public class Page<T extends Serializable>{
 		return count;
 	}
 
+	/** 是否有 下一页 */
 	public boolean isHasNext() {
 		return (pageNo + 1 <= getTotalPages());
 	}
 
+	/** 返回 下一页 页数 */
 	public int getNextPage() {
 		if (isHasNext())
 			return pageNo + 1;
@@ -147,15 +154,54 @@ public class Page<T extends Serializable>{
 			return pageNo;
 	}
 
+	/** 是否有 上一页 */
 	public boolean isHasPre() {
 		return (pageNo - 1 >= 1);
 	}
 
+	/** 返回 上一页 页数 */
 	public int getPrePage() {
 		if (isHasPre())
 			return pageNo - 1;
 		else
 			return pageNo;
+	}
+
+	public int getRangeEnd() {
+		return rangeEnd;
+	}
+	
+	/**
+	 * 获得 分页范围数
+	 */
+	public List<Integer> getPageRange() {
+		List<Integer> ranges = new ArrayList<Integer>(length);
+		int firstPage = 1;
+		int totalPage = getIntTotalPages();
+		int begin = pageNo - (length / 2);
+		if (begin < firstPage)
+			begin = firstPage;
+
+		int end = begin + length - 1;
+		if (end >= totalPage) {
+			end = totalPage;
+			begin = end - length + 1;
+			if (begin < firstPage) {
+				begin = firstPage;
+			}
+		}
+
+		if (begin > firstPage){
+			int i = 0;
+			for (i = firstPage; i < firstPage + 1 && i < begin; i++) {
+				ranges.add(i);
+			}
+		}
+		for (int i = begin; i <= end; i++) {
+			ranges.add(i);
+		}
+		rangeEnd = end;
+		return ranges;
 	}
 	
 }
