@@ -187,7 +187,8 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
             return null;
         }
 
-        s = s.toLowerCase();
+        if(s.contains("_"))
+        	s = s.toLowerCase();
 
         StringBuilder sb = new StringBuilder(s.length());
         boolean upperCase = false;
@@ -196,7 +197,10 @@ public class StringUtils extends org.apache.commons.lang.StringUtils {
 
             if (c == SEPARATOR) {
                 upperCase = true;
-            } else if (upperCase) {
+            }else if (c >= 65 && c <= 90) {//已是大写跳过
+            	sb.append(c);
+                upperCase = false;
+            }else if (upperCase) {
                 sb.append(Character.toUpperCase(c));
                 upperCase = false;
             } else {

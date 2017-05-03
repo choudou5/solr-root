@@ -18,6 +18,22 @@
     <function-signature>java.lang.String getSiteName()</function-signature>
     <example>${fns:getSiteName()}</example>  
   </function>
+  <function>
+    <description>获得 生成代码地址</description>
+    <name>getGenCodePath</name>
+    <function-class>com.choudoufu.solr.util.SysUtil</function-class>
+    <function-signature>java.lang.String getGenCodePath()</function-signature>
+    <example>${fns:getGenCodePath()}</example>  
+  </function>
+  
+  <!-- UserUtil -->
+  <function>
+    <description>是否为管理员</description>
+    <name>isAdmin</name>
+    <function-class>com.choudoufu.solr.util.UserUtil</function-class>
+    <function-signature>java.lang.Boolean isAdmin(java.lang.String)</function-signature>
+    <example>${fns:isAdmin(sid)}</example>  
+  </function>
   
   <!-- Encodes -->
   <function>
@@ -61,21 +77,21 @@
   <function>
     <description>从后边开始截取字符串</description>
     <name>substringAfterLast</name>
-    <function-class>com.choudoufu.solr.common.util.StringUtils</function-class>
+    <function-class>org.apache.commons.lang.StringUtils</function-class>
     <function-signature>java.lang.String substringAfterLast(java.lang.String, java.lang.String)</function-signature>
     <example>${fns:substringAfterLast(str,separator)}</example>  
   </function>
   <function>
     <description>判断字符串是否以某某开头</description>
     <name>startsWith</name>
-    <function-class>com.choudoufu.solr.common.util.StringUtils</function-class>
+    <function-class>org.apache.commons.lang.StringUtils</function-class>
     <function-signature>boolean startsWith(java.lang.String, java.lang.String)</function-signature>
     <example>${fns:startsWith(str,prefix)}</example> 
   </function>
   <function>
     <description>判断字符串是否以某某结尾</description>
     <name>endsWith</name>
-    <function-class>com.choudoufu.solr.common.util.StringUtils</function-class>
+    <function-class>org.apache.commons.lang.StringUtils</function-class>
     <function-signature>boolean endsWith(java.lang.String, java.lang.String)</function-signature>
     <example>${fns:endsWith(str,suffix)}</example> 
   </function>

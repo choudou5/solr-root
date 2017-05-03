@@ -38,6 +38,7 @@
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
             <h5>添加应用</h5>
+            <a href="javascript:history.go(-1);"  class="fl btn head-btn">返回</a>
           </div>
           <div class="widget-content nopadding">
             <form id="addSchemaForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
@@ -82,6 +83,7 @@
 
 <%@include file="/WEB-INF/view/console/include/scriptLib.jsp" %>
 <%@include file="/WEB-INF/view/console/include/scriptValidLib.jsp" %>
+<script src="${ctxStaticConsole }/js/modules/schema-common-add.js"></script>
 <script src="${ctxStaticConsole }/js/modules/schema-add.js"></script>
 </body>
 </html>

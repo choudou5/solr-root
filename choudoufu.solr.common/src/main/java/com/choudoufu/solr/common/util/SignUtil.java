@@ -21,10 +21,10 @@ public class SignUtil {
 	private static final int DEF_TIME_OUT;//单位秒
 	
 	static{
-		SIG_KEY = PropertiesUtil.getString(PropConsts.PROP_KEY_SIG);
-		DEF_TIME_OUT = PropertiesUtil.getInteger(PropConsts.PROP_KEY_SIG_TIME_OUT);
+//		SIG_KEY = PropertiesUtil.getString(PropConsts.PROP_KEY_SIG);
+//		DEF_TIME_OUT = PropertiesUtil.getInteger(PropConsts.PROP_KEY_SIG_TIME_OUT);
 		
-//		SIG_KEY = "solrroot"; DEF_TIME_OUT = 10;
+		SIG_KEY = "solrroot"; DEF_TIME_OUT = 10;
 	}
 	
 	@SuppressWarnings("static-access")
@@ -76,7 +76,6 @@ public class SignUtil {
 		try {
 			Long time = Long.parseLong(decrypt);
 			long now = System.currentTimeMillis();
-			System.out.println(now+" == "+decrypt);
 			return Math.abs(now-time)>(effectiveRangeSecond*1000)?false:true;
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

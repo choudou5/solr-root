@@ -8,10 +8,9 @@
 <script src="${ctxStaticConsole }/js/matrix.js"></script> 
 <script src="${ctxStaticConsole }/js/jquery.peity.min.js"></script> 
 <script src="${ctxStaticConsole }/js/fullcalendar.min.js"></script>
-<%--jBox --%>
-<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.js"></script>
-<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.Confirm.js"></script>
-<script src="${ctxStaticConsole }/js/jBox-0.4.7/jBox.Notice.min.js"></script>
+
+<script src="${ctxStatic }/js/layer/layer.js"></script>
+<script src="${ctxStatic }/js/common.js"></script>
 <script src="${ctxStaticConsole }/js/custom.js"></script>
 <script src="${ctxStaticConsole }/js/menus.js"></script>
 

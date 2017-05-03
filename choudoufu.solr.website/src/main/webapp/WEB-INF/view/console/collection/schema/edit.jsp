@@ -38,6 +38,7 @@
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
             <h5>添加应用</h5>
+            <a href="javascript:history.go(-1);"  class="fl btn head-btn">返回</a>
           </div>
           <div class="widget-content nopadding">
             <form id="editSchemaForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
@@ -55,7 +56,7 @@
               <div class="form-actions">
                 <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;
                 <input id="next" class="btn btn-danger" type="submit" value="下一步" />
-                <input type="hidden" name="isNew" value="${isNew }" />
+                <input type="hidden" name="ext.isNew" value="${isNew }" />
                 <div id="status"></div>
               </div>
               <div id="submitted"></div>
@@ -82,7 +83,7 @@
 
 <%@include file="/WEB-INF/view/console/include/scriptLib.jsp" %>
 <%@include file="/WEB-INF/view/console/include/scriptValidLib.jsp" %>
-<script src="${ctxStaticConsole }/js/modules/schema-edit.js"></script>
+<script src="${ctxStaticConsole }/js/modules/schema-common-add.js"></script>
 <script type="text/javascript">
 	$("#editSchemaForm").formwizard({ 
 		formPluginEnabled: true,
@@ -145,6 +146,14 @@
 	}, "由：英文字母、数字、下划线组成，非纯数字");
 	
 	$("#editSchemaForm").validate();
+	
+
+	$(document).ready(function(){
+		checkboxEvent("reloadSolrConf", function(){
+			layerAlert("勾选后，会更新solr配置喔！", "warning");
+		});
+	});
+	
 </script>
 </body>
 </html>

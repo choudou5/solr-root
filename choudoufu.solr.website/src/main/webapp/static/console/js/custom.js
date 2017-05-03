@@ -1,3 +1,6 @@
+var __screenH = document.body.clientHeight;
+var __screenW = document.body.clientWidth;
+
 $(function(){
 	
 	$("input[class=need_clear]").bind("keydown", function(e){
@@ -12,6 +15,13 @@ $(function(){
 					 $("a#clear_input_"+inputName).hide();
 				 }
 			 }
+		 }
+	});
+	$("input[class=need_clear]").bind("focus", function(e){
+		 var val = $(this).val();
+		 var inputName = $(this).attr("name");
+		 if(val.length != 0){
+			 $("a#clear_input_"+inputName).show();
 		 }
 	});
 	
@@ -94,37 +104,6 @@ function gritterTip(title, content){
 		sticky: false,
 	});
 }
-
-
-
-function jTooltip(attach, title){
-	new jBox('Tooltip', {
-	  attach: attach,
-	  content: title
-	}).show();
-}
-
-function jNotice(title, color){
-	color = color==undefined?'green':color;
-	new jBox('Notice', {content: title, color: color, autoClose: 3000});
-}
-
-var __screenH = document.body.clientHeight;
-var __screenW = document.body.clientWidth;
-
-function jNoticeCenter(title, color){
-	color = color==undefined?'green':color;
-	new jBox('Notice', {
-		content: title, 
-		color: color, 
-		autoClose: 3000,
-		position: {
-	      x: __screenW/2,
-	      y: 200
-	    },
-	});
-}
-
 
 /**
  * 调用

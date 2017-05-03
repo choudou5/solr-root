@@ -12,5 +12,4 @@ public interface PropConsts {
 	
 	String PROP_KEY_ADMIN_PWD= "system.admin.pwd";
 	
-	
 }

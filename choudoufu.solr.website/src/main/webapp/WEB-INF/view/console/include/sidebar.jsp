@@ -36,7 +36,7 @@
       </ul>
     </li>
     <li><a href="${ctx }/console/collection/data/search"><i class="icon icon-play"></i><span>体验搜索</span></a></li>
-    <li><a href="${ctx}/admin.html" target="_blank"><i class="icon icon-sitemap"></i><span>Solr后台</span></a></li>
+    <li><a href="${ctx}/solr/admin.html" target="_blank"><i class="icon icon-sitemap"></i><span>Solr后台</span></a></li>
     <li class="content">&nbsp;&nbsp; <span>内存使用率</span>
       <div class="progress progress-mini progress-danger active progress-striped">
         <div style="width: 77%;" class="bar"></div>

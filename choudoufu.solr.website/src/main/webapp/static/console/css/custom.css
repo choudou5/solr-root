@@ -4,6 +4,8 @@
 	background-color: #efefef;
 }
 
+.width-60x{width: 60px;}
+
 .pd-10{padding: 10px;}
 .mg-10{margin: 10px;}
 .mgl-10{margin-left: 10px}
@@ -51,6 +53,13 @@
 
 .search .clear{display: none;position: absolute;width: 15px;cursor:pointer;height: 15px;margin: 10px 0 0 -24px;background: url('/static/images/clear.png') no-repeat center center;;}
 .search input::-ms-clear { display: none; }
+
+/** 扩展 按钮样式 */
+.head-btn{
+	background: #fff;
+	color: #111;
+	margin: 3px 10px;
+}
 
 
 @media screen and (min-width: 601px) and (max-width: 1200px) {

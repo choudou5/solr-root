@@ -7,10 +7,10 @@
     <label class="control-label">应用标识</label>
     <div class="controls">
       <c:if test="${isNew }">
-      	<input type="checkbox" name="isSys" value="true"/>&nbsp;<span class="help-inline-tip">系统表（系统表将不可删除）</span>
+      	<input type="checkbox" name="ext.isSys" value="true"/>&nbsp;<span class="help-inline-tip">系统表（系统表将不可删除）</span>
       </c:if>
       <c:if test="${!isNew }">
-      	<input type="checkbox" name="isSys" <c:if test="${schema.isSys }">checked="checked" disabled="disabled"</c:if> value="true"/>&nbsp;<span class="help-inline-tip">系统表（系统表将不可删除）</span>
+      	<input type="checkbox" name="ext.isSys" <c:if test="${schema.ext.isSys }">checked="checked" disabled="disabled"</c:if> value="true"/>&nbsp;<span class="help-inline-tip">系统表（系统表将不可删除）</span>
       </c:if>
     </div>
   </div>

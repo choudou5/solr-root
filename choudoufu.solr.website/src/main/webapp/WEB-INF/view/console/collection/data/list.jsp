@@ -30,6 +30,7 @@
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-cogs"></i> </span>
             <h5>数据结果集</h5>
+            <a href="javascript:history.go(-1);"  class="fl btn head-btn">返回</a>
           </div>
           
           <div class="widget-content mg-10">
@@ -88,7 +89,7 @@
 	                  </c:forEach>
 	                  <td class="center" style="width: 120px;">
 	                  	<a href="javascript:void(0);">编辑</a>&nbsp;&nbsp;
-	                  	<a href="javascript:void(0);" data-confirm="您确认删除? （不可恢复）">删除</a>&nbsp;&nbsp;
+	                  	<a href="javascript:void(0);" onclick="return layerConfirm('您确认删除? （不可恢复）', this.href);">删除</a>&nbsp;&nbsp;
 	                  	<%-- <c:if test="${schema.isSys }">
 	                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
 	                  	</c:if> --%>
@@ -122,13 +123,6 @@
 <%@include file="/WEB-INF/view/console/include/footer.jsp" %>
 <%@include file="/WEB-INF/view/console/include/scriptLib.jsp" %>
 <script type="text/javascript">
-	$(document).ready(function() {
-		new jBox('Confirm', {
-			confirmButton: '确定',
-			cancelButton: '取消',
-		});
-	});
-	
 	function searchForm(searchFormId, pageNo, pageSize){
 		var form = $("#"+searchFormId);
 		form.find("input[name=pageNo]").val(pageNo);

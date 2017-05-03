@@ -25,6 +25,21 @@
     <!-- 配置 JSR303 Bean Validator 定义 -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 	
+	<bean id="sendMailUtil" class="com.choudoufu.solr.util.MailUtil">
+		<constructor-arg index="0" name="from" value="${mail.from}"/>
+		<constructor-arg index="1" name="fromName" value="${mail.from.name}"/>
+		<constructor-arg index="2" name="username" value="${mail.form.username}"/>
+		<constructor-arg index="3" name="password" value="${mail.form.password}"/>
+		<constructor-arg index="4" name="smtpHost" value="${mail.smtp}"/>
+		<constructor-arg index="5" name="smtpPort" value="25"/>
+		<constructor-arg index="6" name="mailFreeMarkerConfigurer" ref="mailFreeMarkerConfigurer"/>
+ 	</bean>
+ 	
+	<bean id="mailFreeMarkerConfigurer" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+       <property name="templateLoaderPath" value="classpath:/mailtpl" />
+    </bean>
+ 	
+ 	
 	<!-- 计划任务配置，用 @Service @Lazy(false)标注类，用@Scheduled(cron = "0 0 2 * * ?")标注方法 -->
     <!--
      <task:executor id="executor" pool-size="10"/>
