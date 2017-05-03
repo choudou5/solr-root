@@ -234,7 +234,7 @@ var solr_admin = function( app_config )
     for( var core_name in that.cores_data )
     {
       core_count++;
-      var core_path = config.solr_path + '/' + core_name;
+      var core_path = config.solr_path + '/solr/' + core_name;
       var classes = [];
 
       if( cores.status[core_name]['isDefaultCore'] )

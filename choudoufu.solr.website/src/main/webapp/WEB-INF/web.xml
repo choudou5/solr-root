@@ -34,14 +34,27 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
-	<!-- 自定义 过滤器, 继承 SolrDispatchFilter -->
 	<filter>
-		<filter-name>CustomFilter</filter-name>
-		<filter-class>com.choudoufu.solr.modules.console.web.filter.CustomFilter</filter-class>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.choudoufu.solr.modules.console.web.filter.LoginFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>CustomFilter</filter-name>
+		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 自定义 过滤器, 继承 SolrDispatchFilter -->
+	<filter>
+		<filter-name>ExtSolrDispatchFilter</filter-name>
+		<filter-class>com.choudoufu.solr.core.filter.ExtSolrDispatchFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ExtSolrDispatchFilter</filter-name>
+		<url-pattern>/solr/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ExtSolrDispatchFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
 	</filter-mapping>
 	
 	<!-- Validate code -->
@@ -65,14 +78,15 @@
 	</servlet>
 	<servlet>
 		<servlet-name>LoadAdminUI</servlet-name>
-		<servlet-class>org.apache.solr.servlet.LoadAdminUiServlet</servlet-class>
+		<!-- <servlet-class>org.apache.solr.servlet.LoadAdminUiServlet</servlet-class> -->
+		<servlet-class>com.choudoufu.solr.core.servlet.ExtLoadAdminUiServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>RedirectOldAdminUI</servlet-name>
 		<servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
 		<init-param>
 			<param-name>destination</param-name>
-			<param-value>${context}/#/</param-value>
+			<param-value>/solr/${context}/#/</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
@@ -80,7 +94,7 @@
 		<servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
 		<init-param>
 			<param-name>destination</param-name>
-			<param-value>${context}/zookeeper</param-value>
+			<param-value>/solr/${context}/zookeeper</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
@@ -88,7 +102,7 @@
 		<servlet-class>org.apache.solr.servlet.RedirectServlet</servlet-class>
 		<init-param>
 			<param-name>destination</param-name>
-			<param-value>${context}/#/~logging</param-value>
+			<param-value>/solr/${context}/#/~logging</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
@@ -129,7 +143,7 @@
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>LoadAdminUI</servlet-name>
-		<url-pattern>/admin.html</url-pattern>
+		<url-pattern>/solr/admin.html</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>SolrRestApi</servlet-name>
