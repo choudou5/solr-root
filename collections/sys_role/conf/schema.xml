@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="sys_role" title="系统角色" version="1.5">
+<field name="_version_" type="long" indexed="true" stored="true"/>
+<field name="_root_" type="string" indexed="true" stored="false"/>
+
+<field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+<field name="name" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+<field name="desc" type="string" indexed="false" stored="true" required="false" multiValued="false"/>
+<field name="usable" type="boolean" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="menus" type="string" indexed="false" stored="true" required="false" multiValued="true"/>
+<field name="createBy" type="string" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="createTime" type="date" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="updateBy" type="string" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="updateTime" type="date" indexed="true" stored="true" required="false" multiValued="false"/>
+
+<uniqueKey>id</uniqueKey>
+<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+<fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+<fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+
+
+
+
+
+
+
+
+
+</schema>

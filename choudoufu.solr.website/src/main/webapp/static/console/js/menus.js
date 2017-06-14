@@ -8,7 +8,14 @@ function activeMenuCss(){
 		var href = $(this).find("a").attr("href");
 //		info("href:"+href);
 		var path = getHrefPath(href);
-//		info("path:"+path);
+		//处理 form页面
+		if(path != null){
+//			info("path:"+path);
+			var formMenuDex = localPath.indexOf("form");
+			if(formMenuDex != -1){
+				localPath = localPath.substring(0, formMenuDex);
+			}
+		}
 		if(localPath == href || localPath.indexOf(path) != -1){
 			$(this).addClass('active');//激活当前菜单
 			var ul_id = $(this).closest("ul").attr("id");

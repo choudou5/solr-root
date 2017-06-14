@@ -13,18 +13,12 @@
           <%@include file="/WEB-INF/view/console/collection/schema/table-thead.jsp" %>
         </thead>
         <tbody>
-          <tr id="tr_0">
-          	<sys:fieldInputTpl fieldIndex="0" fieldName="createTime" fieldLabel="创建时间" fieldType="${schemaField.type }"/>
-          </tr>
-          <tr id="tr_1">
-          	<sys:fieldInputTpl fieldIndex="1" fieldName="createBy" fieldLabel="创建人" fieldType="${schemaField.type }"/>
-          </tr>
-          <tr id="tr_2">
-          	<sys:fieldInputTpl fieldIndex="2" fieldName="updateTime" fieldLabel="更新时间" fieldType="${schemaField.type }"/>
-          </tr>
-          <tr id="tr_3">
-          	<sys:fieldInputTpl fieldIndex="3" fieldName="updateBy" fieldLabel="更新人" fieldType="${schemaField.type }"/>
-          </tr>
+          <!-- 默认字段 -->
+          <c:forEach var="defField" items="${fns:getDefFieldArray()}" varStatus="status">
+          	<tr id="tr_${status.index }">
+	          	<sys:fieldInputTpl fieldIndex="${status.index }" fieldName="${defField.name }" fieldDefType="${defField.type }" fieldIndexed="true" fieldStored="true" fieldIsListShow="true" fieldLabel="${defField.label }"/>
+	         </tr>
+          </c:forEach>
         </tbody>
       </table>
       <select id="tplFieldType" class="hide">
@@ -34,7 +28,8 @@
       </select>
     </div>
     <div class="add-row">
-      	<a href="javascript:addFieldRow();">添加</a>
+      	<a href="javascript:addFieldRow('top');">添加到第一行</a>&nbsp;&nbsp;
+      	<a href="javascript:addFieldRow();">添加到尾行</a>
       </div>
   </div>
 </div>

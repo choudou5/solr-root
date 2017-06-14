@@ -56,7 +56,7 @@ public class HttpClientUtil {
 			httpGet.setHeader("Content-Type","text/html; charset=utf-8");
 			httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0");
 			httpGet.setHeader("Cache-Control", "no-cache");
-			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(60000).setConnectTimeout(60000).build();
+			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(20000).setConnectTimeout(20000).build();
 			httpGet.setConfig(requestConfig);
 			httpResponse = httpClient.execute(httpGet);
 			if (httpResponse.getEntity() != null) {

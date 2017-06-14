@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="sys_authcode_hi" title="授权记录历史" version="1.5">
+<field name="_version_" type="long" indexed="true" stored="true"/>
+<field name="_root_" type="string" indexed="true" stored="false"/>
+
+<field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+<field name="code" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+<field name="schemaName" type="string" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="action" type="string" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="actionDesc" type="word_ik_actionDesc" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="used" type="boolean" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="createBy" type="string" indexed="true" stored="true" required="false" multiValued="false"/>
+<field name="createTime" type="date" indexed="true" stored="true" required="false" multiValued="false"/>
+
+<uniqueKey>id</uniqueKey>
+<fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+<fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
+<fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
+<fieldType name="date" class="solr.TrieDateField" precisionStep="0" positionIncrementGap="0"/>
+
+
+
+
+<fieldType name="word_ik_actionDesc" class="solr.TextField">
+<analyzer type="index"><tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"  useSmart="false" />
+</analyzer>
+<analyzer type="query"><tokenizer class="org.wltea.analyzer.lucene.IKTokenizerFactory"  useSmart="true" />
+</analyzer>
+</fieldType>
+
+
+
+
+</schema>

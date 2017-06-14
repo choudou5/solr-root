@@ -3,7 +3,7 @@
 <%@include file="/WEB-INF/view/console/include/tagLib.jsp" %>
 
 <!DOCTYPE html>
-<html>
+<html id="loginPage">
 <head>
    <title>${fns:getSiteName()}-登录</title>
    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,7 +20,7 @@
         	<!-- 消息提示 -->
         	<sys:message content="${message }"/>
             <form id="loginform" class="form-vertical" action="${ctx }/console/login" method="post" enctype="multipart/form-data">
-				<div class="control-group normal_text"> <h3><img src="${ctxStatic }/images/logo.png" alt="Logo" /></h3></div>
+				<div class="control-group normal_text"> <h3><img src="${ctxStatic }/images/logo.png" alt="Logo" style="height: 35px;" /></h3></div>
                 <div class="control-group">
                     <div class="controls">
                         <div class="main_input_box">
@@ -39,8 +39,7 @@
                 <c:if test="${isValidateCodeLogin}">
 	                <div class="control-group">
 	                    <div class="controls">
-	                        <div class="main_input_box" style="text-align: left; padding-left: 12px;">
-	                            <span class="add-on bg_ly"><i class="icon-lock"></i></span>
+	                        <div class="main_input_box">
 	                            <sys:validateCode name="validateCode" inputCssStyle="margin-bottom:0;"/>
 	                        </div>
 	                    </div>

@@ -68,8 +68,8 @@
                 </div>
               </div>
               <div class="form-actions">
-                <input id="back" class="btn btn-primary" type="reset" value="Back" />
-                <input id="next" class="btn btn-primary" type="submit" value="Next" />
+                <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;
+                <input id="next" class="btn btn-danger" type="submit" value="下一步" />
                 <div id="status"></div>
               </div>
               <div id="submitted"></div>

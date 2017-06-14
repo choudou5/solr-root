@@ -158,6 +158,25 @@ limitations under the License.
   
   <script type="text/javascript"> var require = { urlArgs: '_=${version}' }; </script>
   <script src="js/require.js?_=${version}" data-main="js/main"></script>
-
+  <script type="text/javascript">
+  $(function(){
+	  /********begin 登陆超时 校验****************/
+	  $.ajaxSetup({
+	  	global: true,
+	  	complete: function (request, textStatus) {
+	  		console.log("complete");
+	  		var data = request.responseText;
+	          //login页面已做特殊标记    
+	          if(data != null && data.toString().indexOf('loginPage') != -1) {
+	        	  alert("登录已超时!");
+	        	  location.reload();
+	            return;  
+	          }
+	  	}
+	  });
+	  /********end 登陆超时 校验****************/
+  });
+  </script>
+  
 </body>
 </html>

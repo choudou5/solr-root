@@ -17,8 +17,8 @@
 
 <!--main-content-part-->
 <div id="content">
-
-<sys:breadcrumbs currLevel="1" secondLevelTitle="应用列表" secondLevelView="/console/collection/data/search"/>
+<sys:breadcrumbs currLevel="3" secondLevelTitle="应用列表" secondLevelView="/console/collection/schema/list"
+threeLevelTitle="数据结果集-${schema.title}" threeLevelView="/console/collection/data/list?schemaName=${schema.name}"/>
 
 <!--container begin-->
   <div class="container-fluid">
@@ -31,12 +31,13 @@
           <div class="widget-title"> <span class="icon"> <i class="icon-cogs"></i> </span>
             <h5>数据结果集</h5>
             <a href="javascript:history.go(-1);"  class="fl btn head-btn">返回</a>
+            <a href="${ctx }/console/collection/data/form?schemaName=${schema.name}"  class="fl btn head-btn">添加数据</a>
           </div>
           
           <div class="widget-content mg-10">
             <form id="searchForm" class="form-horizontal" method="post" action="${ctx }/console/collection/data/list?schemaName=${schema.name}">
-            	<input type="hidden" name="pageNo"/>
-            	<input type="hidden" name="pageSize"/>
+            	<input type="hidden" name="pageNo" value="${pageNo }"/>
+            	<input type="hidden" name="pageSize" value="${pageSize }"/>
             	<div class="search">
 				   <c:forEach items="${fields }" var="field" varStatus="status">
 	                  <c:if test="${field.isListSearch }">
@@ -68,6 +69,7 @@
               <tbody>
               <c:forEach var="doc" items="${page.result }" varStatus="status">
               		<tr class="">
+              		  <c:set var="pk" value="${fields[schema.primaryNo].name }"/>
               		  <c:forEach items="${fields }" var="field" varStatus="status">
              		  	  <c:if test="${field.isListShow }">
 		                    <td>
@@ -88,11 +90,15 @@
 		                  </c:if>
 	                  </c:forEach>
 	                  <td class="center" style="width: 120px;">
-	                  	<a href="javascript:void(0);">编辑</a>&nbsp;&nbsp;
-	                  	<a href="javascript:void(0);" onclick="return layerConfirm('您确认删除? （不可恢复）', this.href);">删除</a>&nbsp;&nbsp;
-	                  	<%-- <c:if test="${schema.isSys }">
-	                  		<a href="javascript:deleteColl('${schema.name }')" data-confirm="您确认删除? （不可恢复）">删除</a>
-	                  	</c:if> --%>
+	                 	<c:if test="${!schema.canOperData }">
+		                  	<a href="${ctx }/console/collection/data/form?schemaName=${schema.name}&pk=${pk}&pkVal=${doc[pk]}">编辑</a>&nbsp;&nbsp;
+		                  	<c:if test="${!fns:isAdmin(sid)}">
+	                 			<a href="javascript:deleteData('${schema.name}', '${pk}', '${doc[pk]}');" onclick="return layerConfirm('您确认删除? （不可恢复）', this.href);">删除</a>&nbsp;&nbsp;
+	                 		</c:if>
+	                 		<c:if test="${fns:isAdmin(sid)}">
+			                  	<a href="javascript:;" onclick="applyAuthCode('${pk}', '${doc[pk]}', '${schema.name}', 'delete', '${pk }:${doc[pk]}');">删除</a>&nbsp;&nbsp;
+	                 		</c:if>
+	                  	</c:if> 
 	                  </td>
 	                </tr>
               	</c:forEach>
@@ -129,6 +135,96 @@
 		form.find("input[name=pageSize]").val(pageSize);
     	form.submit();
 	}
+	
+	// 申请授权码
+	function applyAuthCode(pk, pkVal, key, action, actionDesc){
+		loading("正在申请授权编码...请稍等");
+		$.ajax({
+		    url: ctx + "/console/auth/applyAuthCode",
+		    type:'POST',
+		    data:{key: key, action: action, actionDesc: actionDesc},
+		    timeout:2000,    //超时时间
+		    dataType:'json', //返回的数据格式：json/xml/html/script/jsonp/text
+		    success:function(data, status, xhr){
+		    	closeloading();
+		    	if(data.status == 200){
+			    	layerPrompt("请输入授权编码（授权码3分钟过期）", function(authCode){
+			    		log(authCode+", "+ action);
+			    		if(action=="delete"){
+				    		deleteData(key, pk, pkVal, authCode);
+			    		}else if(action=="deleteAll"){
+			    			deleteAllData(key, authCode);
+			    		}
+			    	});
+		    		layerTip(data.content, "success", 5000, 't');
+		    	}else{
+		    		layerTip(data.content, "error");
+		    	}
+		    }
+		})
+	}
+	
+	function deleteData(schemaName, pk, pkVal, authCode){
+		$.ajax({
+		    url: ctx + "/console/collection/data/delete",
+		    type:'POST',
+		    async:true,    //或false,是否异步
+		    data:{
+		    	schemaName: schemaName, pk: pk, pkVal: pkVal, authCode: authCode
+		    },
+		    timeout:2000,    //超时时间
+		    dataType:'json', //返回的数据格式：json/xml/html/script/jsonp/text
+		    beforeSend:function(xhr){
+		    	loading("正在处理...请稍等");
+		    },
+		    success:function(data, status, xhr){
+		    	closeloading();
+		    	if(data.status == 200){
+		    		layerTip(data.content);
+		    		setTimeout(function(){
+		    			location.reload();
+		    		}, 1500);
+		    	}else{
+		    		layerTip(data.content);
+		    	}
+		    },
+		    complete:function(){
+		        closeloading();
+		    }
+		})
+	}
+	
+	function deleteAllData(schemaName, authCode){
+		var url = ctx + "/console/collection/data/deleteAll";
+		$.ajax({
+		    url: url,
+		    type:'POST',
+		    async:true,
+		    data:{
+		    	schemaName: schemaName, authCode: authCode
+		    },
+		    timeout:2000,    //超时时间
+		    dataType:'json', //返回的数据格式：json/xml/html/script/jsonp/text
+		    beforeSend:function(xhr){
+		    	loading("正在处理...请稍等");
+		    },
+		    success:function(data, status, xhr){
+		    	closeloading();
+		    	if(data.status == 200){
+		    		layerTip(data.content);
+		    		setTimeout(function(){
+		    			location.reload();
+		    		}, 1500);
+		    	}else{
+		    		layerTip(data.content);
+		    	}
+		    },
+		    complete:function(){
+		        closeloading();
+		    }
+		});
+	}
+	
 </script>
 </body>
 </html>

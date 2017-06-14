@@ -92,24 +92,26 @@
 	
 	<!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
-	
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:/"/>
-	
-	<!-- 支持Shiro对Controller的方法级AOP安全控制 begin-->
-	<!-- <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-		<property name="proxyTargetClass" value="true" />
-	</bean> -->
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="exceptionMappings">
 			<props>
 				<!-- <prop key="org.apache.shiro.authz.UnauthorizedException">error/403</prop> -->
-				<prop key="java.lang.Throwable">error/500</prop>
+				<prop key="java.lang.Throwable">/error/error500</prop>
 			</props>
 		</property>
 	</bean>
-	<!-- 支持Shiro对Controller的方法级AOP安全控制 end -->
+	
+	<!-- 权限拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/console/**"/> 
+			<mvc:exclude-mapping path="/static/**"/>
+			<bean class="com.choudoufu.solr.modules.console.web.interceptor.PermissionInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 		<property name="maxUploadSize" value="10485760" />  

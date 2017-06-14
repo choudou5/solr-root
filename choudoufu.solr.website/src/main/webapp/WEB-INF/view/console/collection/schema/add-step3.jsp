@@ -12,7 +12,7 @@
        <c:if test="${not empty isNew && !isNew }">
       	<p class="alert alert-info alert-block">
 	       <input type="checkbox" id="reloadSolrConf" name="ext.isReLoad" value="true"/>&nbsp;<span class="help-inline-tip">更新solr配置</span>
-       </p>
+        </p>
        </c:if>
        
        <p class="alert alert-info alert-block">
@@ -22,6 +22,11 @@
 	       	&nbsp;生成地址：<span class="orange">${fns:getGenCodePath()}</span>
 	       </span>
        </p>
+       
+       <p class="alert alert-info alert-block">
+	       <input type="checkbox" name="canOperData" <c:if test="${canOperData }">checked="checked"</c:if> value="true"/>&nbsp;<span class="help-inline-tip">是否能 操作数据（add/update/delete）</span>
+       </p>
+       
     </div>
   </div>
 </div>

@@ -11,7 +11,7 @@
 						</tr>
 						<tr>
 							<td width="32px"></td>
-							<td style="font-family: Roboto-Regular, Helvetica, Arial, sans-serif; font-size: 24px; color: #FFFFFF; line-height: 1.25;">${sysName} 验证码</td>
+							<td style="font-family: Roboto-Regular, Helvetica, Arial, sans-serif; font-size: 24px; color: #FFFFFF; line-height: 1.25;">${sysName} 授权码</td>
 							<td width="32px"></td>
 						</tr>
 						<tr>
@@ -32,11 +32,12 @@
 						</tr>
 						<tr>
 							<td><p>尊敬的 ${sysName} 用户：</p>
-								<p>${askforName} 向您申请授权 “<span style="color: #659CEF" dir="ltr">${authTitle}</span>” 权限，此授权码3分钟后失效。
-									验证码为：
-								</p>
+								<p>用户 <span style="color: #f44">${askforName}</span> 向您申请授权 “<span style="color: #f44" dir="ltr">对[${schemaName}] 应用 进行 [${action}] 操作： ${authTitle}</span>” 权限，此授权码3分钟后失效。</p>
+								<p>验证码为：</p>
 								<div style="text-align: center;">
-									<p dir="ltr"><strong style="text-align: center; font-size: 24px; font-weight: bold;">${authCode}</strong></p>
+									<p dir="ltr">
+									<input style="width:500px;font-weight: bold;color:orange;padding:5px;" value="${authCode}"/>
+									</p>
 								</div>
 								<p>此致</p>
 								<p>${sysName} 开发团队敬上</p></td>

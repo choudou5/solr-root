@@ -6,6 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fns" uri="/WEB-INF/tlds/fns.tld" %>
+<%@ taglib prefix="perm" uri="/WEB-INF/tlds/permission.tld" %>
 <%@ taglib prefix="sys" tagdir="/WEB-INF/tags/sys" %>
 
 <c:set var="sid" value="${pageContext.request.session.id}"/>

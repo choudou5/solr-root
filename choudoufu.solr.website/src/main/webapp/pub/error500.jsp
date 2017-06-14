@@ -22,7 +22,7 @@
         <div class="widget-box">
           <div class="widget-content">
             <div class="error_ex">
-              <h1>500</h1>
+              <h1>500--</h1>
               <h3>很抱歉，服务器内部错误！</h3>
               <p>请联系管理员</p>
               <a class="btn btn-warning btn-big" href="/console/page?path=/index">返回首页</a>&nbsp;&nbsp;&nbsp;

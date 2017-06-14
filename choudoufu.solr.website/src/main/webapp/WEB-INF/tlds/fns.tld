@@ -25,14 +25,67 @@
     <function-signature>java.lang.String getGenCodePath()</function-signature>
     <example>${fns:getGenCodePath()}</example>  
   </function>
-  
+
   <!-- UserUtil -->
+  
+  <function>
+    <description>获得当前用户名</description>
+    <name>getSessionUserName</name>
+    <function-class>com.choudoufu.solr.modules.console.util.UserUtil</function-class>
+    <function-signature>java.lang.String getSessionUserName(java.lang.String)</function-signature>
+    <example>${fns:getSessionUserName(sid)}</example>  
+  </function>
   <function>
     <description>是否为管理员</description>
     <name>isAdmin</name>
-    <function-class>com.choudoufu.solr.util.UserUtil</function-class>
+    <function-class>com.choudoufu.solr.modules.console.util.UserUtil</function-class>
     <function-signature>java.lang.Boolean isAdmin(java.lang.String)</function-signature>
     <example>${fns:isAdmin(sid)}</example>  
+  </function>
+  <function>
+    <description>获取当前用户的菜单对象列表</description>
+    <name>getTreeMenuList</name>
+    <function-class>com.choudoufu.solr.modules.console.util.UserUtil</function-class>
+    <function-signature>java.util.List getTreeMenuList()</function-signature>
+    <example>${fns:getTreeMenuList()}</example>
+  </function>
+  <!-- RoleUtil -->
+  <function>
+    <description>根据角色ID 获得 角色名</description>
+    <name>getRoleName</name>
+    <function-class>com.choudoufu.solr.modules.console.util.RoleUtil</function-class>
+    <function-signature>java.lang.String getRoleName(java.lang.String)</function-signature>
+    <example>${fns:getRoleName(roleId)}</example>  
+  </function>
+  <function>
+    <description>是否存在 角色ID</description>
+    <name>containRoleId</name>
+    <function-class>com.choudoufu.solr.modules.console.util.RoleUtil</function-class>
+    <function-signature>java.lang.Boolean containRoleId(java.lang.String[], java.lang.String)</function-signature>
+    <example>${fns:containRoleId(roleIds, roleId)}</example>  
+  </function>
+  
+  <!-- 枚举 -->
+  <function>
+    <description>获得 字段类型集合</description>
+    <name>getFieldTypeArray</name>
+    <function-class>com.choudoufu.solr.modules.console.schema.FieldTypeEnum</function-class>
+    <function-signature>com.choudoufu.solr.modules.console.schema.FieldTypeEnum getFieldTypeArray()</function-signature>
+    <example>${fns:getFieldTypeArray()}</example>  
+  </function>
+  <function>
+    <description>获得 默认字段集合</description>
+    <name>getDefFieldArray</name>
+    <function-class>com.choudoufu.solr.modules.console.schema.DefaultFieldEnum</function-class>
+    <function-signature>com.choudoufu.solr.modules.console.schema.DefaultFieldEnum getDefFieldArray()</function-signature>
+    <example>${fns:getDefFieldArray()}</example>  
+  </function>
+  <function>
+    <description>根据类型 获取 表单忽略字段</description>
+    <name>getFormIgnoreFieldNameByType</name>
+    <function-class>com.choudoufu.solr.modules.console.schema.DefaultFieldEnum</function-class>
+    <function-signature>java.util.List getFormIgnoreFieldNameByType(java.lang.String)</function-signature>
+    <example>${fns:getFormIgnoreFieldNameByType()}</example>  
   </function>
   
   <!-- Encodes -->
@@ -49,14 +102,6 @@
     <function-class>org.apache.commons.lang.StringEscapeUtils</function-class>
     <function-signature>java.lang.String unescapeHtml(java.lang.String)</function-signature>
     <example>${fns:unescapeHtml(html)}</example>  
-  </function>
-  
-    <function>
-    <description>字段类型</description>
-    <name>getFieldTypeArray</name>
-    <function-class>com.choudoufu.solr.modules.console.schema.FieldTypeEnum</function-class>
-    <function-signature>com.choudoufu.solr.modules.console.schema.FieldTypeEnum getFieldTypeArray()</function-signature>
-    <example>${fns:getFieldTypeArray()}</example>  
   </function>
   
   <!-- StringUtils -->

@@ -16,6 +16,7 @@
    <field name="growthId" type="long" indexed="false" stored="true" />
    <field name="primaryNo" type="int" indexed="false" stored="true" />
    <field name="isSys" type="boolean" indexed="true" stored="true" required="true"/>
+   <field name="canOperData" type="boolean" indexed="true" stored="true" required="true"/>
    
    <field name="text" type="word_min_split" indexed="true" stored="false" multiValued="true"/>
 

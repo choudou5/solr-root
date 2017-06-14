@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>SolrHome</title>
+	<title>Solr管理系统</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="keywords" content="">
@@ -48,7 +48,7 @@
 				<span class="icon icon-bar"></span>
 				<span class="icon icon-bar"></span>
 			</button>
-			<a href="/website/index.html" class="navbar-brand"><img src="/static/images/logo.png" style="margin-top: -4px;"/></a>
+			<a href="/website/index.html" class="navbar-brand"><img src="/static/images/logo.png" style="margin-top: -12px; height: 35px;"/></a>
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
@@ -59,7 +59,7 @@
 				<li><a href="#team" class="smoothScroll">成员</a></li>
 				<li><a href="#contact" class="smoothScroll">联系我们</a></li>
 				<li><a href="/console/page?path=/index" target="_blank" class="smoothScroll">在线体验</a></li>
-				<li><a href="/bbs/notice.html" target="_blank" class="smoothScroll">开发者中心</a></li>
+				<li><a href="javascript:layer.msg('客官别急，我们正在努力开发中！', {time: 3000, icon: 6, offset: 't'});" target="_blank" class="smoothScroll">开发者中心</a></li>
 			</ul>
 		</div>
 	</div>
@@ -72,24 +72,24 @@
 		<div class="row">
 			<div class="col-md-12 col-sm-12">
 				<h3>垂直搜索 / 高精度分词 / 云词库 / 排序可定制 / 多种功能组件</h3>
-				<h1>SOLR HOME</h1>
+				<h1>SOLR 管理系统</h1>
 				<hr>
-				<a href="#work" class="smoothScroll btn btn-danger">我们做什么</a>
+				<a href="#work" class="smoothScroll btn btn-danger">您所在意的</a>
 				<a href="#contact" class="smoothScroll btn btn-default">联系我们</a>
 				
-			    <div class="col-md-8 col-md-offset-2 col-sm-10" style="padding: 16px;">
+			   <!--  <div class="col-md-8 col-md-offset-2 col-sm-10" style="padding: 16px;">
 			      <div class="col-md-6 col-md-offset-2 col-sm-6">
 				      <div class="form-group margin-bottom">
 				        <input name="email" type="email" class="form-control" id="email" placeholder="输入你的邮箱地址…" required="" aria-required="true">
 				      </div>
 				  </div>
-				  
 				  <div class="col-md-3 col-sm-6">
 				      <button type="button" onclick="javascript:;" class="form-control label-success">
 				       	 订阅更新&&nbsp;&nbsp;<i class="fa fa-envelope" aria-hidden="true"></i>
 				      </button>
 				  </div>
-  				</div>
+  				</div> -->
+  				
 			</div>
 		</div>
 	</div>		
@@ -107,41 +107,51 @@
 				</div>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.6s">
-				<i class="icon-cloud medium-icon"></i>
-					<h3>WEB MARKETING</h3>
-					<hr>
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteu sunt in culpa qui officia.</p>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.9s">
-				<i class="icon-mobile medium-icon"></i>
-					<h3>UI &amp; UX DESIGN</h3>
-					<hr>
-					<p>Solr Home is free responsive Bootstrap v3.3.5 layout from <a rel="nofollow" href="http://www.tooplate.com" target="_parent">Tooplate</a>. Images are from <a rel="nofollow" href="http://pixabay.com" target="_parent">Pixabay</a> free photo webwebsite.</p>
-			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
 				<i class="icon-laptop medium-icon"></i>
-					<h3>ECOMMERCE</h3>
+					<h3>易接入</h3>
 					<hr>
-					<p>You can edit and use this template for your webwebsites. Please tell your friends about Tooplate. Thank you for visiting our webwebsite.</p>
+					<p>不改动solr核心代码，只需将Solr管理系统 集成到现有solr服务，即可享有一套丰富的界面化管理功能。</p>
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="0.9s">
+				<i class="icon-shield medium-icon"></i>
+					<h3>安全</h3>
+					<hr>
+					<p>系统采用 高性能的<a href="http://baike.baidu.com/link?url=5K6YHbL_-k3PuwNKdkdf-oFwx-y6rT-QqnIaHC4jT-StPVPchwokngenMXnvoByDjPKYHYcivHpFoqhUVvS5VnZ0VoTL1EQvEyHZlVDRdoZwXt9yuwCiX6YBoee9QHEh" target="_blank">XXTea加密算法</a>(QQ协议就是采用此算法)+填充算法  进行数据授权访问，可为每个子应用分配授权令牌。 </p>
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
+				<i class="icon-gears medium-icon"></i>
+					<h3>多数据源</h3>
+					<hr>
+					<p>支持 Mysql, SqlServer, Excel数据导入，同时支持 定时增量导入。</p>
+					<br><br>
+			</div>
+			
+			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
+				<i class="icon-search medium-icon"></i>
+					<h3>精准分词</h3>
+					<hr>
+					<p>系统提供多种分词器：正向分词（IkAnalyzer, mmseg4j）, 正向连续分词，拼音分词，树结构分词，地区分词，自定义符号切割分词等等。</p>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
-				<i class="icon-compass medium-icon"></i>
-					<h3>MOBILE APP</h3>
+				<i class="icon-cloud medium-icon"></i>
+					<h3>云词库</h3>
 					<hr>
-					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteu sunt in culpa qui officia.</p>
+					<p>支持 在线添加模块词库，您只需要配置SQL语句即可 热生效索引数据。</p>
 			</div>
 			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
-				<i class="icon-chat medium-icon"></i>
-					<h3>SOCIAL MEDIA</h3>
+				<i class="icon-refresh medium-icon"></i>
+					<h3>故障恢复</h3>
 					<hr>
-					<p>You can easily change icons by looking at <a href="https://www.elegantthemes.com/blog/resources/how-to-use-and-embed-an-icon-font-on-your-webwebsite" target="_blank">ET Line Icons</a>. Excepteu sunt in culpa qui officia. Duis aute irure dolor in reprehenderit.</p>
+					<p>不小心删掉了 zk或本地的 solr配置文件？ 一键恢复。</p>
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
+			<!-- <div class="col-lg-4 col-md-4 col-sm-4 wow fadeInUp" data-wow-delay="1s">
 				<i class="icon-browser medium-icon"></i>
 					<h3>RESPONSIVE LAYOUT</h3>
 					<hr>
 					<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteu sunt in culpa qui officia.</p>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </section>
@@ -262,12 +272,12 @@
 					<div class="plan_title">
 						<i class="icon-mobile medium-icon"></i>
 						<h3>基础套餐</h3>
-						<h2>￥待定 <span>永久</span></h2>
+						<h2>￥待定 </h2>
 					</div>
 					<ul>
                     	<li>源码+文档</li>
 						<li>更新免费</li>
-                        <li>技术支持 1月</li>
+                        <li>加入讨论群</li>
 					</ul>
 					<a class="btn btn-warning"  href="#contact">立即联系</a>
 				</div>
@@ -277,7 +287,7 @@
 					<div class="plan_title">
 						<i class="icon-desktop medium-icon"></i>
 						<h3>高级套餐</h3>
-						<h2>￥待定 <span>永久</span></h2>
+						<h2>￥待定 </h2>
 					</div>
 					<ul>
 						<li>含基础套餐</li>
@@ -292,12 +302,12 @@
 					<div class="plan_title">
 						<i class="icon-cloud medium-icon"></i>
 						<h3>定制套餐</h3>
-						<h2>￥待定 <span>永久</span></h2>
+						<h2>￥待定 </h2>
 					</div>
 					<ul>
 						<li>含高级套餐</li>
-						<li>功能定制 3次</li>
-						<li>技术培训 3次</li>
+						<li>版本定制</li>
+						<li>功能定制</li>
 					</ul>
 					<a class="btn btn-warning"  href="#contact">立即联系</a>
 				</div>
@@ -325,7 +335,7 @@
 							<h3>Senior Designer</h3>
 							<hr>
 							<ul class="social-icon">
-								<li><a href="javascript:;" title="git" class="fa fa-git wow fadeIn" data-wow-delay="0.3s"></a></li>
+								<li><a href="https://github.com/choudou5" target="_blank" title="git" class="fa fa-git wow fadeIn" data-wow-delay="0.3s"></a></li>
 								<li><a href="javascript:;" title="QQ" class="fa fa-qq wow fadeIn" data-wow-delay="0.6s"></a></li>
 								<li><a href="javascript:;" title="微博" class="fa fa-weibo wow fadeIn" data-wow-delay="0.9s"></a></li>
 							</ul>

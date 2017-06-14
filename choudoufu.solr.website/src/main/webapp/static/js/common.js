@@ -28,25 +28,46 @@ function layerConfirm(content, href, title, okBtnText, noBtnText){
 /**
  * 弹出框
  * @param title
- * @param type 类型：success/error/warning
+ * @param type 类型：success/error/warning/md5/bad/nice
  */
 function layerAlert(title, type){
-	type = type==undefined?1:type;
+	type = type==undefined?"warning":type;
 	layer.alert(title, {icon: layerGetIcon(type), btn:["知道了"]});
 }
 
 /**
  * 提示框
  * @param title
- * @param type 类型：success/error/warning
+ * @param type 类型：success/error/warning/md5/bad/nice
  * @param autoCloseTime 自动关闭时间（毫秒）
+ * @param algin t/r/b/l/lt/lb/rt/rb  默认：auto
  */
-function layerTip(title, type, autoCloseTime){
-	type = type==undefined?1:type;
+function layerTip(title, type, autoCloseTime, align){
+	type = type==undefined?"success":type;
 	autoCloseTime = autoCloseTime==undefined?3000:autoCloseTime;
-	layer.msg(title, {icon: layerGetIcon(type), time: autoCloseTime});
+	align = align==undefined?"auto":align;
+	layer.msg(title, {icon: layerGetIcon(type), time: autoCloseTime, offset: '20px'});
 }
 
+
+/**
+ * prompt层
+ * @param title
+ * @param callBack 回调函数
+ * @param inputType 输入类型 0=text, 1=password, 2=textarea 默认 0
+ */
+function layerPrompt(title, callBack, inputType){
+	inputType = inputType==undefined?0:inputType;
+	layer.prompt({title: title, formType: inputType}, function(content, index){
+	  layer.close(index);
+	  if(typeof callBack == 'function'){
+		  callBack(content);
+	  }
+	});
+}
+
+
+  
 /**
  * 提示框
  * @param title
@@ -55,10 +76,16 @@ function layerTip(title, type, autoCloseTime){
  */
 function loading(text, autoCloseTime){
 	autoCloseTime = autoCloseTime==undefined?3000:autoCloseTime;
-	layer.msg('正在加载...请稍等', { icon: 6, time: autoCloseTime});
+	text = text==undefined?'正在加载...请稍等':text;
+	layer.msg(text, { icon: 6, time: autoCloseTime});
 }
 
 var __loadingIndex = 9999999999;
+/**
+ * 加载提示框
+ * @param text
+ * @param autoCloseTime
+ */
 function loading(text, autoCloseTime){
 	__loadingIndex = layer.load();
 	autoCloseTime = autoCloseTime==undefined?1000:autoCloseTime;
@@ -67,22 +94,75 @@ function loading(text, autoCloseTime){
 	},autoCloseTime );
 }
 
+/**
+ * 关闭加载提示框
+ */
 function closeloading(){
 	layer.close(__loadingIndex); 
 }
 
+/**
+ * 弹出 新页面
+ * @param title
+ * @param url
+ * @param width
+ * @param height
+ * @param okCall
+ * @param cancelCall
+ * @param initCall
+ */
+function layerOpenPage(title, url, width, height, okCall, cancelCall, initCall){
+	layer.closeAll();
+	width = width==undefined?'450px':width+'px';
+	height = height==undefined?'350px':height+'px';
+	
+	//单窗口模式，层叠置顶
+	layer.open({
+	  type: 2 //此处以iframe举例
+	  ,title: title
+	  ,area: [width, height]
+	  ,closeBtn: 0
+	  ,shadeClose: true
+	  ,maxmin: true
+	  ,content: url
+	  ,btn: ['确定', '取消']
+	  ,yes: function(index){
+		  if(typeof okCall == 'function'){
+			  okCall(index);
+		  }
+	  }
+	  ,btn2: function(){
+		  if(typeof cancelCall == 'function'){
+			  cancelCall();
+		  }
+	  }
+	  ,zIndex: layer.zIndex //重点1
+	  ,success: function(layero){
+		  if(typeof initCall == 'function'){
+			  initCall();
+		  }
+	  }
+	});
+}
 
 /**
- * @param type success/error/warning
+ * @param type success/error/warning/md5/bad/nice
  * @returns {0=感叹号, 1=成功, 2=错误, 3=疑问, 4=加密, 5=坏脸, 6=笑脸}
  */
 function layerGetIcon(type){
+	log(type);
 	if("success" == type){
 		return 1;
 	}else if("error" == type){
 		return 2;
 	}else if("warning" == type){
 		return 3;
+	}else if("md5" == type){
+		return 4;
+	}else if("bad" == type){
+		return 5;
+	}else if("nice" == type){
+		return 6;
 	}else{
 		return 0;
 	}
@@ -108,3 +188,9 @@ function checkboxEvent(attId, checkedCall, unCheckedCall){
 		}
 	});
 }
+
+
+function log(msg){
+	console.log(msg);
+}
+

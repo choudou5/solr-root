@@ -222,8 +222,9 @@ function getAnalyzerHiddenParamVal(type, groupId, name){
 
 /**
  * 添加 字段
+ * @type top/bottom 默认bottom
  */
-function addFieldRow(){
+function addFieldRow(type){
 	var tbody = $("#fieldTable tbody");
 	var newIndex = tbody.find("tr").length-1;
 	var tpl = new StringBuffer();
@@ -258,9 +259,17 @@ function addFieldRow(){
 	tpl.append('<td><input type="checkbox" attrname="fields.isListShow" value="true"/></td>');
 	tpl.append('<td><input type="checkbox" attrname="fields.isListSearch" value="true"/></td>');
 	tpl.append('<td><input type="radio" attrname="primaryNo" value="'+newIndex+'"/></td>');
-	tpl.append('<td><a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a></td> ');
+	tpl.append('<td><a href="javascript:void(0);" onclick="removeFieldRow(this)">删除</a>&nbsp;&nbsp;');
+	tpl.append('<a href="javascript:void(0);" onclick="moveRowUp(this, \'tr\')" title="上移"><i class="icon-caret-up icon-2x"></i></a>&nbsp;&nbsp;');
+	tpl.append('<a href="javascript:void(0);" onclick="moveRowDown(this, \'tr\')" title="下移"><i class="icon-caret-down icon-2x"></i></a>');
+	tpl.append('</td> ');
 	tpl.append('</tr>');
-	tbody.append(tpl.toString());
+	
+	if(type=="top"){
+		tbody.prepend(tpl.toString());
+	}else{
+		tbody.append(tpl.toString());
+	}
 	tbody.find("tr#tr_"+groupId+" td select").select2();
 	resetFieldIndex();//重置 字段下班
 }
@@ -295,4 +304,64 @@ function resetFieldIndex(){
 function removeFieldRow(thi){
 	$(thi).closest("tr").remove();
 	resetFieldIndex();//重置 字段下班
+}
+
+
+/**
+ * 向上 移动行
+ * @param thisEle 当前元素
+ * @param parentTagName 当前父标记名
+ */
+function moveRowUp(thisEle, parentTagName){
+	//当前单元格
+	var thisParent = $(thisEle).closest(parentTagName);
+	//当前单元格下标
+	var thisIndex = $(thisParent).index();
+	if(thisIndex != 0){
+		//上一个单元格
+		var prev = thisParent.prev();
+		//克隆当前单元格
+		var thisParentClone = thisParent.clone();
+		var selectItem = thisParent.find("td select").val();
+		thisParent.remove();
+		prev.before(thisParentClone);
+		resetFieldIndex();//重置 字段下班
+		
+		thisParentClone.addClass('success');
+		thisParentClone.siblings().removeClass("success");//移除兄弟标记样式
+		
+		//重新渲染select
+		thisParentClone.find(".select2-container").remove();
+		thisParentClone.find("td select").select2().select2('val', selectItem);
+	}
+}
+
+/**
+ * 向下 移动行
+ * @param thisEle 当前元素
+ * @param parentTagName 当前父标记名
+ */
+function moveRowDown(thisEle, parentTagName){
+	//当前单元格
+	var thisParent = $(thisEle).closest(parentTagName);
+	//当前单元格下标
+	var thisIndex = $(thisParent).index();
+	var parentSibCount = thisParent.siblings().length;
+	if(thisIndex != parentSibCount){
+		//下一个单元格
+		var next = thisParent.next();
+		
+		//克隆当前单元格
+		var thisParentClone = thisParent.clone();
+		var selectItem = thisParent.find("td select").val();
+		thisParent.remove();
+		next.after(thisParentClone);
+		resetFieldIndex();//重置 字段下班
+		
+		thisParentClone.addClass('success');
+		thisParentClone.siblings().removeClass("success");//移除兄弟标记样式
+		//重新渲染select
+		thisParentClone.find(".select2-container").remove();
+		thisParentClone.find("td select").select2().select2('val', selectItem);
+	}
 }

@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@ attribute name="currLevel" type="java.lang.Integer" required="true" description="当前等级"%>
 <%@ attribute name="secondLevelTitle" type="java.lang.String" required="false" description="二级标题"%>
 <%@ attribute name="secondLevelView" type="java.lang.String" required="false" description="二级跳转视图"%>
@@ -15,7 +16,7 @@
    		<a href="${empty secondLevelView ?'javascript:;':secondLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${secondLevelTitle }</a>
    	</c:if>
    	<c:if test="${not empty threeLevelTitle}">
-   		<a href="${empty threeLevelView ?'javascript:;':threeLevelView}" class="${currLevel eq 2?'current':'tip-bottom' }" data-original-title="">${threeLevelTitle }</a>
+   		<a href="${empty threeLevelView ?'javascript:;':threeLevelView}" class="${currLevel eq 3?'current':'tip-bottom' }" data-original-title="">${threeLevelTitle }</a>
    	</c:if>
    </div>
 </div>

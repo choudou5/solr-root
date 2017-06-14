@@ -21,7 +21,7 @@
 
 <!--main-content-part-->
 <div id="content">
-<sys:breadcrumbs currLevel="2" secondLevelTitle="应用列表" threeLevelTitle="代码文件列表" secondLevelView="/console/collection/list"/>
+<sys:breadcrumbs currLevel="2" secondLevelTitle="应用列表" threeLevelTitle="代码文件列表" secondLevelView="/console/collection/schema/list"/>
 
 
   <!--container begin-->

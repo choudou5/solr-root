@@ -15,7 +15,7 @@
           <c:forEach items="${schemaFields }" var="schemaField" varStatus="status">
           	<c:set var="index" value="${status.index}" />
           	<tr id="tr_${index }">
-	            <sys:fieldInputTpl fieldIndex="${index }" schemaField="${schemaField }" fieldName="${schemaField.name }" fieldLabel="${schemaField.label }" fieldType="${schemaField.type }" canDel="${index > 0 }"/>
+	            <sys:fieldInputTpl fieldIndex="${index }" schemaField="${schemaField }" fieldName="${schemaField.name }" fieldLabel="${schemaField.label }" canDel="${index > 0 }"/>
 	        </tr>
           </c:forEach>
         </tbody>
@@ -27,7 +27,8 @@
       </select>
     </div>
     <div class="add-row">
-      	<a href="javascript:addFieldRow();">添加</a>
+      	<a href="javascript:addFieldRow('top');">添加到第一行</a>&nbsp;&nbsp;
+      	<a href="javascript:addFieldRow();">添加到尾行</a>
       </div>
   </div>
 </div>

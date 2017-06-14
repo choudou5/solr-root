@@ -4,3 +4,4 @@
 <script src="${ctxStaticConsole }/js/jquery.validate.js"></script> 
 <script src="${ctxStaticConsole }/js/jquery.wizard.js"></script> 
 <script src="${ctxStaticConsole }/js/select2.min.js"></script>
+<script src="${ctxStaticConsole }/js/bootstrap-datepicker.js"></script>

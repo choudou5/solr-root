@@ -29,7 +29,7 @@
       	<div id="app-list" class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-hand-right"></i> </span>
             <h5>应用列表</h5>
-            <a href="${ctx }/console/page?path=collection/schema/add" class="fl btn head-btn"> <i class="icon-plus-sign"></i>&nbsp;新建</a>
+            <a href="${ctx }/console/page?path=collection/schema/add" class="fl btn head-btn"> <i class="icon-plus-sign"></i>&nbsp;新建应用</a>
           </div>
           <div class="widget-content">
             <ul class="quick-actions"></ul>
@@ -189,12 +189,13 @@ $.ajax({
     	if(!_.isEmpty(data)){
     		var bg_list = ["bg_lb", "bg_dy", "bg_lg", "bg_lr", "bg_ly", "bg_db", "bg_ls", "bg_lo", "bg_dg", "bg_lv", "bg_lh"];
     		for (var index in data) {
-    			var color = bg_list.length%(parseInt(index)+1);
+    			var color = (parseInt(index)+1)%bg_list.length;
 				var schema = data[index];
-				$("#app-list ul.quick-actions").append('<li class="'+bg_list[color]+'"><a href="#">'+schema.name+'</a></li>');
+				var name = _.isEmpty(schema.title)?schema.name:schema.title;
+				$("#app-list ul.quick-actions").append('<li class="'+bg_list[color]+'"><a href="#" title="'+schema.name+'">'+name+'</a></li>');
 			}
     	}else{
-    		info(data);
+			$("#app-list div.widget-content").append('<p align="center" class="font16">您还没有创建应用，立即新建吧！</a>');
     	}
     }
 });

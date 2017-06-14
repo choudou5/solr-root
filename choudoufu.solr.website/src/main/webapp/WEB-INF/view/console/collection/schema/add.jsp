@@ -8,7 +8,8 @@
 	<title>${fns:getSiteName()}-控制台</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<%@include file="/WEB-INF/view/console/include/cssLib.jsp" %>
-	<link rel="stylesheet" href="${ctxStaticConsole }/css/select2.css" />
+	<%@include file="/WEB-INF/view/console/include/cssFormLib.jsp" %>
+	
 	<style type="text/css">
 		.table tbody>tr td:nth-child(n+6){text-align: center;width: 70px;}
 		.table tbody>tr td:nth-child(1){text-align: center;width: 50px;}
@@ -26,7 +27,7 @@
 <!--main-content-part-->
 <div id="content">
 
-<sys:breadcrumbs currLevel="2" threeLevelTitle="创建应用" secondLevelTitle="应用列表" secondLevelView="/console/page?path=collection/list"/>
+<sys:breadcrumbs currLevel="2" threeLevelTitle="创建应用" secondLevelTitle="应用列表" secondLevelView="/console/collection/schema/list"/>
 
   <!--container begin-->
   <div class="container-fluid">
@@ -38,7 +39,6 @@
       	<div class="widget-box">
           <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
             <h5>添加应用</h5>
-            <a href="javascript:history.go(-1);"  class="fl btn head-btn">返回</a>
           </div>
           <div class="widget-content nopadding">
             <form id="addSchemaForm" class="form-horizontal" method="post" action="${ctx }/console/collection/schema/save">
@@ -55,9 +55,13 @@
               <%@include file="/WEB-INF/view/console/collection/schema/add-step3.jsp" %>
 
               <div class="form-actions">
-                <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;
-                <input id="next" class="btn btn-danger" type="submit" value="下一步" />
-                <div id="status"></div>
+                 <label class="control-label"></label>
+                 <div class="controls">
+                 	 <a href="javascript:history.go(-1);"  class="btn">返回</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	                 <input id="back" class="btn btn-primary" type="reset" value="上一步" />&nbsp;&nbsp;&nbsp;
+		             <input id="next" class="btn btn-danger" type="submit" value="下一步" />
+		             <div id="status"></div>
+                 </div>
               </div>
               <div id="submitted"></div>
             </form>

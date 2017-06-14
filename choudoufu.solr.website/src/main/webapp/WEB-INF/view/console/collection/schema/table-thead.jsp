@@ -13,5 +13,5 @@
   <th><input type="checkbox" class="fl" targetAttrName="fields.isListShow">列表展示</th>
   <th>列表搜索</th>
   <th>主键</th>
-  <th>操作</th>
+  <th width="80">操作</th>
 </tr>

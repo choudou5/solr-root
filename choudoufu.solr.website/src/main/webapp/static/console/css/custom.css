@@ -1,3 +1,9 @@
+.font12{font-size: 12px;}
+.font14{font-size: 14px;}
+.font16{font-size: 16px;}
+.font18{font-size: 18px;}
+.font20{font-size: 20px;}
+
 .label-none{
 	box-shadow: #fff;
 	font-weight: normal;
@@ -17,10 +23,14 @@
 
 
 /** color */
+.grey{color: grey;}
 .green{color: #468847;}
 .orange{color: #c09853;}
-.red{color: #b94a48;}
+.red{color: #f44;}
 .blue{color: #3a87ad;}
+
+/** background */
+.bg_white{background: #fff;}
 
 
 /** bootstrap扩展*/
@@ -44,6 +54,10 @@
 @media(max-width:480px){.formwizard-steps li,.formwizard-steps li.active,.formwizard-steps li:first-child,.formwizard-steps li:last-child{background-color:transparent;padding:0;margin-right:0}
 .formwizard-steps li:after,.formwizard-steps li:before{border:0}}
 
+table>tfoot>tr>td{text-align: center;}
+
+.table td.center{text-align: center;}
+
 /** 搜索*/
 .search{margin:5px;min-width:150px}
 .search input[type=text]{padding:5pt;width:180px;border-radius:5px;color:#333333;font-size:1.0875rem}
@@ -51,8 +65,8 @@
 .search button i{color:#fff;opacity:.8}
 .search button:active i,.search button:hover i{opacity:1}
 
-.search .clear{display: none;position: absolute;width: 15px;cursor:pointer;height: 15px;margin: 10px 0 0 -24px;background: url('/static/images/clear.png') no-repeat center center;;}
-.search input::-ms-clear { display: none; }
+.search .clear, form .clear{display: none;position: absolute;width: 15px;cursor:pointer;height: 15px;margin: 10px 0 0 -24px;background: url('/static/images/clear.png') no-repeat center center;;}
+.search input::-ms-clear, form input::-ms-clear{ display: none; }
 
 /** 扩展 按钮样式 */
 .head-btn{
