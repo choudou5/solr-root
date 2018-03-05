@@ -76,7 +76,7 @@ public class AddressUtil {
 			BufferedReader bufferedReader = new BufferedReader(read);
             String lineTxt = null;
             while((lineTxt = bufferedReader.readLine()) != null){
-            	String[] array = lineTxt.split("\\|");
+            	String[] array = ToolkitUtil.split(lineTxt, "|");
             	for (String city : array) {
             		result.add(city);
 				}

@@ -1,15 +1,15 @@
 package com.choudoufu.solr.analyzer.tokenizer;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.choudoufu.solr.analyzer.SeparatorAnalyzer;
+import com.choudoufu.solr.analyzer.utils.ToolkitUtil;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 
-import com.choudoufu.solr.analyzer.SeparatorAnalyzer;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * <pre>
@@ -62,11 +62,11 @@ public class SeparatorTokenizer extends Tokenizer {
 			String data = getWord(ioBuffer, dataLen);
 			//sql分组处理
 			if(!"".equals(sqlGroupSymbol)){
-				String[] sqlSplitArray = data.split("\\"+sqlGroupSymbol);
-				Map<String, String> map = new HashMap<String, String>(sqlSplitArray.length*8);
+				String[] sqlSplitArray = ToolkitUtil.split(data, sqlGroupSymbol);
+				Map<String, String> map = new LinkedHashMap<String, String>(sqlSplitArray.length*8);
 				String[] itemArray = null;
 				for (String item : sqlSplitArray) {
-					itemArray = item.split("\\"+separator);
+					itemArray = ToolkitUtil.split(item, separator);
 					for (String node : itemArray) {
 						if(node != null && !node.isEmpty()){
 							map.put(node, null);
@@ -86,7 +86,7 @@ public class SeparatorTokenizer extends Tokenizer {
 				itemArray = null;
 				sqlSplitArray = null;
 			}else{
-				words = data.split("\\"+separator);
+				words = ToolkitUtil.split(data, separator);
 			}
 			itemCount = words.length;
 		}
