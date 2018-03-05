@@ -15,7 +15,7 @@ import org.apache.solr.client.solrj.response.FacetField;
  * 版权：徐浩文版权所有
  * </pre>
  */
-public class Page<T extends Serializable>{
+public class Page<T extends Serializable> implements Serializable{
 
 	public static final Integer MAX_ROWS = 30;	// 每页最大记录数限制
 	
