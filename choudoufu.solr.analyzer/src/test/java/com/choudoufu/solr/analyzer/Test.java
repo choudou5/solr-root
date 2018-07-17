@@ -1,8 +1,5 @@
 package com.choudoufu.solr.analyzer;
 
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -10,33 +7,34 @@ import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
-import com.chenlb.mmseg4j.analysis.SimpleAnalyzer;
+import java.io.IOException;
+import java.io.StringReader;
 
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		String keyword = "成都建筑资质代办行业迎来高速增长期";
+		String keyword = "成都建筑资质代办行业迎来高速增长期，柔洁护宝舒";
 		
 		// IK分词器
 		print(keyword, new IKAnalyzer(true));
 		
-		// mmseg4j分词器
-		print(keyword, new SimpleAnalyzer());
-		
-		// 最小切割分词器
-		print("我是中国人", new MinSplitAnalyzer());
-		
-		// 正向连续切割
-		print("中国北京天安门", new PositiveContinuousSplitAnalyzer());
-		
-		// 符号分词器
-		print("123.456.78910,12312.8888", new SeparatorAnalyzer(".", ","));
-		
-		// 地址分词器
-		print("广东省广州天河区车陂小学", new AddressAnalyzer("city"));
-		
-		// 拼音分词器
-		print("中国北京", new PinyinAnalyzer());
+//		// mmseg4j分词器
+//		print(keyword, new SimpleAnalyzer());
+//
+//		// 最小切割分词器
+//		print("我是中国人", new MinSplitAnalyzer());
+//
+//		// 正向连续切割
+//		print("中国北京天安门", new PositiveContinuousSplitAnalyzer());
+//
+//		// 符号分词器
+//		print("123.456.78910,12312.8888", new SeparatorAnalyzer(".", ","));
+//
+//		// 地址分词器
+//		print("广东省广州天河区车陂小学", new AddressAnalyzer("city"));
+//
+//		// 拼音分词器
+//		print("中国北京", new PinyinAnalyzer());
 	}
 	
 	private static void print(String keyword, Analyzer analyzer){

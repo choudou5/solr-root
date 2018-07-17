@@ -1,14 +1,11 @@
 package org.wltea.analyzer.core;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
 import org.wltea.analyzer.cfg.Configuration;
 import org.wltea.analyzer.dic.Dictionary;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.*;
 
 class AnalyzeContext
 {
@@ -176,7 +173,11 @@ class AnalyzeContext
         }
         else
         {
-          outputSingleCJK(index);
+          if (cfg.filterOneWords()) {
+            // todo 过滤一元不做处理
+          }else {
+            outputSingleCJK(index);
+          }
           index++;
         }
       }

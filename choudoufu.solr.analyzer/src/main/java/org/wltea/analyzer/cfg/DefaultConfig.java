@@ -17,6 +17,7 @@ public class DefaultConfig
   private static final String EXT_STOP = "ext_stopwords";
   private Properties props;
   private boolean useSmart;
+  private boolean filterOneWords;
 
   public static Configuration getInstance()
   {
@@ -92,5 +93,13 @@ public class DefaultConfig
       }
     }
     return extStopWordDictFiles;
+  }
+
+  public boolean filterOneWords() {
+    return filterOneWords;
+  }
+
+  public void setFilterOneWords(boolean filterOneWords) {
+    this.filterOneWords = filterOneWords;
   }
 }

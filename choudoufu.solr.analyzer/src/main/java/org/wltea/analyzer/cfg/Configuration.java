@@ -15,4 +15,8 @@ public abstract interface Configuration
   public abstract List<String> getExtDictionarys();
 
   public abstract List<String> getExtStopWordDictionarys();
+
+  public abstract boolean filterOneWords();
+
+  public abstract void setFilterOneWords(boolean paramBoolean);
 }

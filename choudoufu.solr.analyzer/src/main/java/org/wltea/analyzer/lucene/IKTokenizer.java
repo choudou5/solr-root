@@ -1,8 +1,5 @@
 package org.wltea.analyzer.lucene;
 
-import java.io.IOException;
-import java.io.Reader;
-
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -10,6 +7,9 @@ import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 import org.apache.lucene.util.AttributeFactory;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
+
+import java.io.IOException;
+import java.io.Reader;
 
 public final class IKTokenizer extends Tokenizer
 {
@@ -21,12 +21,18 @@ public final class IKTokenizer extends Tokenizer
   
   public IKTokenizer(Reader in, boolean useSmart)
   {
+    this(in, useSmart, false);
+  }
+
+  public IKTokenizer(Reader in, boolean useSmart, boolean filterOneWords)
+  {
     super(in);
     this.offsetAtt = ((OffsetAttribute)addAttribute(OffsetAttribute.class));
     this.termAtt = ((CharTermAttribute)addAttribute(CharTermAttribute.class));
     this.typeAtt = ((TypeAttribute)addAttribute(TypeAttribute.class));
-    this._IKImplement = new IKSegmenter(this.input, useSmart);
+    this._IKImplement = new IKSegmenter(this.input, useSmart, filterOneWords);
   }
+
 
   //扩展 factory
   public IKTokenizer(Reader in, AttributeFactory factory, boolean useSmart) {
@@ -36,6 +42,14 @@ public final class IKTokenizer extends Tokenizer
     this.typeAtt = ((TypeAttribute)addAttribute(TypeAttribute.class));
     this._IKImplement = new IKSegmenter(this.input, useSmart);
   }
+  public IKTokenizer(Reader in, AttributeFactory factory, boolean useSmart, boolean filterOneWords) {
+    super(factory, in);
+    this.offsetAtt = ((OffsetAttribute)addAttribute(OffsetAttribute.class));
+    this.termAtt = ((CharTermAttribute)addAttribute(CharTermAttribute.class));
+    this.typeAtt = ((TypeAttribute)addAttribute(TypeAttribute.class));
+    this._IKImplement = new IKSegmenter(this.input, useSmart);
+  }
+
   
   public boolean incrementToken()
     throws IOException

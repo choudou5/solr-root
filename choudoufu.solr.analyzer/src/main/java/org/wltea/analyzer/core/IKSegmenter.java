@@ -1,12 +1,13 @@
 package org.wltea.analyzer.core;
 
+import org.wltea.analyzer.cfg.Configuration;
+import org.wltea.analyzer.cfg.DefaultConfig;
+import org.wltea.analyzer.dic.Dictionary;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-import org.wltea.analyzer.cfg.Configuration;
-import org.wltea.analyzer.cfg.DefaultConfig;
-import org.wltea.analyzer.dic.Dictionary;
 
 public final class IKSegmenter
 {
@@ -18,11 +19,18 @@ public final class IKSegmenter
 
   public IKSegmenter(Reader input, boolean useSmart)
   {
+    this(input, useSmart, false);
+  }
+
+  public IKSegmenter(Reader input, boolean useSmart, boolean filterOneWords)
+  {
     this.input = input;
     this.cfg = DefaultConfig.getInstance();
     this.cfg.setUseSmart(useSmart);
+    this.cfg.setFilterOneWords(filterOneWords);
     init();
   }
+
 
   public IKSegmenter(Reader input, Configuration cfg)
   {
