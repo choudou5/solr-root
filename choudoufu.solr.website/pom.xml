@@ -30,7 +30,7 @@
 		<fastjson.version>1.2.24</fastjson.version>
 		<dozer.version>5.5.1</dozer.version>
 		
-		<solr-solr.version>4.10.4</solr-solr.version>
+		<solr-solr.version>8.2.0</solr-solr.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<choudoufu.package.version>0.0.1</choudoufu.package.version>
 		<mysql.driver.version>5.1.37</mysql.driver.version>
