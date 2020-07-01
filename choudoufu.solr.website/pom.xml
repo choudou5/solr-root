@@ -33,7 +33,7 @@
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<spring.version>4.2.4.RELEASE</spring.version>
 		<choudoufu.package.version>0.0.1</choudoufu.package.version>
-		<mysql.driver.version>5.1.37</mysql.driver.version>
+		<mysql.driver.version>8.0.16</mysql.driver.version>
 		<package.warName>choudoufu.solr.website</package.warName>
 	</properties>
 
