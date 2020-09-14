@@ -25,7 +25,7 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<http.version>4.4.1</http.version>
 		<ehcache-core.version>2.6.11</ehcache-core.version>
-		<ant.version>1.7.1</ant.version>
+		<ant.version>1.9.15</ant.version>
 		<freemarker.version>2.3.20</freemarker.version>
 		<fastjson.version>1.2.24</fastjson.version>
 		<dozer.version>5.5.1</dozer.version>
