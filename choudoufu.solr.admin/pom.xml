@@ -20,7 +20,7 @@
 		<commons-beanutils.version>1.9.1</commons-beanutils.version>
 		<commons-codec.version>1.9</commons-codec.version>
 		<servlet-api.version>2.5</servlet-api.version>
-		<http.version>4.4.1</http.version>
+		<http.version>4.5.13</http.version>
 		
 		<solr-solr.version>4.10.4</solr-solr.version>
 		<choudoufu.package.version>0.0.1</choudoufu.package.version>
