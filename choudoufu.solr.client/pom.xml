@@ -16,7 +16,7 @@
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-beanutils.version>1.9.1</commons-beanutils.version>
 		<http.version>4.4.1</http.version>
-		<spring.version>4.2.4.RELEASE</spring.version>
+		<spring.version>5.3.19</spring.version>
 		<slf4j.version>1.7.5</slf4j.version>
 	</properties>
 
