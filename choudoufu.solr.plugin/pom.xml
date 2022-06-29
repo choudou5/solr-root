@@ -16,7 +16,7 @@
 		<servlet-api.version>2.5</servlet-api.version>
 		<commons-logging>1.2</commons-logging>
 		<commons-apache.version>2.5</commons-apache.version>
-		<zookeeper.version>3.4.8</zookeeper.version>
+		<zookeeper.version>3.4.14</zookeeper.version>
 	</properties>
 
 	<dependencies>
